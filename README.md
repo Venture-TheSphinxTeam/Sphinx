@@ -1,9 +1,2 @@
--------------------------
-#                       #  
-# Sphinx                #
-#                       #
-#  By Team Venture      #
-#                       #
--------------------------
-
-
+Sphinx
+   By Team Venture
