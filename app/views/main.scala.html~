@@ -39,9 +39,16 @@
 		  <div class="well sidebar-nav">
 		    <ul class="nav">
 		      <li><button class="btn btn-primary" type="button">Dashboard</button></li>
-		      <li class="active"><button class="btn btn-primary" type="button">Search</button></li>
-		      <li><button class="btn btn-primary" type="button">Subscriptions</button></li>
-		      <li><button class="btn btn-primary" type="button">Admin Tools</button></li>
+		      <li class="active"><a href="#">Link</a></li>
+		      <li><a href="#">Link</a></li>
+		      <li><a href="#">Link</a></li>
+		      <li>Sidebar</li>
+		      <li><a href="#">Link</a></li>
+		      <li><a href="#">Link</a></li>
+		      <li><a href="#">Link</a></li>
+		      <li>Sidebar</li>
+		      <li><a href="#">Link</a></li>
+		      <li><a href="#">Link</a></li>
 		    </ul>
 		  </div><!--/.well -->
 		</div><!--/span-->

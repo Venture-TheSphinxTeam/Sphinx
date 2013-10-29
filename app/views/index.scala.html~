@@ -1,5 +1,6 @@
 @(message: String)
 @main("Sphinx: Connecting Projects to People") {
+<body>
    <!-- Main jumbotron for a primary marketing message or call to action -->
    <div class="jumbotron">
       <div class="container">
@@ -76,4 +77,5 @@
       <p>&copy; Team Venture</p>
    </footer>
    </div> <!-- /container -->
+</body>
 }
