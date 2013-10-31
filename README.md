@@ -1,11 +1,25 @@
 Sphinx
    By Team Venture
 
+  Sphinx is a web based project management catalog and event subscription system.  
+The goal of this system is to provide visibility and communication about projects
+within an organization. Employees will be able to browse through their companies 
+projects using various search criteria, subscribe to project related events, and 
+receive periodic updates about their subscribed projects when aspects about them change. 
+Users of the system will also be able to comment on projects with their feedback and vote 
+if they like or dislike a project.
+
+	To collect the data it operates on, Sphinx will interface with external project
+management system APIs acquire project metadata and event information. The initial
+implementation of this system will interact with a custom API for the JIRA project
+management system (https://www.atlassian.com/software/jira). Once the system has
+been validated with the Jira integration, interfaces with other project management
+systems will be considered.
+
 Opensource software utilized:
   - Mongo
   - Play
   - Elasticsearch
-
 
 ##Setting Up Your Environment:
 
