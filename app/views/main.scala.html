@@ -62,3 +62,12 @@
 
    </body>
 </html>
+<script type="text/javascript" charset="utf-8">
+$('.col-xs-6 li').each(function(){
+	
+    if(this.firstChild.pathname.replace(/^.*[\\\/]/, '').toLowerCase() == window.location.pathname.replace(/^.*[\\\/]/, '').toLowerCase())
+    {
+    $(this).addClass('active').siblings().removeClass('active');
+    }
+});
+</script>
