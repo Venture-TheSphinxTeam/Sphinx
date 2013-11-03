@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(userName: String)(content: Html)
 <!DOCTYPE html>
 <html ng-app>
    <head>
@@ -25,6 +25,10 @@
           </button>
           <a class="navbar-brand" href="./">Sphinx</a>
         </div>
+       <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">@{userName}</a></li>
+            </ul>
+
       </div><!-- /.container -->
     </div><!-- /.navbar -->
 
