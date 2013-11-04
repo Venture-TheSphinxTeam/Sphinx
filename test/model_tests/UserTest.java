@@ -15,7 +15,9 @@ public class UserTest extends WithApplication {
 
    @Test
     public void createAndRetrieveUser() {
-        new User( "Bob").insert();
+        User u = new User();
+        u.name = "Bob";
+        u.insert();
         User bob = User.findByName("Bob");
         assertNotNull(bob);
         assertEquals("Bob", bob.name);
