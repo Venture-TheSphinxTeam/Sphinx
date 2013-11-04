@@ -11,4 +11,18 @@ public class Application extends Controller {
         return ok(index.render("Soon to come: Sphinx"));
     }
 
+    
+    public static Result search() {
+    	return ok(search.render());
+    
+    }
+    
+    public static Result subscriptions() {
+    	return ok(subscriptions.render());
+    	
+    }
+    
+    public static Result adminTools() {
+    	return ok(adminTools.render());
+    }
 }
