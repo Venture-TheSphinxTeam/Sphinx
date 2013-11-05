@@ -9,7 +9,11 @@ import static play.test.Helpers.*;
 public class UserTest extends WithApplication {
     @Before
     public void setUp() {
-        start(fakeApplication(inMemoryDatabase()));
+    }
+
+    @After
+    public void tearDown(){
+      User.users().remove();
     }
 
 
