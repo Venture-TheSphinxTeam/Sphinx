@@ -24,6 +24,10 @@ public class MongoControlCenter {
 	public void setDatabase(String dbName) {
 		db = mongoClient.getDB(dbName);
 	}
+	
+	public void closeConnection(){
+		mongoClient.close();
+	}
 
 	public void getInitiativesByUser(String collection, String user) {
 
