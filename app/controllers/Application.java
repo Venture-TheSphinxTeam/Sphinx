@@ -28,7 +28,7 @@ public class Application extends Controller {
 		MongoControlCenter control = new MongoControlCenter("venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 
-		Object[] array = control.getAllDocuments("entities");
+		Object[] array = control.getInitiativesByUser("entities", "jay-z");
 		
 		control.closeConnection();
 
