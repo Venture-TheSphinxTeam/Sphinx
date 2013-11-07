@@ -23,20 +23,38 @@ public class MongoControlCenter {
 
 	}
 
+	/**
+	 * 
+	 * Sets the database of the Mongo DB controller.
+	 * 
+	 * @param dbName  The name of the Database to access
+	 */
 	public void setDatabase(String dbName) {
 		db = mongoClient.getDB(dbName);
 	}
 
+	/**
+	 * 
+	 * Closes the connection to the database.
+	 */
 	public void closeConnection() {
 		mongoClient.close();
 	}
 
-	public Object[] getInitiativesByUser(String collection, String user) {
+	/**
+	 * 
+	 * Gets all the entities the supplied user is a part of. 
+	 * 
+	 * 
+	 * @param user	The user supplied.
+	 * @return	An array of entity documents the user belongs to.
+	 */
+	public Object[] getEntitiesByUser(String user) {
 
-		DBObject query = new QueryBuilder().start()
+		DBObject query = new QueryBuilder()
 				.or(new BasicDBObject("assignee", user))
 				.or(new BasicDBObject("watchers", user)).get();
-		DBCollection coll = db.getCollection(collection);
+		DBCollection coll = db.getCollection("entities");
 
 		DBCursor cursor = coll.find(query);
 
@@ -53,6 +71,13 @@ public class MongoControlCenter {
 
 	}
 
+	/**
+	 * 
+	 * Gets all of the documents in a specific collection
+	 * 
+	 * @param collection	The collection being queried.
+	 * @return	An array of all documents in that collection.
+	 */
 	public Object[] getAllDocuments(String collection) {
 		DBCollection coll = db.getCollection(collection);
 
