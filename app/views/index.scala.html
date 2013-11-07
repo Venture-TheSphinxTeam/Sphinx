@@ -17,8 +17,8 @@
                   @for(field <- message){
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-                     <h3>@init.get("key")</h3>
-                     <p>@init.get("summary")
+                     <h3>@init.get("summary")</h3>
+                     <p>@init.get("key")
                         <br/> @init.get("dueDate")
                      </p>
                      }
