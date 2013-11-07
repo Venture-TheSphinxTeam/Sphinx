@@ -53,7 +53,10 @@ public class MongoControlCenter {
 
 		DBObject query = new QueryBuilder()
 				.or(new BasicDBObject("assignee", user))
-				.or(new BasicDBObject("watchers", user)).get();
+				.or(new BasicDBObject("watchers", user))
+				.or(new BasicDBObject("reporter", user))
+				.or(new BasicDBObject("businessOwner", user))
+				.get();
 		DBCollection coll = db.getCollection("entities");
 
 		DBCursor cursor = coll.find(query);
