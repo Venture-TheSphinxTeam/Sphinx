@@ -57,7 +57,7 @@ public class MongoControlCenter {
 				.or(new BasicDBObject("reporter", user))
 				.or(new BasicDBObject("businessOwner", user))
 				.get();
-		DBCollection coll = db.getCollection("entities");
+		DBCollection coll = db.getCollection("initiatives");
 
 		DBCursor cursor = coll.find(query);
 
