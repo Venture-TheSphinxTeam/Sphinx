@@ -1,5 +1,7 @@
 package controllers;
 
+import helpers.MongoControlCenter;
+
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,54 +22,31 @@ import com.mongodb.DBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.ServerAddress;
 
-
 public class Application extends Controller {
 
-    public static Result index(){
-    	
-    	
+	public static Result index() throws UnknownHostException {
+		MongoControlCenter control = new MongoControlCenter("venture.se.rit.edu", 27017);
+		control.setDatabase("dev");
 
-        return ok(index.render("Sphinx"));
-    }
+		Object[] array = control.getAllDocuments("entities");
+		
+		control.closeConnection();
 
-    
-    public static Result search() throws UnknownHostException {
-    	
-    	//TEST CODE FOR MONGO DB
-    	/**
-    	MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-    	DB db = mongoClient.getDB( "Sphinx" );
-    	
-    	
-    	BasicDBObject query = new BasicDBObject("key", "IN-1");
-    	DBCollection coll =  db.getCollection("Initiative");
-    	
-    	DBCursor cursor = coll.find(query);
-    	Object [] dbo = {};
-    	try {
-    	   while(cursor.hasNext()) {
-    	       Collection<Object> values = cursor.next().toMap().values();
-    	       List<String> listVals = new ArrayList<String>();
-    	       for(Object val: values){
-    	    	   listVals.add("" + val );
-    	    	   
-    	       }
-    	       dbo = listVals.toArray();
-    	   }
-    	} finally {
-    	   cursor.close();
-    	}
-    	**/
-    	return ok(search.render());
-    
-    }
-    
-    public static Result subscriptions() {
-    	return ok(subscriptions.render());
-    	
-    }
-    
-    public static Result adminTools() {
-    	return ok(adminTools.render());
-    }
+		return ok(index.render(array));
+	}
+
+	public static Result search() {
+
+		return ok(search.render());
+
+	}
+
+	public static Result subscriptions() {
+		return ok(subscriptions.render());
+
+	}
+
+	public static Result adminTools() {
+		return ok(adminTools.render());
+	}
 }
