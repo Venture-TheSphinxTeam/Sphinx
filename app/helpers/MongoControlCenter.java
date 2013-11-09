@@ -41,6 +41,42 @@ public class MongoControlCenter {
 		mongoClient.close();
 	}
 
+
+
+        public Object[] getEventsForUser(String user) {
+
+          DBObject query = new QueryBuilder()
+				.or(new BasicDBObject("assignee", user))
+				.or(new BasicDBObject("watchers", user))
+				.or(new BasicDBObject("reporter", user))
+				.or(new BasicDBObject("businessOwner", user))
+				.get();
+          DBCollection init = db.getCollection("initiatives");
+          DBCollection risks = db.getCollection("risks");
+          DBCollection mile = db.getCollection("milestones");
+          
+          ArrayList<DBObject> result = new ArrayList<DBObject>();
+
+          ArrayList<Integer> ids = new ArrayList<Integer>();
+          DBCursor c = init.find(query);
+          
+          try {
+                while (cursor.hasNext()){
+                  ids.add(cursor.next().get("entityID");
+                }
+              }
+          finally{
+             c.close();
+          }
+
+          
+
+
+        }
+
+
+
+
 	/**
 	 * 
 	 * Gets all the entities the supplied user is a part of. 
