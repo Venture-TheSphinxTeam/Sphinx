@@ -10,6 +10,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.QueryBuilder;
+import com.mongodb.BasicDBList;
 
 public class MongoControlCenter {
 
@@ -40,6 +41,66 @@ public class MongoControlCenter {
 	public void closeConnection() {
 		mongoClient.close();
 	}
+
+
+
+        public Object[] getEventsForUser(String user) {
+
+          DBObject query = new QueryBuilder()
+				.or(new BasicDBObject("assignee", user))
+				.or(new BasicDBObject("watchers", user))
+				.or(new BasicDBObject("reporter", user))
+				.or(new BasicDBObject("businessOwner", user))
+				.get();
+
+
+
+          //ArrayList<Integer> ids = new ArrayList<Integer>();
+          
+          BasicDBList ids = new BasicDBList();
+
+          BasicDBObject eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject("$in", ids));
+
+          DBCollection init = db.getCollection("initiatives");
+          DBCollection risks = db.getCollection("risks");
+          DBCollection mile = db.getCollection("milestones");
+          DBCollection event = db.getCollection("events");          
+
+          ArrayList<DBObject> result = new ArrayList<DBObject>();
+
+          DBCursor c = init.find(query); 
+	  DBObject t;
+          try {
+                while (c.hasNext()){
+		  t = c.next();
+		  System.out.println(((BasicDBObject)t).getInt("entityId"));
+                  ids.add(((BasicDBObject)t).getInt("entityId"));
+                }
+              }
+          finally{
+             c.close();
+          }
+
+          c = event.find(eventQuery.append("entity.entityType", "INITIATIVE"));
+
+         try{
+           while(c.hasNext()){
+             result.add(c.next());
+           }
+         }
+         finally{
+           c.close();
+         }
+
+         
+
+
+        return result.toArray();
+
+        }
+
+
+
 
 	/**
 	 * 

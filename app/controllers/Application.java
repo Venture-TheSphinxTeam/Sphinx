@@ -13,11 +13,11 @@ public class Application extends Controller {
 		MongoControlCenter control = new MongoControlCenter("venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 
-		Object[] array = control.getEntitiesByUser("jay-z");
+		Object[] array = control.getEventsForUser("jay-z");
 		
 		control.closeConnection();
 
-		return ok(index.render(array));
+		return ok(index.render(array,"RickyWinterborn"));
 	}
 
 	public static Result search() {
