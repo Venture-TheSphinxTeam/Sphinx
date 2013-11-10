@@ -73,7 +73,6 @@ public class MongoControlCenter {
           try {
                 while (c.hasNext()){
 		  t = c.next();
-		  System.out.println(((BasicDBObject)t).getInt("entityId"));
                   ids.add(((BasicDBObject)t).getInt("entityId"));
                 }
               }
@@ -92,8 +91,48 @@ public class MongoControlCenter {
            c.close();
          }
 
-         
+        ids = new BasicDBList();
 
+	c = risks.find(query);
+	try{
+          while(c.hasNext()){
+	    t = c.next();
+	    //System.out.println(((BasicDBObject)t).getInt("entityId"));
+	    ids.add(((BasicDBObject)t).getInt("entityId"));
+	  }
+	}
+	finally{
+	  c.close();
+	}
+        eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject("$in", ids));
+	c = event.find(eventQuery.append("entity.entityType","RISK"));
+        
+	try{
+	  while(c.hasNext()){
+	  result.add(c.next());}
+	}
+	finally{
+	  c.close();
+	}
+
+
+	ids = new BasicDBList();
+	c= mile.find(query);
+        try{
+          while(c.hasNext()){ids.add(((BasicDBObject)c.next()).getInt("entityId"));}
+	}
+	finally{
+	  c.close();
+	}
+        eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject("$in", ids));
+	c = event.find(eventQuery.append("entity.entityType","MILESTONE"));
+        
+	try{
+	  while(c.hasNext()){result.add(c.next());}
+	}
+	finally{
+	  c.close();
+	}
 
         return result.toArray();
 
