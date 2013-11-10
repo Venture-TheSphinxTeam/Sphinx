@@ -1,5 +1,5 @@
-@(message: Array[Object])
-@main("Sphinx: Connecting Projects to People")("Ricky Winterboard") {
+@(message: Array[Object])(username: String)
+@main("Sphinx: Connecting Projects to People")(username) {
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="container">
    <div class="row">
@@ -17,11 +17,14 @@
                   @for(field <- message){
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-                     <h3>@init.get("summary")</h3>
-                     <p>@init.get("key")
-                        <br/> @init.get("dueDate")
+		     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
+		     <h3>@entity.get("summary")</h3>
+		     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
+                     <p>@entity.get("key")
+                        <br/> @init.get("eventDate")
                      </p>
                      }
+		     }
                      <a class="btn btn-primary btn-sm">Learn more &raquo;</a>
                   </div>
                   <br/>
