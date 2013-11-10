@@ -21,7 +21,7 @@
 		     <h3>@entity.get("summary")</h3>
 		     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
                      <p>@entity.get("key")
-                        <br/> @init.get("eventDate")
+                        <br/> @{new Date(init.getLong("eventDate"))}
                      </p>
                      }
 		     }
