@@ -12,12 +12,12 @@ public class Application extends Controller {
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter("venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
-
-		Object[] array = control.getEventsForUser("jay-z");
+                String username = "jay-z";
+		Object[] array = control.getEventsForUser(username);
 		
 		control.closeConnection();
 
-		return ok(index.render(array,"RickyWinterborn"));
+		return ok(index.render(array,username));
 	}
 
 	public static Result search() {
