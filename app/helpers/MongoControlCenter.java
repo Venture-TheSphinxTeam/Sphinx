@@ -16,6 +16,11 @@ public class MongoControlCenter {
 
 	private MongoClient mongoClient;
 	private DB db;
+	private DBCollection initiatives;
+	private DBCollection risks;
+	private DBCollection milestones;
+	private DBCollection events;
+	
 
 	public MongoControlCenter(String address, int port)
 			throws UnknownHostException {
@@ -33,6 +38,11 @@ public class MongoControlCenter {
 	 */
 	public void setDatabase(String dbName) {
 		db = mongoClient.getDB(dbName);
+		
+		initiatives = db.getCollection("initiatives");
+		risks = db.getCollection("risks");
+		milestones = db.getCollection("milestones");
+		events = db.getCollection("events");
 	}
 
 	/**
@@ -51,21 +61,14 @@ public class MongoControlCenter {
 				.or(new BasicDBObject("reporter", user))
 				.or(new BasicDBObject("businessOwner", user)).get();
 
-		// ArrayList<Integer> ids = new ArrayList<Integer>();
-
 		BasicDBList ids = new BasicDBList();
 
 		BasicDBObject eventQuery = new BasicDBObject("entity.entityId",
 				new BasicDBObject("$in", ids));
 
-		DBCollection init = db.getCollection("initiatives");
-		DBCollection risks = db.getCollection("risks");
-		DBCollection mile = db.getCollection("milestones");
-		DBCollection event = db.getCollection("events");
-
 		ArrayList<DBObject> result = new ArrayList<DBObject>();
 
-		DBCursor c = init.find(query);
+		DBCursor c = initiatives.find(query);
 		DBObject t;
 		try {
 			while (c.hasNext()) {
@@ -76,7 +79,7 @@ public class MongoControlCenter {
 			c.close();
 		}
 
-		c = event.find(eventQuery.append("entity.entityType", "INITIATIVE"));
+		c = events.find(eventQuery.append("entity.entityType", "INITIATIVE"));
 
 		try {
 			while (c.hasNext()) {
@@ -100,7 +103,7 @@ public class MongoControlCenter {
 		}
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
-		c = event.find(eventQuery.append("entity.entityType", "RISK"));
+		c = events.find(eventQuery.append("entity.entityType", "RISK"));
 
 		try {
 			while (c.hasNext()) {
@@ -111,7 +114,7 @@ public class MongoControlCenter {
 		}
 
 		ids = new BasicDBList();
-		c = mile.find(query);
+		c = milestones.find(query);
 		try {
 			while (c.hasNext()) {
 				ids.add(((BasicDBObject) c.next()).getInt("entityId"));
@@ -121,7 +124,7 @@ public class MongoControlCenter {
 		}
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
-		c = event.find(eventQuery.append("entity.entityType", "MILESTONE"));
+		c = events.find(eventQuery.append("entity.entityType", "MILESTONE"));
 
 		try {
 			while (c.hasNext()) {
@@ -168,11 +171,7 @@ public class MongoControlCenter {
 					.or(new BasicDBObject("businessGroups", group))
 					.or(new BasicDBObject("providerGroups", group)).get();
 
-			DBCollection event = db.getCollection("events");
-
-			DBCollection init = db.getCollection("initiatives");
-
-			DBCursor teamCursor = init.find(teamQuery);
+			DBCursor teamCursor = initiatives.find(teamQuery);
 			DBObject t;
 			try {
 				while (teamCursor.hasNext()) {
@@ -183,7 +182,7 @@ public class MongoControlCenter {
 				teamCursor.close();
 			}
 
-			teamCursor = event.find(eventQuery.append("entity.entityType",
+			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"INITIATIVE"));
 
 			try {
@@ -195,8 +194,6 @@ public class MongoControlCenter {
 			}
 
 			ids.clear();
-
-			DBCollection risks = db.getCollection("risks");
 
 			teamCursor = risks.find(teamQuery);
 
@@ -211,7 +208,7 @@ public class MongoControlCenter {
 
 			eventQuery = new BasicDBObject("entity.entityId",
 					new BasicDBObject("$in", ids));
-			teamCursor = event.find(eventQuery.append("entity.entityType",
+			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"RISK"));
 
 			try {
@@ -224,9 +221,9 @@ public class MongoControlCenter {
 
 			ids.clear();
 
-			DBCollection mile = db.getCollection("milestones");
+			DBCollection milestones = db.getCollection("milestones");
 
-			teamCursor = mile.find(teamQuery);
+			teamCursor = milestones.find(teamQuery);
 
 			try {
 				while (teamCursor.hasNext()) {
@@ -239,7 +236,7 @@ public class MongoControlCenter {
 
 			eventQuery = new BasicDBObject("entity.entityId",
 					new BasicDBObject("$in", ids));
-			teamCursor = event.find(eventQuery.append("entity.entityType",
+			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"MILESTONE"));
 
 			try {
@@ -255,6 +252,9 @@ public class MongoControlCenter {
 		return teamEntities.toArray();
 	}
 
+	public Object[] getOrgEventsForUser(String user){
+		return null;
+	}
 	/**
 	 * 
 	 * Gets all the entities the supplied user is a part of.
@@ -264,16 +264,15 @@ public class MongoControlCenter {
 	 *            The user supplied.
 	 * @return An array of entity documents the user belongs to.
 	 */
-	public Object[] getInitiativesByUser(String user) {
+/*	public Object[] getInitiativesByUser(String user) {
 
 		DBObject query = new QueryBuilder()
 				.or(new BasicDBObject("assignee", user))
 				.or(new BasicDBObject("watchers", user))
 				.or(new BasicDBObject("reporter", user))
 				.or(new BasicDBObject("businessOwner", user)).get();
-		DBCollection coll = db.getCollection("initiatives");
 
-		DBCursor cursor = coll.find(query);
+		DBCursor cursor = initiatives.find(query);
 
 		ArrayList<DBObject> list = new ArrayList<DBObject>();
 
@@ -286,7 +285,7 @@ public class MongoControlCenter {
 		}
 		return list.toArray();
 
-	}
+	}*/
 
 	/**
 	 * 
