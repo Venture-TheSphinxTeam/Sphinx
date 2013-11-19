@@ -1,4 +1,4 @@
-@(message: Array[Object])(teams: Array[Object])(username: String)
+@(userEntities: Array[Object])(teamEntities: Array[Object])(orgEntities: Array[Object])(username: String)
 @main("Sphinx: Connecting Projects to People")(username) {
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="container">
@@ -14,7 +14,7 @@
                <div class="tab-pane active" id="1">
                   <br/>
                   <ul class="thumbnails">
-                  @for(field <- message){
+                  @for(field <- userEntities){
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
                      @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
@@ -34,7 +34,7 @@
                <div class="tab-pane" id="2">
                   <br/>
                   <ul class="thumbnails">
-                  @for(field <- teams){
+                  @for(field <- teamEntities){
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
                      @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
@@ -52,17 +52,7 @@
                   <br/>
                </div>
                <div class="tab-pane" id="3">
-                  <br/>
-                  <ul class="thumbnails">
-                     <div class="thumbnail">
-                        <h3>SEO Initiative 1:</h3>
-                        <p>Website Conversion Request
-                           <br/> 10/28/13 2:00 PM
-                           <br/>
-                           <a class="btn btn-primary btn-sm">Learn more &raquo;</a>
-                        </p>
-                     </div>
-                  </ul>
+
                </div>
             </div>
          </div>
