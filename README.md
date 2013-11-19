@@ -9,7 +9,7 @@ receive periodic updates about their subscribed projects when aspects about them
 Users of the system will also be able to comment on projects with their feedback and vote 
 if they like or dislike a project.
 
-	To collect the data it operates on, Sphinx will interface with external project
+  To collect the data it operates on, Sphinx will interface with external project
 management system APIs acquire project metadata and event information. The initial
 implementation of this system will interact with a custom API for the JIRA project
 management system (https://www.atlassian.com/software/jira). Once the system has
