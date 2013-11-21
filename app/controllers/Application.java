@@ -10,14 +10,20 @@ import views.html.*;
 public class Application extends Controller {
 
 	public static Result index() throws UnknownHostException {
-		MongoControlCenter control = new MongoControlCenter("venture.se.rit.edu", 27017);
+		MongoControlCenter control = new MongoControlCenter(
+				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
-                String username = "jay-z";
-		Object[] array = control.getEventsForUser(username);
 		
+		String username = "RickyWinterborn";	//TODO : Make this pull current user name
+		
+		Object[] userEntities = control.getEventsForUser("jay-z");
+		Object[] teamEntities = control.getTeamEventsForUser("RickyWinterborn");
+		Object[] orgEntities = control.getOrgEventsForUser("jay-z");
+		//Object[] userSubscriptions =		//TODO
+	
 		control.closeConnection();
 
-		return ok(index.render(array,username));
+		return ok(index.render(userEntities, teamEntities, orgEntities, username));
 	}
 
 	public static Result search() {
