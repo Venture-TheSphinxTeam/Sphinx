@@ -69,7 +69,6 @@ public class MongoControlCenter {
 	 */
 	public Object[] getEventsForUser(String user) {
 		ArrayList<DBObject> results = new ArrayList<DBObject>();
-		ids.clear();
 		
 		// Query that returns results that the user is part of
 		DBObject baseQuery = new QueryBuilder()
@@ -123,7 +122,7 @@ public class MongoControlCenter {
 
 	@SuppressWarnings("unchecked")
 	public Object[] getTeamEventsForUser(String user) {
-		ArrayList<DBObject> teamEntities = new ArrayList<DBObject>();
+		ArrayList<DBObject> results = new ArrayList<DBObject>();
 
 		DBObject query = new BasicDBObject("username", user);
 		DBCursor cursor = users.find(query);
@@ -137,7 +136,6 @@ public class MongoControlCenter {
 		finally {
 			cursor.close();
 		}
-		ids.clear();
 
 		BasicDBObject eventQuery = new BasicDBObject("entity.entityId",
 				new BasicDBObject("$in", ids));
@@ -157,7 +155,7 @@ public class MongoControlCenter {
 			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"INITIATIVE"));
 
-			teamEntities.addAll( getResults( teamCursor ) );
+			results.addAll( getResults( teamCursor ) );
 			ids.clear();
 			
 			// find all team risk related events
@@ -170,7 +168,7 @@ public class MongoControlCenter {
 			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"RISK"));
 
-			teamEntities.addAll( getResults( teamCursor ) );
+			results.addAll( getResults( teamCursor ) );
 			ids.clear();
 
 			// find all team milestone related events
@@ -183,25 +181,60 @@ public class MongoControlCenter {
 			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"MILESTONE"));
 
-			teamEntities.addAll( getResults(teamCursor) );
+			results.addAll( getResults(teamCursor) );
 			ids.clear();
 		}
 
-		return teamEntities.toArray();
+		return results.toArray();
 	}
 
 	public Object[] getOrgEventsForUser(String user){
+		ArrayList<DBObject> results = new ArrayList<DBObject>();
 		
-		DBObject query = new QueryBuilder()
+		DBObject baseQuery = new QueryBuilder()
 		.or(new BasicDBObject("allowedAccessUsers", user))
 		.or(new BasicDBObject("allowedAccessUsers", null)).get();
+		
+		/* ------------- Get Results --------------- */
 
-		ids.clear();
+		// Get all events associated with initiatives user is part of 
+		
+		DBCursor queryCursor = initiatives.find(baseQuery);
+		setIdsFromQueryResults(queryCursor);
 		
 		BasicDBObject eventQuery = new BasicDBObject("entity.entityId",
 				new BasicDBObject("$in", ids));
+
+		queryCursor = events.find(eventQuery.append("entity.entityType", "INITIATIVE"));
+		results.addAll( getResults(queryCursor) );
+
+		ids.clear();
 		
-		return null;
+		// Get all events associated with risks user is part of 
+
+		queryCursor = risks.find(baseQuery);
+		setIdsFromQueryResults(queryCursor);
+		
+		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
+				"$in", ids));
+		
+		queryCursor = events.find(eventQuery.append("entity.entityType", "RISK"));
+		results.addAll( getResults(queryCursor) );	
+		
+		ids.clear();
+		
+		// Get all milestones associated with results user is part of 
+		
+		queryCursor = milestones.find(baseQuery);
+		setIdsFromQueryResults(queryCursor);
+		
+		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
+				"$in", ids));
+		
+		queryCursor = events.find(eventQuery.append("entity.entityType", "MILESTONE"));
+		results.addAll( getResults(queryCursor) );
+		
+		return results.toArray();
 	}
 
 	/*
