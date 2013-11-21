@@ -28,6 +28,11 @@ public class Ingester {
 	  invBuild = webTarget.request();
 	}
 
+
+        public boolean setTarget(String url){
+          webTarget. client.target(url);
+	  invBuild = webTarget.request();
+	}
         /**
 	 **Gets the response from the set target and returns the message as a string
 	 **/
