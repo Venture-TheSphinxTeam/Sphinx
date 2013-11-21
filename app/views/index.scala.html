@@ -52,7 +52,24 @@
                   <br/>
                </div>
                <div class="tab-pane" id="3">
-
+                  <br/>
+                  <ul class="thumbnails">
+                  @for(field <- orgEntities){
+                  <div class="thumbnail">
+                     @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
+                     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
+                     <h3>@entity.get("summary")</h3>
+                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
+                     <p>@entity.get("key")
+                        <br/> @{new Date(init.getLong("eventDate"))}
+                     </p>
+                     }
+                     }
+                     <a class="btn btn-primary btn-sm">Learn more &raquo;</a>
+                  </div>
+                  <br/>
+                  }                   	  
+                  <br/>
                </div>
             </div>
          </div>
