@@ -20,6 +20,9 @@ Opensource software utilized:
   - Mongo
   - Play
   - Elasticsearch
+  - Jersey
+  - Jackson
+  - Play-Jongo (maybe)
 
 ##Setting Up Your Environment:
 
