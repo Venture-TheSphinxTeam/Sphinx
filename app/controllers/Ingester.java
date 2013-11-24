@@ -30,8 +30,10 @@ public class Ingester {
 
 
         public boolean setTarget(String url){
-          webTarget. client.target(url);
+          webTarget= client.target(url);
 	  invBuild = webTarget.request();
+
+	  return true;
 	}
         /**
 	 **Gets the response from the set target and returns the message as a string
@@ -41,7 +43,7 @@ public class Ingester {
 	  
 	  if(invBuild != null){
             r = invBuild.get();
-	    if(r.status == 200){
+	    if(r.getStatus() == 200){
 	      return r.readEntity(String.class);
 	    }
 	  }
