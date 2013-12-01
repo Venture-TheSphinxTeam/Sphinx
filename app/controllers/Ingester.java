@@ -1,5 +1,9 @@
 package controllers;
 
+import java.util.ArrayList;
+
+import helpers.JSONParser;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -65,16 +69,19 @@ public class Ingester {
 
 
 	public void getStuff(){
-		WebTarget target = client.target("http://localhost:9998");
+		WebTarget target = client.target("http://localhost:9998/entity/2001-01-01");
 		
 		Invocation.Builder ib = target.request();
 		
 		Response r= ib.get();
 		
 		System.out.println(r.getStatus());
-		System.out.println(r.readEntity(String.class));
+		//System.out.println(r.readEntity(String.class));
 		
-			
+		JSONParser j = new JSONParser();
+		ArrayList<String> k = j.extractEntities(r.readEntity(String.class));
+		
+		System.out.println(k.get(0));
 		
 	}
 }

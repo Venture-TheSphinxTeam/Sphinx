@@ -16,12 +16,12 @@ import org.junit.*;
 
 public class IngesterTest{
   protected static HttpServer server;
-  protected final static String TESTURL="http://localhost:9998/test";
+  protected final static String TESTURL="http://localhost:9997/test";
 
   @BeforeClass
   public static void setUpTestServer() throws URISyntaxException {
 	  ResourceConfig rc = new ResourceConfig(TestResource.class);
-	  URI uri = new URI("http","","localhost",9998,"/",null,null);
+	  URI uri = new URI("http","","localhost",9997,"/",null,null);
 	  server = JdkHttpServerFactory.createHttpServer(uri, rc);
   }
   
@@ -51,6 +51,12 @@ public class IngesterTest{
     Ingester i = new Ingester();
     String r = i.getMessageFromTarget(TESTURL);
     Assert.assertEquals(r,TestResource.TEST_JSON);
+  }
+
+  //Don't test this pls
+  public void testtesttesttesttest(){
+    Ingester i = new Ingester("http://localhost:9997/entity");
+    i.getStuff();
   }
 
 
