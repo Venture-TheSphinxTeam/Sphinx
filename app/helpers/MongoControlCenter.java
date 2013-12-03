@@ -247,7 +247,11 @@ public class MongoControlCenter {
 		try{
 			while (resultsCursor.hasNext()) {
 				temp = resultsCursor.next();
+                                try{
 				ids.add(((BasicDBObject) temp).getInt("entityId"));
+                                }catch(NullPointerException e){
+                                  //TODO:Some sort of logging
+                                 }
 			}
 		} finally {
 			resultsCursor.close();
