@@ -14,7 +14,7 @@ libraryDependencies ++= Seq(
   "org.jongo" % "jongo" % "0.4",
   "uk.co.panaxiom" %% "play-jongo" % "0.6.0-jongo0.4",
   "javax.ws.rs" % "javax.ws.rs-api" % "2.0",
-  "org.glassfish.jersey.containers" % "jersey-container-jdk-http" % "2.4"
+  "org.glassfish.jersey.containers" % "jersey-container-jdk-http" % "2.0"
 )     
 
 play.Project.playJavaSettings
