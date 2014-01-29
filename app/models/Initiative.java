@@ -1,5 +1,5 @@
 package models;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import java.util.List;
 
 

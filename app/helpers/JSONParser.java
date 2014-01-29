@@ -17,9 +17,9 @@ public class JSONParser {
     ObjectMapper om = new ObjectMapper();
     try{
     	EntityCollection e= om.readValue(message, EntityCollection.class);
-    	entities.addAll(e.getInitiatives());
-    	entities.addAll(e.getRisks());
-    	entities.addAll(e.getMilestones());
+    	//entities.addAll(e.getInitiatives());
+    	//entities.addAll(e.getRisks());
+    	//entities.addAll(e.getMilestones());
     }catch(JsonGenerationException e){
     	e.printStackTrace();
     }catch(JsonMappingException e){

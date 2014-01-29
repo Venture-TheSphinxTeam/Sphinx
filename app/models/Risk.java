@@ -1,7 +1,7 @@
 package models;
 
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.*;
 /**
  * Created by Striker on 1/28/14.
  */
