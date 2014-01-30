@@ -2,6 +2,10 @@ name := "sphinx"
 
 version := "1.0-SNAPSHOT"
 
+dependencyOverrides ~= { overrides => 
+  overrides + "org.glassfish.hk2" % "hk2-utils" % "2.2.0-b21" 
+}
+
 libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,
@@ -18,5 +22,6 @@ libraryDependencies ++= Seq(
   "org.glassfish.jersey.core" % "jersey-server" % "2.4",
   "org.glassfish.jersey.containers" % "jersey-container-jdk-http" % "2.4"
 )     
+
 
 play.Project.playJavaSettings
