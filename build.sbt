@@ -2,9 +2,7 @@ name := "sphinx"
 
 version := "1.0-SNAPSHOT"
 
-dependencyOverrides ~= { overrides => 
-  overrides + "org.glassfish.hk2" % "hk2-utils" % "2.2.0-b21" 
-}
+dependencyOverrides += "org.glassfish.hk2" % "hk2-utils" % "2.2.0-b21"
 
 libraryDependencies ++= Seq(
   javaJdbc,

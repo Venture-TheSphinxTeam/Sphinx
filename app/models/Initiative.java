@@ -1,6 +1,12 @@
 package models;
 import com.fasterxml.jackson.annotation.*;
+
 import java.util.List;
+
+import org.bson.types.ObjectId;
+import org.jongo.MongoCollection;
+
+import uk.co.panaxiom.playjongo.PlayJongo;
 
 
 /**
@@ -10,9 +16,52 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Initiative extends Entity{
+	
+	private static MongoCollection initiatives(){
+		return PlayJongo.getCollection("initiatives");
+	}
+	
+	public void remove(){
+		initiatives().remove(this.id);
+	}
+	
+	public static void removeAll(){
+		initiatives().remove();
+	}
+	
+	public static Iterable<Initiative> getAllByKey(String key){
+		return initiatives().find("{key: #}",key).as(Initiative.class);
+	}
+	
+	public Initiative upsert(){
+		
+		initiatives().update("{key: #}",this.getKey()).upsert().merge(this);
+		
+		return this;
+	}
+	
+	public Initiative insert(){
+		initiatives().save(this);
+		return this;
+	}
+	
+	public Initiative insertIfNew(){
+		
+		if(getFirstInitiativeByKey(this.key) == null){
+			this.insert();
+		}
+		return this;
+	}
+	
+	public static Initiative getFirstInitiativeByKey(String key){
+		return initiatives().findOne("{key:#}",key).as(Initiative.class);
+	}
 
     public Initiative(){}
-
+    
+    @JsonProperty("_id")
+    public ObjectId id;
+    
     private String projectType;
     private String complexity;
     private String health;
