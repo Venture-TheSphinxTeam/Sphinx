@@ -22,17 +22,21 @@ public class InitiativeTest extends WithApplication {
 	protected final String TEST_STRING = "SUPERCOOL";
 	@Before
     public void setUp() {
+	running(fakeApplication(), new Runnable(){
+	  public void run(){
 		Initiative.removeAll();
 		Initiative.removeAll();
 		Initiative.removeAll();
 		i = new Initiative();
     	i.setKey(TEST_STRING);
-    	
+    	}});
     }
 
     @After
     public void tearDown(){
-    	Initiative.removeAll();
+	running(fakeApplication(), new Runnable(){
+	  public void run(){
+    	Initiative.removeAll();}});
     }
     
     @Test
