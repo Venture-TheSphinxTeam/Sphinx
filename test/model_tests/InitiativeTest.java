@@ -3,6 +3,7 @@ package model_tests;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.Iterator;
 
 import models.Initiative;
 import models.User;
@@ -94,20 +95,14 @@ public class InitiativeTest extends WithApplication {
     			Iterable<Initiative> it = Initiative.getAllByKey(TEST_STRING);
     			assertNotNull(it);
     			assertNotNull(it.iterator());
-    			assertFalse("Should only return one thing",it.iterator().hasNext());
+    			Iterator<Initiative> iter = it.iterator();
+    			Initiative q = iter.next();
+    			assertNotNull(q);
+    			assertEquals(q.getDescription(),"Even Cooler!");
+    			assertFalse(iter.hasNext());
     		}
     	});
     }
     
-@AfterClass
-public static void insertCrap(){
-	running(fakeApplication(),new Runnable(){
-		public void run(){
-			Initiative k = new Initiative();
-			k.setKey("SO COOL");
-			k.upsert();
-		}
-	});
-}
 
 }

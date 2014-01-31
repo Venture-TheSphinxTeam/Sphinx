@@ -11,12 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JSONParser {
   public JSONParser(){}
 
-  public ArrayList<String> extractEntities(String message){
-    ArrayList<String> entities = new ArrayList<String>();
+  public EntityCollection extractEntities(String message){
+    EntityCollection entities = null;
     
     ObjectMapper om = new ObjectMapper();
     try{
-    	EntityCollection e= om.readValue(message, EntityCollection.class);
+    	entities= om.readValue(message, EntityCollection.class);
     	//entities.addAll(e.getInitiatives());
     	//entities.addAll(e.getRisks());
     	//entities.addAll(e.getMilestones());

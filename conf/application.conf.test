@@ -72,3 +72,8 @@ logger.application=DEBUG
 # ~~~~~
 playjongo.uri="mongodb://127.0.0.1:27017/test"
 playjongo.gridfs.enabled=false
+
+
+# Sphinx
+# ~~~~~~
+external.json.source="http://callao.student.rit.edu:9998"

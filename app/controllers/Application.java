@@ -27,7 +27,6 @@ public class Application extends Controller {
 	}
 
 	public static Result search() {
-
 		return ok(search.render());
 
 	}
@@ -38,6 +37,6 @@ public class Application extends Controller {
 	}
 
 	public static Result adminTools() {
-		return ok(adminTools.render());
+		return ok(adminTools.render("",AdminController.entitForm));
 	}
 }

@@ -1,6 +1,8 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import helpers.JSONParser;
 
@@ -9,6 +11,9 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+
+import play.Play;
+import models.EntityCollection;
 
 public class Ingester {
         protected Client client;
@@ -66,6 +71,18 @@ public class Ingester {
 
 	  return r.readEntity(String.class);
 	}
+        
+    public EntityCollection getEntitiesSince(Date date){
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	WebTarget target = client.target(Play.application().configuration().getString("external.json.source")+
+    			"/entity/"+format.format(date));
+    	Invocation.Builder ib = target.request();
+    	Response r = ib.get();
+    	
+    	JSONParser j = new JSONParser();
+    	
+    	return j.extractEntities(r.readEntity(String.class));
+    }
 
 
 	public void getStuff(){
@@ -79,9 +96,9 @@ public class Ingester {
 		//System.out.println(r.readEntity(String.class));
 		
 		JSONParser j = new JSONParser();
-		ArrayList<String> k = j.extractEntities(r.readEntity(String.class));
+		EntityCollection entities= j.extractEntities(r.readEntity(String.class));
 		
-		System.out.println(k.get(0));
+		
 		
 	}
 }
