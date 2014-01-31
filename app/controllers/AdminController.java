@@ -18,9 +18,8 @@ public class AdminController extends Controller{
 		Ingester ingester = new Ingester();
 		EntityCollection ec = ingester.getEntitiesSince(ff.get().date);
 		List<Initiative> li = ec.getInitiatives();
-		System.out.println(li.size());
-		if(li.size()>0){
-			System.out.println(li.get(0).getDescription());
+		for(Initiative i : li){
+			i.upsert();
 		}
 		return ok(adminTools.render("Migration Started",entitForm ));
 	}
