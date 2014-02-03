@@ -247,11 +247,12 @@ public class MongoControlCenter {
 		try{
 			while (resultsCursor.hasNext()) {
 				temp = resultsCursor.next();
-                                try{
-				ids.add(((BasicDBObject) temp).getInt("entityId"));
-                                }catch(NullPointerException e){
-                                  //TODO:Some sort of logging
-                                 }
+				try{
+				  ids.add(((BasicDBObject) temp).getString("entityId"));
+				}catch(NullPointerException e){
+                                  //This occurs when there is no element entityId on the object.
+				  //TODO: Setup logging so we can find these rogue entities and destroy them
+				}
 			}
 		} finally {
 			resultsCursor.close();
