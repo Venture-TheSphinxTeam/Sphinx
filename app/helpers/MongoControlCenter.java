@@ -15,16 +15,15 @@ import com.mongodb.BasicDBList;
 public class MongoControlCenter {
 
 	private MongoClient mongoClient;
-	
+
 	private DB db;
 	private DBCollection initiatives;
 	private DBCollection risks;
 	private DBCollection milestones;
 	private DBCollection events;
 	private DBCollection users;
-	
+
 	private BasicDBList ids;
-	
 
 	public MongoControlCenter(String address, int port)
 			throws UnknownHostException {
@@ -37,18 +36,19 @@ public class MongoControlCenter {
 	 * 
 	 * Sets the database of the Mongo DB controller.
 	 * 
-	 * @param dbName - The name of the Database to access
+	 * @param dbName
+	 *            - The name of the Database to access
 	 * 
 	 */
 	public void setDatabase(String dbName) {
 		db = mongoClient.getDB(dbName);
-		
+
 		initiatives = db.getCollection("initiatives");
 		risks = db.getCollection("risks");
 		milestones = db.getCollection("milestones");
 		events = db.getCollection("events");
 		users = db.getCollection("users");
-		
+
 		ids = new BasicDBList();
 	}
 
@@ -59,63 +59,86 @@ public class MongoControlCenter {
 		mongoClient.close();
 	}
 
+	public Object getInitiativeByKey(String key) {
+
+		BasicDBObject keyQuery = new BasicDBObject("key", key);
+
+		DBCursor cursor = initiatives.find(keyQuery);
+
+		DBObject temp = new BasicDBObject();
+
+		try {
+			while (cursor.hasNext()) {
+				temp = cursor.next();
+			}
+		} finally {
+			cursor.close();
+		}
+
+		return temp;
+
+	}
+
 	/**
-	 * Gets events that the user is part of aka ones that they 
-	 * reported, are assigned to, are watchers of or is the 
-	 * buisiness owner of.
+	 * Gets events that the user is part of aka ones that they reported, are
+	 * assigned to, are watchers of or is the buisiness owner of.
 	 * 
 	 * @param user
 	 * @return
 	 */
 	public Object[] getEventsForUser(String user) {
 		ArrayList<DBObject> results = new ArrayList<DBObject>();
-		
+
 		// Query that returns results that the user is part of
 		DBObject baseQuery = new QueryBuilder()
 				.or(new BasicDBObject("assignee", user))
-				.or(new BasicDBObject("watchers", user))	// does this work because watchers is a list?
+				.or(new BasicDBObject("watchers", user))
+				// does this work because watchers is a list?
 				.or(new BasicDBObject("reporter", user))
 				.or(new BasicDBObject("businessOwner", user)).get();
 
 		/* ------------- Get Results --------------- */
 
-		// Get all events associated with initiatives user is part of 
-		
+		// Get all events associated with initiatives user is part of
+
 		DBCursor queryCursor = initiatives.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-		
+
 		BasicDBObject eventQuery = new BasicDBObject("entity.entityId",
 				new BasicDBObject("$in", ids));
 
-		queryCursor = events.find(eventQuery.append("entity.entityType", "INITIATIVE"));
-		results.addAll( getResults(queryCursor) );
+		queryCursor = events.find(eventQuery.append("entity.entityType",
+				"INITIATIVE"));
+		results.addAll(getResults(queryCursor));
 
 		ids.clear();
-		
-		// Get all events associated with risks user is part of 
+
+		// Get all events associated with risks user is part of
 
 		queryCursor = risks.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-		
+
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
-		
-		queryCursor = events.find(eventQuery.append("entity.entityType", "RISK"));
-		results.addAll( getResults(queryCursor) );	
-		
+
+		queryCursor = events.find(eventQuery
+				.append("entity.entityType", "RISK"));
+		results.addAll(getResults(queryCursor));
+
 		ids.clear();
-		
-		// Get all milestones associated with results user is part of 
-		
+
+		// Get all milestones associated with results user is part of
+
 		queryCursor = milestones.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-		
+
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
-		
-		queryCursor = events.find(eventQuery.append("entity.entityType", "MILESTONE"));
-		results.addAll( getResults(queryCursor) );
-		
+
+		queryCursor = events.find(eventQuery.append("entity.entityType",
+				"MILESTONE"));
+		results.addAll(getResults(queryCursor));
+
 		return results.toArray();
 
 	}
@@ -126,14 +149,13 @@ public class MongoControlCenter {
 
 		DBObject query = new BasicDBObject("username", user);
 		DBCursor cursor = users.find(query);
-		
+
 		ArrayList<String> groups = new ArrayList<String>();
 		try {
 			while (cursor.hasNext()) {
 				groups = (ArrayList<String>) cursor.next().get("groups");
 			}
-		}
-		finally {
+		} finally {
 			cursor.close();
 		}
 
@@ -144,7 +166,7 @@ public class MongoControlCenter {
 		for (String group : groups) {
 
 			// find all team initiative related events
-			
+
 			DBObject teamQuery = new QueryBuilder()
 					.or(new BasicDBObject("businessGroups", group))
 					.or(new BasicDBObject("providerGroups", group)).get();
@@ -155,11 +177,11 @@ public class MongoControlCenter {
 			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"INITIATIVE"));
 
-			results.addAll( getResults( teamCursor ) );
+			results.addAll(getResults(teamCursor));
 			ids.clear();
-			
+
 			// find all team risk related events
-			
+
 			teamCursor = risks.find(teamQuery);
 			setIdsFromQueryResults(teamCursor);
 
@@ -168,11 +190,11 @@ public class MongoControlCenter {
 			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"RISK"));
 
-			results.addAll( getResults( teamCursor ) );
+			results.addAll(getResults(teamCursor));
 			ids.clear();
 
 			// find all team milestone related events
-			
+
 			teamCursor = milestones.find(teamQuery);
 			setIdsFromQueryResults(teamCursor);
 
@@ -181,87 +203,92 @@ public class MongoControlCenter {
 			teamCursor = events.find(eventQuery.append("entity.entityType",
 					"MILESTONE"));
 
-			results.addAll( getResults(teamCursor) );
+			results.addAll(getResults(teamCursor));
 			ids.clear();
 		}
 
 		return results.toArray();
 	}
 
-	public Object[] getOrgEventsForUser(String user){
+	public Object[] getOrgEventsForUser(String user) {
 		ArrayList<DBObject> results = new ArrayList<DBObject>();
-		
+
 		DBObject baseQuery = new QueryBuilder()
-		.or(new BasicDBObject("allowedAccessUsers", user))
-		.or(new BasicDBObject("allowedAccessUsers", null)).get();
-		
+				.or(new BasicDBObject("allowedAccessUsers", user))
+				.or(new BasicDBObject("allowedAccessUsers", null)).get();
+
 		/* ------------- Get Results --------------- */
 
-		// Get all events associated with initiatives user is part of 
-		
+		// Get all events associated with initiatives user is part of
+
 		DBCursor queryCursor = initiatives.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-		
+
 		BasicDBObject eventQuery = new BasicDBObject("entity.entityId",
 				new BasicDBObject("$in", ids));
 
-		queryCursor = events.find(eventQuery.append("entity.entityType", "INITIATIVE"));
-		results.addAll( getResults(queryCursor) );
+		queryCursor = events.find(eventQuery.append("entity.entityType",
+				"INITIATIVE"));
+		results.addAll(getResults(queryCursor));
 
 		ids.clear();
-		
-		// Get all events associated with risks user is part of 
+
+		// Get all events associated with risks user is part of
 
 		queryCursor = risks.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-		
+
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
-		
-		queryCursor = events.find(eventQuery.append("entity.entityType", "RISK"));
-		results.addAll( getResults(queryCursor) );	
-		
+
+		queryCursor = events.find(eventQuery
+				.append("entity.entityType", "RISK"));
+		results.addAll(getResults(queryCursor));
+
 		ids.clear();
-		
-		// Get all milestones associated with results user is part of 
-		
+
+		// Get all milestones associated with results user is part of
+
 		queryCursor = milestones.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-		
+
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
-		
-		queryCursor = events.find(eventQuery.append("entity.entityType", "MILESTONE"));
-		results.addAll( getResults(queryCursor) );
-		
+
+		queryCursor = events.find(eventQuery.append("entity.entityType",
+				"MILESTONE"));
+		results.addAll(getResults(queryCursor));
+
 		return results.toArray();
 	}
 
 	/*
 	 * -----------Helper Functions--------------
 	 */
-	
+
 	private void setIdsFromQueryResults(DBCursor resultsCursor) {
-		
+
 		DBObject temp;
-		try{
+		try {
 			while (resultsCursor.hasNext()) {
 				temp = resultsCursor.next();
-				try{
-				  ids.add(((BasicDBObject) temp).getString("entityId"));
-				}catch(NullPointerException e){
-                                  //This occurs when there is no element entityId on the object.
-				  //TODO: Setup logging so we can find these rogue entities and destroy them
+				try {
+					ids.add(((BasicDBObject) temp).getString("entityId"));
+				} catch (NullPointerException e) {
+					// This occurs when there is no element entityId on the
+					// object.
+					// TODO: Setup logging so we can find these rogue entities
+					// and destroy them
 				}
 			}
 		} finally {
 			resultsCursor.close();
 		}
 	}
-	
+
 	private ArrayList<DBObject> getResults(DBCursor resultsCursor) {
 		ArrayList<DBObject> temp = new ArrayList<DBObject>();
-		
+
 		try {
 			while (resultsCursor.hasNext()) {
 				temp.add(resultsCursor.next());
@@ -269,7 +296,7 @@ public class MongoControlCenter {
 		} finally {
 			resultsCursor.close();
 		}
-		
+
 		return temp;
 	}
 }
