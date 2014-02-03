@@ -17,12 +17,12 @@ been validated with the Jira integration, interfaces with other project manageme
 systems will be considered.
 
 Opensource software utilized:
-  - Mongo (Database)
-  - Play  (Web framework)
-  - Elasticsearch (maybe not)
-  - Jersey (REST client/server)
-  - Jackson (JSON Parser)
-  - Play-Jongo/Jongo (Database Connectors)
+  - [Mongo DB] (http://www.mongodb.org) (Database)
+  - [Play](http://www.playframework.com/)  (Web framework)
+  - [Elasticsearch](http://www.elasticsearch.org/) (maybe not)
+  - [Jersey](https://jersey.java.net/) (REST client/server)
+  - [Jackson](https://github.com/FasterXML/jackson) (JSON Parser)
+  - [Play-Jongo](https://github.com/alexanderjarvis/play-jongo)/[Jongo](http://jongo.org/) (Database Connectors)
 
 ##Setting Up Your Environment:
 
