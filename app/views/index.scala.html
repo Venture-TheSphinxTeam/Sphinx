@@ -18,14 +18,17 @@
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
                      @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
+                     <h3>@entity.get("key")</h3>
                      <h3>@entity.get("summary")</h3>
                      <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
                      <p>@entity.get("key")
                         <br/> @{new Date(init.getLong("eventDate"))}
                      </p>
+                     <a class="btn btn-primary btn-sm" href="./initiative?arg=@entity.get("key")">Learn more &raquo;</a>
                      }
+                     
                      }
-                     <a class="btn btn-primary btn-sm" href="./initiative">Learn more &raquo;</a>
+                    
                   </div>
                   <br/>
                   }                   	  
