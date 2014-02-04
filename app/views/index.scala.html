@@ -17,21 +17,33 @@
                   @for(field <- userEntities){
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-                     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
-                     <h3>@entity.get("key")</h3>
-                     <h3>@entity.get("summary")</h3>
-                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
-                     <p>@entity.get("key")
-                        <br/> @{new Date(init.getLong("eventDate"))}
-                     </p>
-                     <a class="btn btn-primary btn-sm" href="./initiative?arg=@entity.get("key")">Learn more &raquo;</a>
-                     }
-                     
-                     }
-                    
-                  </div>
-                  <br/>
-                  }                   	  
+                     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=> 
+                     <div align="right">
+                     	<button type="button"">
+						  <span class="glyphicon glyphicon-star-empty"></span> <!--  glyphicon-star-empty -->
+						</button>
+						<button type="button">
+						  <span class="glyphicon glyphicon-unchecked"></span> <!-- glyphicon-thumbs-up -->
+						</button>
+						<button type="button">
+						  <span class="glyphicon glyphicon-eye-close"></span> <!-- glyphicon-eye-open -->
+						</button>
+                     </div>
+                     <div>
+		                 <h3>@entity.get("key")</h3>
+	                     <h3>@entity.get("summary")</h3>
+	                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
+	                     <p>@entity.get("key")
+	                        <br/> @{new Date(init.getLong("eventDate"))}
+	                     </p>
+			                     
+		                 <a class="btn btn-primary btn-sm" href="./initiative?arg=@entity.get("key")">Learn more &raquo;</a>
+	                     <br/>
+	                  </div>
+	                }
+	                }
+                  </div>   
+                  }               	  
                   <br/>
                </div>
                <div class="tab-pane" id="2">
