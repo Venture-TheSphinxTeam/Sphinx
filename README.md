@@ -17,9 +17,12 @@ been validated with the Jira integration, interfaces with other project manageme
 systems will be considered.
 
 Opensource software utilized:
-  - Mongo
-  - Play
-  - Elasticsearch
+  - [Mongo DB] (http://www.mongodb.org) (Database)
+  - [Play](http://www.playframework.com/)  (Web framework)
+  - [Elasticsearch](http://www.elasticsearch.org/) (maybe not)
+  - [Jersey](https://jersey.java.net/) (REST client/server)
+  - [Jackson](https://github.com/FasterXML/jackson) (JSON Parser)
+  - [Play-Jongo](https://github.com/alexanderjarvis/play-jongo)/[Jongo](http://jongo.org/) (Database Connectors)
 
 ##Setting Up Your Environment:
 
@@ -35,5 +38,9 @@ No matter what environment you're running, you'll need to grab the play framewor
   *For other IDEs, check out http://www.playframework.com/documentation/2.1.x/IDE
 6. Now you should be able to import this as an eclipse project!
 
+
+###But What About the Libraries?
+Play uses the sbt build tool for both building all of the internal code and for managing dependencies.  When you first compile/run the project, the libraries should all be downloaded by sbt through the maven repositories.  If you do run into any problems with the dependencies resolving, please open an issue or contact smy2748@rit.edu so we can look into it.
+
 ###Longer Term Setup
-*You'll probably want to add play to your path
+* You'll probably want to add play to your path
