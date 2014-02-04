@@ -41,7 +41,7 @@ public class Application extends Controller {
 		return ok(adminTools.render());
 	}
 	
-	public static Result initiativeView(String arg) throws UnknownHostException {
+	public static Result entityView(String arg) throws UnknownHostException {
 		
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
