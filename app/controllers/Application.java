@@ -63,7 +63,6 @@ public class Application extends Controller {
 		}
 
 		else {
-			System.out.println("This is a risk");
 			return ok(risk.render(null));
 		}
 
