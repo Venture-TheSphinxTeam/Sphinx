@@ -53,17 +53,19 @@ public class Application extends Controller {
 
 		if (type.equals("INITIATIVE")) {
 
-			Object testInitiative = control.getInitiativeByKey(arg);
+			Object testInitiative = control.getInitiativeById(arg);
 			return ok(initiative.render(testInitiative));
 		}
 
 		else if (type.equals("MILESTONE")) {
-			return null;
+			Object testMilestone = control.getMilestoneById(arg);
+			return ok(milestone.render(testMilestone));
 
 		}
 
 		else {
-			return ok(risk.render(null));
+			Object testRisk = control.getRiskById(arg);
+			return ok(risk.render(testRisk));
 		}
 
 	}

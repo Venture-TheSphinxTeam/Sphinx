@@ -1,15 +1,13 @@
 @(milestone: Object)
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
-    @defining(milestone.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-    @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
-    <h5>@entity.get("entityType")</h5>
-    <h3>@entity.get("summary")</h3>
+    @defining(milestone.asInstanceOf[com.mongodb.BasicDBObject]){ mile=>
+    <h5>@mile.get("entityType")</h5>
+    <h3>@mile.get("summary")</h3>
     
-    <p>@entity.get("key")
-       <br/> @{new Date(init.getLong("eventDate"))}
+    <p>@mile.get("key")
+    
     </p>
-    }
     }
  </div>
 	

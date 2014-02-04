@@ -59,11 +59,11 @@ public class MongoControlCenter {
 		mongoClient.close();
 	}
 
-	public Object getInitiativeByKey(String key) {
+	public Object getInitiativeById(String entityId) {
 
-		BasicDBObject keyQuery = new BasicDBObject("key", key);
+		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
 
-		DBCursor cursor = initiatives.find(keyQuery);
+		DBCursor cursor = initiatives.find(entityIdQuery);
 
 		DBObject temp = new BasicDBObject();
 
@@ -77,6 +77,42 @@ public class MongoControlCenter {
 
 		return temp;
 
+	}
+
+	public Object getMilestoneById(String entityId) {
+		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
+
+		DBCursor cursor = milestones.find(entityIdQuery);
+
+		DBObject temp = new BasicDBObject();
+
+		try {
+			while (cursor.hasNext()) {
+				temp = cursor.next();
+			}
+		} finally {
+			cursor.close();
+		}
+
+		return temp;
+	}
+
+	public Object getRiskById(String entityId) {
+		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
+
+		DBCursor cursor = risks.find(entityIdQuery);
+
+		DBObject temp = new BasicDBObject();
+
+		try {
+			while (cursor.hasNext()) {
+				temp = cursor.next();
+			}
+		} finally {
+			cursor.close();
+		}
+
+		return temp;
 	}
 
 	/**

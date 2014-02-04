@@ -37,7 +37,7 @@
 	                        <br/> @{new Date(init.getLong("eventDate"))}
 	                     </p>
 			                     
-		                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("key")?entityType=@entity.get("entityType")">Learn more &raquo;</a>
+		                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
 	                     <br/>
 	                  </div>
 	                }
@@ -58,7 +58,7 @@
                      <p>@entity.get("key")
                         <br/> @{new Date(init.getLong("eventDate"))}
                      </p>
-                     <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("key")?entityType=@entity.get("entityType")">Learn more &raquo;</a>
+                     <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
                      }
                      }
                      
@@ -79,7 +79,7 @@
                      <p>@entity.get("key")
                         <br/> @{new Date(init.getLong("eventDate"))}
                      </p>
-                     <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("key")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
+                     <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
                      }
                      }
                      
