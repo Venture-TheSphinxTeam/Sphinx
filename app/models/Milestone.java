@@ -1,6 +1,9 @@
 package models;
 import java.util.List;
 import com.fasterxml.jackson.annotation.*;
+import org.bson.types.ObjectId;
+import org.jongo.MongoCollection;
+import uk.co.panaxiom.playjongo.PlayJongo;
 
 
 /**
@@ -10,7 +13,36 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Milestone extends Entity{
 
+    private static MongoCollection milestones(){
+        return PlayJongo.getCollection("milestones");
+    }
+
+    public void remove(){
+        milestones().remove(this.id);
+    }
+
+    public void removeAll(){
+        milestones().remove();
+    }
+
+    public static Iterable<Milestone> getAllWithKey(String key){
+        return milestones().find("{key: #}",key).as(Milestone.class);
+    }
+
+    public Milestone upsert(){
+        milestones().update("{key: #}", this.getKey()).upsert().merge(this);
+        return this;
+    }
+
+    public Milestone getFirstWithKey(String key){
+        return milestones().findOne("{key: #",key).as(Milestone.class);
+    }
+
+
     public Milestone() {}
+
+    @JsonProperty("_id")
+    public ObjectId id;
 
     private String health;
     private String verificationSteps;

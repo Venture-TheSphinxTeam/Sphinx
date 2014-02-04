@@ -29,7 +29,7 @@ public class Initiative extends Entity{
 		initiatives().remove();
 	}
 	
-	public static Iterable<Initiative> getAllByKey(String key){
+	public static Iterable<Initiative> getAllWithKey(String key){
 		return initiatives().find("{key: #}",key).as(Initiative.class);
 	}
 	
