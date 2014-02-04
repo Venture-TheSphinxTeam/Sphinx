@@ -2,14 +2,11 @@ package model_tests;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
 import java.util.Iterator;
 
 import models.Initiative;
-import models.User;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -96,7 +93,7 @@ public class InitiativeTest extends WithApplication {
     			i.upsert();
     			r = Initiative.getFirstInitiativeByKey(TEST_STRING);
     			assertEquals(r.getDescription(),"Even Cooler!");
-    			Iterable<Initiative> it = Initiative.getAllByKey(TEST_STRING);
+    			Iterable<Initiative> it = Initiative.getAllWithKey(TEST_STRING);
     			assertNotNull(it);
     			assertNotNull(it.iterator());
     			Iterator<Initiative> iter = it.iterator();
