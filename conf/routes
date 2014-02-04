@@ -8,7 +8,7 @@ GET     /search						controllers.Application.search()
 GET		/subscriptions				controllers.Application.subscriptions()
 GET		/admin-tools				controllers.Application.adminTools()
 GET		/user-settings				controllers.Application.userSettings()
-GET		/entity					    controllers.Application.entityView(arg: String ?= "")
+GET		/entity					    controllers.Application.entityView(arg: String ?= "", entityType: String ?= "")
 
 #Admin Tools
 POST 	/admin-tools/retrieve					controllers.AdminController.forceGetEntities()

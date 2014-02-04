@@ -13,17 +13,19 @@ public class Application extends Controller {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
-		
-		String username = "RickyWinterborn";	//TODO : Make this pull current user name
-		
+
+		String username = "RickyWinterborn"; // TODO : Make this pull current
+												// user name
+
 		Object[] userEntities = control.getEventsForUser("jay-z");
 		Object[] teamEntities = control.getTeamEventsForUser("RickyWinterborn");
 		Object[] orgEntities = control.getOrgEventsForUser("jay-z");
-		//Object[] userSubscriptions =		//TODO
-	
+		// Object[] userSubscriptions = //TODO
+
 		control.closeConnection();
 
-		return ok(index.render(userEntities, teamEntities, orgEntities, username));
+		return ok(index.render(userEntities, teamEntities, orgEntities,
+				username));
 	}
 
 	public static Result search() {
@@ -35,22 +37,35 @@ public class Application extends Controller {
 	}
 
 	public static Result adminTools() {
-		return ok(adminTools.render("",AdminController.entitForm));
+		return ok(adminTools.render("", AdminController.entitForm));
 	}
-	
-	public static Result userSettings(){
+
+	public static Result userSettings() {
 		return ok(settings.render());
 	}
-	
-	public static Result entityView(String arg) throws UnknownHostException {
-		
+
+	public static Result entityView(String arg, String type)
+			throws UnknownHostException {
+
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
-		
-		Object testInitiative = control.getInitiativeByKey(arg);
-		
-		
-		return ok(initiative.render(testInitiative));
+
+		if (type.equals("INITIATIVE")) {
+
+			Object testInitiative = control.getInitiativeByKey(arg);
+			return ok(initiative.render(testInitiative));
+		}
+
+		else if (type.equals("MILESTONE")) {
+			return null;
+
+		}
+
+		else {
+			System.out.println("This is a risk");
+			return ok(risk.render(null));
+		}
+
 	}
 }
