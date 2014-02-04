@@ -41,13 +41,14 @@ public class Application extends Controller {
 		return ok(adminTools.render());
 	}
 	
-	public static Result initiativeView() throws UnknownHostException{
+	public static Result initiativeView(String arg) throws UnknownHostException {
 		
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 		
-		Object testInitiative = control.getEventsForUser("jay-z")[0];
+		Object testInitiative = control.getInitiativeByKey(arg);
+		
 		
 		return ok(initiative.render(testInitiative));
 	}
