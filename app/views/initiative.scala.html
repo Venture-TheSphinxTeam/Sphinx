@@ -2,12 +2,54 @@
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
     @defining(initiative.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-    <h5>@init.get("entityType")</h5>
-    <h3>@init.get("summary")</h3>
-    
-    <p>@init.get("key")
-    
-    </p>
+    <p>
+    Assignee: @init.get("assignee")
+    <br/>
+    Business Goals: @init.get("businessGoals")
+    <br/>
+    Business Groups: @init.get("businessGroups")
+    <br/>
+    Business Owner: @init.get("businessOwner")
+    <br/>
+    Business Unit: @init.get("businessUnit")
+    <br/>
+    Complexity: @init.get("complexity")
+    <br/>
+    Created @{new Date(init.getLong("created"))}
+    <br/>
+    Description @init.get("description")
+    <br/>
+    Desired Due Date: @{new Date(init.getLong("desiredDueDate"))}
+    <br/>
+    Desired Start Date @{new Date(init.getLong("desiredStartDate"))}
+    <br/>
+    Due Date: @{new Date(init.getLong("dueDate"))}
+    <br/>
+    Entity ID: @init.get("entityId")
+    <br/>
+    Entity Type: @init.get("entityType")
+    <br/>
+    Health: @init.get("health")
+    <br/>
+    Key: @init.get("key")
+    <br/>
+    Priority: @init.get("priority")
+    <br/>
+    Project Type: @init.get("projectType")
+    <br/>
+    Provider Groups: @init.get("providerGroups")
+    <br/>
+    Reporter: @init.get("reporter")
+    <br/>
+    Start Date: @{new Date(init.getLong("startDate"))}
+    <br/>
+    Status: @init.get("status")
+    <br/>
+    Summary: @init.get("summary")
+    <br/>
+    Updated: @{new Date(init.getLong("updated"))}
+    <br/>
+    Verification Steps: @init.get("verificationSteps")
     }
  </div>
 	
