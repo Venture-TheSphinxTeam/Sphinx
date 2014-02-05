@@ -1,4 +1,4 @@
-package tests.modelTests;
+package model_tests;
 
 import models.*;
 import org.junit.*;
@@ -19,12 +19,17 @@ public class UserTest extends WithApplication {
 
    @Test
     public void createAndRetrieveUser() {
-        User u = new User();
-        u.name = "Bob";
-        u.insert();
-        User bob = User.findByName("Bob");
-        assertNotNull(bob);
-        assertEquals("Bob", bob.name);
+	   running(fakeApplication(), new Runnable(){
+		   public void run(){
+			   User u = new User();
+		        u.name = "Bob";
+		        u.insert();
+		        User bob = User.findByName("Bob");
+		        assertNotNull(bob);
+		        assertEquals("Bob", bob.name);
+		   }
+	   });
+        
     }
 
 

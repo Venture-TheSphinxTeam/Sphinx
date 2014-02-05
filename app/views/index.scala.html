@@ -17,8 +17,7 @@
                   @for(field <- userEntities){
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-                     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
-                     
+                     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=> 
                      <div align="right">
                      	<button type="button"">
 						  <span class="glyphicon glyphicon-star-empty"></span> <!--  glyphicon-star-empty -->

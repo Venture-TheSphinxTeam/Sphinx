@@ -27,18 +27,19 @@ public class Application extends Controller {
 	}
 
 	public static Result search() {
-
 		return ok(search.render());
-
 	}
 
 	public static Result subscriptions() {
 		return ok(subscriptions.render());
-
 	}
 
 	public static Result adminTools() {
-		return ok(adminTools.render());
+		return ok(adminTools.render("",AdminController.entitForm));
+	}
+	
+	public static Result userSettings(){
+		return ok(settings.render());
 	}
 	
 	public static Result entityView(String arg) throws UnknownHostException {

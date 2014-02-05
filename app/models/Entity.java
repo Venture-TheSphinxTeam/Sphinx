@@ -13,64 +13,164 @@ import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Entity {
 
-    public static MongoCollection entities() {
-        return PlayJongo.getCollection("entities");
+    public Entity(){}
+
+    protected String entityId;
+    protected String entityType;//TODO: Change from String to Enum
+    protected Entity workBreakdownParent;
+    protected List<Entity> otherParents;
+    protected String key;
+    protected String summary;
+    protected String description;
+    protected String priority;
+    protected String status;
+    protected long dueDate;
+    protected String reporter;
+    protected String assignee;
+    protected List<String> watchers;
+    protected List<String> labels;
+    protected long created;
+    protected long updated;
+    protected List<String> allowedAccessUsers;
+
+
+    public String getEntityId() {
+        return entityId;
     }
 
-
-    @JsonProperty("_id")
-    public ObjectId id;
-    public String key;
-    public String summary;
-    public String description;
-    public String status;
-    public String priority;
-    public String projectType;
-    public String complexity;
-    public String health;
-    public String businessGoals;
-    public String verificationSteps;
-    public String businessUnit;
-    public String businessGroup;
-    public String providerGroup;
-    public ArrayList<User> businessOwner;
-    public User assigne;
-    public User reporter;
-    public Date desiredStartDate;
-    public Date startDate;
-    public Date desiredDueDate;
-    public Date dueDate;
-    public int originalEstimate;
-    public int remainingEstimate;
-    public int workLogged;
-    public ArrayList<String> labels;
-    public Entity parent;
-    public Entity altParent;
-    public ArrayList<String> riskType;
-    public String riskImpact;
-    public String riskLiklihood;
-    public String riskResponseStrat;
-    public String riskPlan;
-    public ArrayList<User> allowedUsers;
-    public Date updated;
-    public Date created; 
-
-    public String name;
-
-    public Entity insert() {
-        entities().save(this);
-        return this;
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 
-    public void remove() {
-        entities().remove(this.id);
+    public String getEntityType() {
+        return entityType;
     }
 
-    public static Entity findByName(String name) {
-        return entities().findOne("{name: #}", name).as(Entity.class);
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
+    public Entity getWorkBreakdownParent() {
+        return workBreakdownParent;
+    }
+
+    public void setWorkBreakdownParent(Entity workBreakdownParent) {
+        this.workBreakdownParent = workBreakdownParent;
+    }
+
+    public List<Entity> getOtherParents() {
+        return otherParents;
+    }
+
+    public void setOtherParents(List<Entity> otherParents) {
+        this.otherParents = otherParents;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public long getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(long dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getReporter() {
+        return reporter;
+    }
+
+    public void setReporter(String reporter) {
+        this.reporter = reporter;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
+    }
+
+    public List<String> getWatchers() {
+        return watchers;
+    }
+
+    public void setWatchers(List<String> watchers) {
+        this.watchers = watchers;
+    }
+
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
+    }
+
+    public long getCreated() {
+        return created;
+    }
+
+    public void setCreated(long created) {
+        this.created = created;
+    }
+
+    public long getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(long updated) {
+        this.updated = updated;
+    }
+
+    public List<String> getAllowedAccessUsers() {
+        return allowedAccessUsers;
+    }
+
+    public void setAllowedAccessUsers(List<String> allowedAccessUsers) {
+        this.allowedAccessUsers = allowedAccessUsers;
+    }
 }
 
