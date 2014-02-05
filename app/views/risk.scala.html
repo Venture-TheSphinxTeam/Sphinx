@@ -2,12 +2,37 @@
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
     @defining(risk.asInstanceOf[com.mongodb.BasicDBObject]){ ri=>
-    <h5>@ri.get("entityType")</h5>
-    <h3>@ri.get("summary")</h3>
-    
-    <p>@ri.get("key")
-    
-    </p>
+    Assignee: @ri.get("assignee")
+    <br/>
+    Created: @{new Date(ri.getLong("created"))}
+    <br/>
+    Due Date: @{new Date(ri.getLong("dueDate"))}
+    <br/>
+    Entity Id: @ri.get("entityId")
+    <br/>
+    Entity Type: @ri.get("entityType")
+    <br/>
+    Key: @ri.get("key")
+    <br/>
+    Labels: @ri.get("labels")
+    <br/>
+    Priority: @ri.get("priority")
+    <br/>
+    Reporter: @ri.get("reporter")
+    <br/>
+    Risk Impact: @ri.get("riskImpact")
+    <br/>
+    Risk Likelihood: @ri.get("riskLikelihood")
+    <br/>
+    Risk Types: @ri.get("riskTypes")
+    <br/>
+    Status: @ri.get("status")
+    <br/>
+    Updated: @{new Date(ri.getLong("updated"))}
+    <br/>
+    Watchers: @ri.get("watchers")
+    <br/>
+    Work Breakdown Parent: @ri.get("workBreakdownParent")
     }
  </div>
 	

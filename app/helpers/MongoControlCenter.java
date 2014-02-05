@@ -139,7 +139,7 @@ public class MongoControlCenter {
 
 		DBCursor queryCursor = initiatives.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-
+		
 		BasicDBObject eventQuery = new BasicDBObject("entity.entityId",
 				new BasicDBObject("$in", ids));
 
@@ -153,7 +153,7 @@ public class MongoControlCenter {
 
 		queryCursor = risks.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-
+		
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
 
