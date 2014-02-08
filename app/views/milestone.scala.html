@@ -2,11 +2,11 @@
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
     @defining(milestone.asInstanceOf[com.mongodb.BasicDBObject]){ mile=>
+    <h1>Description: @mile.get("description")</h1>
+    <br/>
     Assignee: @mile.get("assignee")
     <br/>
     Created: @{new Date(mile.getLong("created"))}
-    <br/>
-    Description: @mile.get("description")
     <br/>
     Desired Due Date: @{new Date(mile.getLong("desiredDueDate"))}
     <br/>
