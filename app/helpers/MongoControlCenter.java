@@ -79,6 +79,12 @@ public class MongoControlCenter {
 
 	}
 
+	/**
+	 * Get a specific milestone by its ID.
+	 * 
+	 * @param entityId
+	 * @return entity object
+	 */
 	public Object getMilestoneById(String entityId) {
 		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
 
@@ -97,6 +103,12 @@ public class MongoControlCenter {
 		return temp;
 	}
 
+	/**
+	 * Get a specific risk by its ID.
+	 * 
+	 * @param entityId
+	 * @return an entity object
+	 */
 	public Object getRiskById(String entityId) {
 		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
 
@@ -246,6 +258,12 @@ public class MongoControlCenter {
 		return results.toArray();
 	}
 
+	/**
+	 * Gets all events of that user's organization .
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public Object[] getOrgEventsForUser(String user) {
 		ArrayList<DBObject> results = new ArrayList<DBObject>();
 
