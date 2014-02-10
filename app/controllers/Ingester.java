@@ -12,6 +12,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import models.EventCollection;
 import play.Play;
 import models.EntityCollection;
 
@@ -60,8 +61,6 @@ public class Ingester {
 	  return null;
 	}
 
-
-
         public String getMessageFromTarget(String target){
           WebTarget t = client.target(target);
 
@@ -82,6 +81,18 @@ public class Ingester {
     	JSONParser j = new JSONParser();
     	
     	return j.extractEntities(r.readEntity(String.class));
+    }
+
+    public EventCollection getEventsSince(Date date){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        WebTarget target = client.target(Play.application().configuration().getString("external.json.source") +
+                "/event/"+ format.format(date));
+        Invocation.Builder ib = target.request();
+        Response r = ib.get();
+
+        JSONParser j = new JSONParser();
+
+        return j.extractEvents(r.readEntity(String.class));
     }
 
 
