@@ -3,10 +3,25 @@
     <div class="thumbnail">
     @defining(initiative.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
     <p>
-    <h1>Description @init.get("description")</h1>
+    <h1>Key: @init.get("key") - Summary: @init.get("summary")</h1>
+    <h2>Description: @init.get("description")</h2>
+    
+    <h3>Entity ID: @init.get("entityId")
     <br/>
+    Entity Type: @init.get("entityType")
+    </h3>
+    <br/>
+    
+    <h4>
     Assignee: @init.get("assignee")
     <br/>
+    Reporter: @init.get("reporter")
+    <br/>
+    Watchers: @init.get("watchers")   
+    </h4>
+    
+    
+    <h4>
     Business Goals: @init.get("businessGoals")
     <br/>
     Business Groups: @init.get("businessGroups")
@@ -15,45 +30,44 @@
     <br/>
     Business Unit: @init.get("businessUnit")
     <br/>
+    </h4>
+    
+    
+    <h4>
+    Priority: @init.get("priority")
+    <br/>
+    Status: @init.get("status")
+    <br/>
     Complexity: @init.get("complexity")
     <br/>
-    Created @{new Date(init.getLong("created"))}
+    Health: @init.get("health")
+    </h4>
+    
+    
+    <h4>
+    Created: @{new Date(init.getLong("created"))}
+    <br/>
+    Start Date: @{new Date(init.getLong("startDate"))}
     <br/>
     Desired Due Date: @{new Date(init.getLong("desiredDueDate"))}
     <br/>
-    Desired Start Date @{new Date(init.getLong("desiredStartDate"))}
+    Desired Start Date: @{new Date(init.getLong("desiredStartDate"))}
     <br/>
     Due Date: @{new Date(init.getLong("dueDate"))}
     <br/>
-    Entity ID: @init.get("entityId")
-    <br/>
-    Entity Type: @init.get("entityType")
-    <br/>
-    Health: @init.get("health")
-    <br/>
-    Key: @init.get("key")
-    <br/>
+    Updated: @{new Date(init.getLong("updated"))}
+    </h4>
+    
+    <h4>
     Labels: @init.get("labels")
-    <br/>
-    Priority: @init.get("priority")
     <br/>
     Project Type: @init.get("projectType")
     <br/>
     Provider Groups: @init.get("providerGroups")
     <br/>
-    Reporter: @init.get("reporter")
-    <br/>
-    Start Date: @{new Date(init.getLong("startDate"))}
-    <br/>
-    Status: @init.get("status")
-    <br/>
-    Summary: @init.get("summary")
-    <br/>
-    Updated: @{new Date(init.getLong("updated"))}
-    <br/>
     Verification Steps: @init.get("verificationSteps")
-    <br/>
-    Watchers: @init.get("watchers")
+    </h4>
+    
     }
  </div>
 	
