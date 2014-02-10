@@ -11,85 +11,118 @@
                <li class=""><a href="#3" data-toggle="tab">Projects Across the Firm</a></li>
             </ul>
             <div class="tab-content">
-               <div class="tab-pane active" id="1">
+            	<!--  MY PROJECTS  -->
+               <div class="tab-pane active" id="1">	
                   <br/>
                   <ul class="thumbnails">
                   @for(field <- userEntities){
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
                      @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=> 
-                     <div align="right">
-                     	<button type="button"">
-						  <span class="glyphicon glyphicon-star-empty"></span> <!--  glyphicon-star-empty -->
-						</button>
-						<button type="button">
-						  <span class="glyphicon glyphicon-unchecked"></span> <!-- glyphicon-thumbs-up -->
-						</button>
-						<button type="button">
-						  <span class="glyphicon glyphicon-eye-close"></span> <!-- glyphicon-eye-open -->
-						</button>
-                     </div>
-                     <div>
-		                 <h3>@entity.get("key")</h3>
-	                     <h3>@entity.get("summary")</h3>
-	                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
-	                     <p>@entity.get("key")
-	                        <br/> @{new Date(init.getLong("eventDate"))}
-	                     </p>
-			                     
+                     	<div class="entityStateButtons" align="right">
+                     		<button type="button" class="btn btn-primary" data-toggle="button">					<!--  going to have to autogenerate IDs so we can reference -->
+                     			<span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+                     		</button>
+                     		<button type="button" class="btn btn-primary" data-toggle="button">
+								<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+							</button>
+							<button type="button" class="btn btn-primary" data-toggle="button">
+								<span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+							</button>
+                   		</div>
+                   		<div>
+			                 <h3>@entity.get("key")</h3>
+		                     <h3>@entity.get("summary")</h3>
+		                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
+		                     <p>@entity.get("key")
+		                        <br/> @{new Date(init.getLong("eventDate"))}
+		                     </p>
+				                     
+			                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
+		                     <br/>
+	                  	</div>
+	                }}}
+                   	</div>               	  
+                  <br/>
+               </div>
+               <!--  TEAM PROJECTS  -->
+	           <div class="tab-pane" id="2">
+	              <br/>
+	              <ul class="thumbnails">
+	              @for(field <- teamEntities){
+	              <div class="thumbnail">
+	                 @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
+	                 @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
+	                 <div class="entityStateButtons" align="right">
+                     		<button type="button" class="btn btn-primary" data-toggle="button">					<!--  going to have to autogenerate IDs so we can reference -->
+                     			<span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+                     		</button>
+                     		<button type="button" class="btn btn-primary" data-toggle="button">
+								<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+							</button>
+							<button type="button" class="btn btn-primary" data-toggle="button">
+								<span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+							</button>
+                   	 </div>
+                   	 <div>
+		                 <h3>@entity.get("summary")</h3>
+		                 <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
+		                 <p>@entity.get("key")
+		                    <br/> @{new Date(init.getLong("eventDate"))}
+		                 </p>
 		                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
-	                     <br/>
-	                  </div>
-	                }
-	                }
-                  </div>   
-                  }               	  
-                  <br/>
-               </div>
-               <div class="tab-pane" id="2">
-                  <br/>
-                  <ul class="thumbnails">
-                  @for(field <- teamEntities){
-                  <div class="thumbnail">
-                     @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-                     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
-                     <h3>@entity.get("summary")</h3>
-                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
-                     <p>@entity.get("key")
-                        <br/> @{new Date(init.getLong("eventDate"))}
-                     </p>
-                     <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
-                     }
-                     }
-                     
-                  </div>
-                  <br/>
-                  }                   	  
-                  <br/>
-               </div>
-               <div class="tab-pane" id="3">
-                  <br/>
-                  <ul class="thumbnails">
-                  @for(field <- orgEntities){
-                  <div class="thumbnail">
-                     @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-                     @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
-                     <h3>@entity.get("summary")</h3>
-                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
-                     <p>@entity.get("key")
-                        <br/> @{new Date(init.getLong("eventDate"))}
-                     </p>
-                     <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
-                     }
-                     }
-                     
-                  </div>
-                  <br/>
-                  }                   	  
-                  <br/>
-               </div>
-            </div>
-         </div>
+		             </div>
+	                 }
+	                 }
+	                 
+	              </div>
+	              <br/>
+	              }                   	  
+	              <br/>
+	           </div>
+	           <!--  PROJECTS FROM ACROSS THE FIRM  -->
+	           <div class="tab-pane" id="3">
+	              <br/>
+	              <ul class="thumbnails">
+	              @for(field <- orgEntities){
+	              <div class="thumbnail">
+	                 @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
+	                 @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=>
+	                 <div class="entityStateButtons" align="right">
+                        <button type="button" class="btn btn-primary" data-toggle="button">					<!--  going to have to autogenerate IDs so we can reference -->
+                    			<span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+                    		</button>
+                    		<button type="button" class="btn btn-primary" data-toggle="button">
+							<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+						</button>
+						<button type="button" class="btn btn-primary" data-toggle="button">
+							<span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+						</button>
+				     </div>
+				     <div>
+		                 <h3>@entity.get("summary")</h3>
+		                 <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
+		                 <p>@entity.get("key")
+		                    <br/> @{new Date(init.getLong("eventDate"))}
+		                 </p>
+		                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
+		             </div>
+	                 }
+	                 }
+	                 
+	              </div>
+	              <br/>
+	              }                   	  
+	              <br/>
+	           </div>
+         	   <!--  MY SUBSCRIPTIONS  -->
+         	   <!--  <div class="tab-pane" id="4">
+	              <br/>
+	              <ul class="thumbnails">
+	              </ul>
+	           </div> -->
+         	</div>
+     	</div>
       </div>
    </div>
 </div>

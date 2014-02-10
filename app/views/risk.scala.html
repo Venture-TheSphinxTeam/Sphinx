@@ -2,6 +2,8 @@
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
     @defining(risk.asInstanceOf[com.mongodb.BasicDBObject]){ ri=>
+    <h1>@ri.get("description")</h1>
+    <br/>
     Assignee: @ri.get("assignee")
     <br/>
     Created: @{new Date(ri.getLong("created"))}
