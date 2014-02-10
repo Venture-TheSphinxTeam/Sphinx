@@ -10,8 +10,12 @@ function subscribeToEntity(entityType,entityId,username){
 
 	// Based on current status subscribe or unsubscribe user
 	if (currentClass == "btn btn-primary active") {
+		
 		//unsubscribe user
 		alert("unsubscribing");
+
+		//update the status of each subscribe button related to type TYPE-ID
+		//document.getElementById( entityType + "-" + entityId + "-subscribe" )
 	}
 	else{
 		//subscribe user
@@ -26,10 +30,13 @@ function subscribeToEntity(entityType,entityId,username){
 			url: "/updateSubscription",
 			data: json,
 			datatype: "json",
+			contentType: 'application/json; charset=utf-8'
 			success: function (data){
 				alert("this was a success!!!");
 			}
 		});
+
+		//update the status of each subscribe button related to type TYPE-ID
 
 	}
 }

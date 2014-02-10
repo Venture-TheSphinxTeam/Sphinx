@@ -9,8 +9,15 @@ import play.mvc.Result;
 
 public class SubscriptionController extends Controller{
 	
-	public static Result updateSubscriptionController(){
+	/**
+	 * 
+	 * @return
+	 */
+	public static Result UpdateSubscriptionStatus(){
 
+		//working here
+		
+		return ok();
 	}
 
 }
