@@ -1,12 +1,9 @@
 package controllers;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.User;
-import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -26,11 +23,20 @@ public class SubscriptionController extends Controller{
 		String entityId = json.get("entityId").asText();
 		String username = json.get("username").asText();
 		
-		
+		User user = User.findByName(username);
 		
 		// create return object
 		ObjectNode result = Json.newObject();
-		result.put("test","do I work?");
+		
+		// swap subscription status
+		if( User.doesUserSubscribeToEntity(user, entityId, entityType )){
+			User.setUserEntitySubscriptionStatus(false, user, entityId, entityType);
+			result.put("newState","false");
+		}
+		else{
+			User.setUserEntitySubscriptionStatus(true, user, entityId, entityType);
+			result.put("newState","true");
+		}
 		
 		return ok(result);
 	}
