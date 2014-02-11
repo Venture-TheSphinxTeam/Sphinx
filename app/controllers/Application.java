@@ -7,12 +7,54 @@ import java.util.Arrays;
 
 import com.mongodb.BasicDBObject;
 
+import play.libs.F.Callback;
+import play.libs.F.Callback0;
 import play.mvc.*;
-
 import views.html.*;
 import views.html.defaultpages.error;
 
 public class Application extends Controller {
+	
+	public static WebSocket<String> webbysockets(){
+	    return new WebSocket<String>() {
+
+	        // Called when the Websocket Handshake is done.
+	        public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
+
+	            // For each event received on the socket,
+	            in.onMessage(new Callback<String>() {
+	                public void invoke(String event) {
+
+	                    // Log events to the console
+	                    //System.out.println(event.toString());
+	                	
+	                	try {
+							index();
+						} catch (UnknownHostException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+	                }
+	            });
+
+	            // When the socket is closed.
+	            in.onClose(new Callback0() {
+	                public void invoke() {
+
+	                    System.out.println("Disconnected");
+
+	                }
+	            });
+
+	            // Send a single 'Hello!' message
+	            out.write("Haz pulled data for");
+
+	        }
+
+	    };
+	    
+	}
 
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(

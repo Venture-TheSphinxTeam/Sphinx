@@ -1,6 +1,23 @@
 @(userEntities: Array[Object])(teamEntities: Array[Object])(orgEntities: Array[Object])(username: String)
 @main("Sphinx: Connecting Projects to People")(username) {
 <!-- Main jumbotron for a primary marketing message or call to action -->
+
+<script type="text/javascript">
+   
+var socket = new WebSocket("ws:./webbysockets");
+
+socket.onopen = function(){  
+    console.log("Socket has been opened!");  
+    socket.send(username);
+
+} 
+
+socket.onmessage = function(message){
+	console.log(message);
+}
+
+</script>
+
 <div class="container">
    <div class="row">
       <div class="span4">

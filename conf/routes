@@ -9,6 +9,7 @@ GET		/subscriptions				controllers.Application.subscriptions()
 GET		/admin-tools				controllers.Application.adminTools()
 GET		/user-settings				controllers.Application.userSettings()
 GET		/entity					    controllers.Application.entityView(arg: String ?= "", entityType: String ?= "")
+GET     /webbysockets               controllers.Application.webbysockets()
 
 #Admin Tools
 POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
