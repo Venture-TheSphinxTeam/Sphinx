@@ -62,14 +62,17 @@
 		                     <h3>@entity.get("summary")</h3>
 		                     <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
 		                     <p>@entity.get("key")
-		                        <br/> @{new Date(init.getLong("eventDate"))}
+		                        <br/> 
+		                        @{if (init.containsField("eventDate")){new Date(init.getLong("eventDate"))}}
+		                        @{if (init.containsField("reportDate")){new Date(init.getLong("reportDate"))}}		     
 		                     </p>
 				                     
 			                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
 		                     <br/>
 	                  	</div>
-	                }}}
-                   	</div>               	  
+                        
+	                }}</div>}
+                   	               	  
                   <br/>
                </div>
                <!--  TEAM PROJECTS  -->
@@ -115,14 +118,17 @@
 		                 <h3>@entity.get("summary")</h3>
 		                 <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
 		                 <p>@entity.get("key")
-		                    <br/> @{new Date(init.getLong("eventDate"))}
+		                    <br/> 
+								@{if (init.containsField("eventDate")){new Date(init.getLong("eventDate"))}}
+		                        @{if (init.containsField("reportDate")){new Date(init.getLong("reportDate"))}}
 		                 </p>
 		                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
 		             </div>
+                   </div>
 	                 }
 	                 }
 	                 
-	              </div>
+	              
 	              <br/>
 	              }                   	  
 	              <br/>
@@ -157,7 +163,9 @@
 		                 <h3>@entity.get("summary")</h3>
 		                 <h4>User @{init.get("changedBy")}@{init.get("reportedBy")} has performed a @init.get("eventClass") event!</h4>
 		                 <p>@entity.get("key")
-		                    <br/> @{new Date(init.getLong("eventDate"))}
+		                    <br/> 
+							@{if (init.containsField("eventDate")){new Date(init.getLong("eventDate"))}}
+		                        @{if (init.containsField("reportDate")){new Date(init.getLong("reportDate"))}}
 		                 </p>
 		                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.get("entityId")&entityType=@entity.get("entityType")">Learn more &raquo;</a>
 		             </div>
