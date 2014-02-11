@@ -10,26 +10,34 @@ function subscribeToEntity(entityType,entityId,username){
 
 	// Based on current status subscribe or unsubscribe user
 	if (currentClass == "btn btn-primary active") {
+		
 		//unsubscribe user
 		alert("unsubscribing");
+
+		//update the status of each subscribe button related to type TYPE-ID
+		//document.getElementById( entityType + "-" + entityId + "-subscribe" )
 	}
 	else{
 		//subscribe user
 		alert("subscribing")
 
-		var json = { entityType: entityType, 
-					 entityId: 	 entityId,
-					 username:   username };
+		var json = { 'entityType': entityType, 
+					 'entityId': 	 entityId,
+					 'username':   username };
 
 		$.ajax({
 			type: "POST",
 			url: "/updateSubscription",
-			data: json,
+			data: JSON.stringify(json),
 			datatype: "json",
+			contentType: 'application/json; charset=utf-8',
 			success: function (data){
 				alert("this was a success!!!");
+				alert(data['test']);
 			}
-		});
+		})
+
+		//update the status of each subscribe button related to type TYPE-ID
 
 	}
 }
