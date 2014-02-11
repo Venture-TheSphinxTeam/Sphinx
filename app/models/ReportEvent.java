@@ -1,9 +1,30 @@
 package models;
 
+import org.jongo.MongoCollection;
+
+import uk.co.panaxiom.playjongo.PlayJongo;
+
 /**
  * Created by Striker on 2/4/14.
  */
 public class ReportEvent extends Event  {
+	
+	private static MongoCollection _events(){
+		return PlayJongo.getCollection("events");
+	}
+	
+	public void remove(){
+        _events().remove(this.id);
+    }
+
+    public void removeAll(){
+        _events().remove();
+    }
+
+    public ReportEvent insert(){
+        _events().save(this);
+        return this;
+    }
 
     public ReportEvent(){}
 

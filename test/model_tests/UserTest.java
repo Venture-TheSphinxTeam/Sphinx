@@ -17,7 +17,6 @@ public class UserTest extends WithApplication {
     }
 
 
-   @Test
     public void createAndRetrieveUser() {
 	   running(fakeApplication(), new Runnable(){
 		   public void run(){

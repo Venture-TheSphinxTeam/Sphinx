@@ -35,6 +35,17 @@ public class AdminController extends Controller{
         EventCollection events = ingester.getEventsSince(ff.get().date);
         List<ChangeEvent> ce = events.getChangeEvents();
         for(ChangeEvent c : ce){
+        	c.insert();
+        }
+        
+        List<ReportEvent> re = events.getReportEvents();
+        for(ReportEvent rep: re){
+        	rep.insert();
+        }
+        
+        List<TimeSpentEvent> tse = events.getTimeSpentEvents();
+        for(TimeSpentEvent ts : tse){
+        	ts.insert();
         }
 		return ok(adminTools.render("Migration Started", entitForm));
 	}

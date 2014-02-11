@@ -2,7 +2,11 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.bson.types.ObjectId;
+import org.jongo.MongoCollection;
+
+import uk.co.panaxiom.playjongo.PlayJongo;
 
 import java.util.List;
 
@@ -11,6 +15,24 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChangeEvent extends Event{
+	
+	private static MongoCollection _events(){
+		return PlayJongo.getCollection("events");
+	}
+	
+	public void remove(){
+        _events().remove(this.id);
+    }
+
+    public void removeAll(){
+        _events().remove();
+    }
+
+    public ChangeEvent insert(){
+        _events().save(this);
+        return this;
+    }
+
 
     public ChangeEvent(){}
 
