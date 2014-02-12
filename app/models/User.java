@@ -36,68 +36,80 @@ public class User {
         return users().findOne("{name: #}", name).as(User.class);
     }
 
-    public User(){}
-
-    private String emailAddress;
-    private String pictureURL;
-    private List<String> querySubscriptions;
-    private List<String> initiativeSubscriptions;
-    private List<String> milestoneSubscriptions;
-    private List<String> riskSubscriptions;
-    private int updateFrequency;
-
+    // TODO : Figure out how to actually access this data
     /**
-     * Add an entity to subscribe to.
-     * IN PROGRESS
-     *
-     * @input entityType of entity to be inserted
-     * @input entityId   of entity to be inserted
-     * @input userName   of the user to have the subscription added to
-     */ // TODO : FIX
-    /*public void addEntitySubscription(String entityType, String entityId) {
-        if(entityType=="initiative"){
-            this.initiativeSubscriptions.add(entityId);
+     * Returns whether the user is already subscribed to the entity or not.
+     * 
+     * @param user			user object
+     * @param entityId		id of entity to look up
+     * @param entityType	type of entity to look up
+     * @return
+     */
+    public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){
+		boolean retVal = false;
+    	
+        /*if(entityType=="initiative"){
+        	if( user.initiativeSubscriptions.findOne("{entityId: #}", entityId) ){
+        		retVal = true;
+        	}
         } else if(entityType=="milestone"){
-            this.milestoneSubscriptions.add(entityId);
+        	if( user.milestoneSubscriptions.findOne("{entityId: #}", entityId) ){
+        		retVal = true;
+        	}
         } else {
-            this.riskSubscriptions.add(entityId);
-        }
+        	if( user.riskSubscriptions.findOne("{entityId: #}", entityId) ){
+        		retVal = true;
+        	}
+        }*/
+		
+    	return retVal;
     }
-
-    public boolean isEntitySubscribed(String entityType, String entityId){
-        boolean retVal;
-        if(entityType=="initiative"){
-            if(this.initiativeSubscriptions.contains(entityId)){
-                retVal = true;
-            }else{
-                retVal = false;
-            }
-        } else if(entityType=="milestone"){
-            if(this.milestoneSubscriptions.contains(entityId)){
-                retVal = true;
-            }else{
-                retVal = false;
-            }
-        } else {
-            if(this.riskSubscriptions.contains(entityId)){
-                retVal = true;
-            }else{
-                retVal = false;
-            }
-        }
-        return retVal;
+    
+    /**
+     * Subscribe to or unsubscribe from an entity. 
+     * 
+     * @param status		whether you would like to subscribe (true) or unsubscribe (false)
+     * @param user			user object
+     * @param entityId		id of entity
+     * @param entityType	entity's type
+     * @return				the new status of the subscription
+     */
+    public static boolean setUserEntitySubscriptionStatus(boolean status, User user, String entityId, String entityType){
+		boolean retVal = false;
+    	
+		// TODO : make this work
+		if( status = true ){
+	        /*if(entityType=="initiative"){
+	        	if( user.initiativeSubscriptions.add("{entityId: #}", entityId) ){
+	        		retVal = true;
+	        	}
+	        } else if(entityType=="milestone"){
+	        	if( user.milestoneSubscriptions.add("{entityId: #}", entityId) ){
+	        		retVal = true;
+	        	}
+	        } else {
+	        	if( user.riskSubscriptions.add("{entityId: #}", entityId) ){
+	        		retVal = true;
+	        	}
+	        }*/
+		}
+		else {
+	        /*if(entityType=="initiative"){
+        	if( user.initiativeSubscriptions.remove("{entityId: #}", entityId) ){
+        		retVal = true;
+        	}
+	        } else if(entityType=="milestone"){
+	        	if( user.milestoneSubscriptions.remove("{entityId: #}", entityId) ){
+	        		retVal = true;
+	        	}
+	        } else {
+	        	if( user.riskSubscriptions.remove("{entityId: #}", entityId) ){
+	        		retVal = true;
+	        	}
+	        }*/			
+		}
+		
+    	return retVal;
     }
-
-    public List<String> getInitiativeSubscriptions(){
-        return this.initiativeSubscriptions;
-    }
-
-    public void setUpdateFrequency(int updateFrequency){
-        this.updateFrequency = updateFrequency;
-    }
-
-    public int getUpdateFrequency(){
-        return this.updateFrequency;
-    }*/
 }
 
