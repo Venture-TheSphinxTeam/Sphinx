@@ -33,7 +33,7 @@ function subscribeToEntity(entityType,entityId,username){
 			contentType: 'application/json; charset=utf-8',
 			success: function (data){
 				alert("this was a success!!!");
-				alert(data['test']);
+				alert(data['newState']);
 			}
 		})
 
