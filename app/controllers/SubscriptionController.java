@@ -23,7 +23,7 @@ public class SubscriptionController extends Controller{
 		String entityId = json.get("entityId").asText();
 		String username = json.get("username").asText();
 		
-		//User user = User.findByName(username);
+		User user = User.findByName(username);
 		// TODO this is totally a huge problem that appears to break everything!!!!
 
 
