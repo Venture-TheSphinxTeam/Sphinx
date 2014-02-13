@@ -129,10 +129,6 @@ public class User {
     	return retVal;
     }
 
-    public int getUpdateFrequency(){
-        return this.updateFrequency;
-    }*/
-
     public String getUsername() {
         return username;
     }
