@@ -3,9 +3,14 @@ package controllers;
 import helpers.MongoControlCenter;
 
 import java.net.UnknownHostException;
+import java.util.Arrays;
+
+import com.mongodb.BasicDBObject;
+
 import play.mvc.*;
 
 import views.html.*;
+import views.html.defaultpages.error;
 
 public class Application extends Controller {
 
@@ -53,8 +58,17 @@ public class Application extends Controller {
 
 		if (type.equals("INITIATIVE")) {
 
-			Object testInitiative = control.getInitiativeById(arg);
-			return ok(initiative.render(testInitiative));
+			BasicDBObject testInitiative = (BasicDBObject) control.getInitiativeById(arg);
+			
+			if(testInitiative.get("assignee").equals("jay-z")){
+				
+				return ok(initiative.render(testInitiative));
+			}
+			else{
+				return ok(accessError.render());
+			}
+			
+			
 		}
 
 		else if (type.equals("MILESTONE")) {

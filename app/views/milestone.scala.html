@@ -2,11 +2,37 @@
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
     @defining(milestone.asInstanceOf[com.mongodb.BasicDBObject]){ mile=>
+    <h1>Key: @mile.get("key") - Summary: @mile.get("summary")</h1>
+    <h2>Description: @mile.get("description")</h2>
+    
+    <h3>Entity ID: @mile.get("entityId")
+    <br/>
+    Entity Type: @mile.get("entityType")
+    </h3>
+    <br/>
+    
+    <h4>
     Assignee: @mile.get("assignee")
     <br/>
+    Reporter: @mile.get("reporter")
+    <br/>
+    Watchers: @mile.get("watchers")   
+    </h4>
+    
+    
+    <h4>
+    Priority: @mile.get("priority")
+    <br/>
+    Status: @mile.get("status")
+    <br/>
+    Health: @mile.get("health")
+    </h4>
+    
+    
+    <h4>
     Created: @{new Date(mile.getLong("created"))}
     <br/>
-    Description: @mile.get("description")
+    Start Date: @{new Date(mile.getLong("startDate"))}
     <br/>
     Desired Due Date: @{new Date(mile.getLong("desiredDueDate"))}
     <br/>
@@ -14,33 +40,17 @@
     <br/>
     Due Date: @{new Date(mile.getLong("dueDate"))}
     <br/>
-    Entity Id: @mile.get("entityId")
-    <br/>
-    Entity Type: @mile.get("entityType")
-    <br/>
-    Health: @mile.get("health")
-    <br/>
-    Key: @mile.get("key")
-    <br/>
-    Labels: @mile.get("labels")
-    <br/>
-    Priority: @mile.get("priority")
-    <br/>
-    Reporter: @mile.get("reporter")
-    <br/>
-    Start Date: @{new Date(mile.getLong("startDate"))}
-    <br/>
-    Status: @mile.get("status")
-    <br/>
-    Summary: @mile.get("summary")
-    <br/>
     Updated: @{new Date(mile.getLong("updated"))}
+    </h4>
+    
+    <h4>
+    Labels: @mile.get("labels")
     <br/>
     Verification Steps: @mile.get("verificationSteps")
     <br/>
-    Watchers: @mile.get("watchers")
-    <br/>
     Work Breakdown Parent: @mile.get("workBreakdownParent")
+    </h4>
+    
     }
  </div>
 	

@@ -2,37 +2,47 @@
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
     @defining(risk.asInstanceOf[com.mongodb.BasicDBObject]){ ri=>
-    Assignee: @ri.get("assignee")
-    <br/>
-    Created: @{new Date(ri.getLong("created"))}
-    <br/>
-    Due Date: @{new Date(ri.getLong("dueDate"))}
-    <br/>
-    Entity Id: @ri.get("entityId")
+    <h1> Key: @ri.get("key")</h1>
+    
+    <h2>    Entity Id: @ri.get("entityId")
     <br/>
     Entity Type: @ri.get("entityType")
-    <br/>
-    Key: @ri.get("key")
-    <br/>
-    Labels: @ri.get("labels")
-    <br/>
-    Priority: @ri.get("priority")
+    </h2>
+    
+    <h4>  Assignee: @ri.get("assignee")
     <br/>
     Reporter: @ri.get("reporter")
     <br/>
+    Watchers: @ri.get("watchers")
+    </h4>
+    
+    <h4>
     Risk Impact: @ri.get("riskImpact")
     <br/>
     Risk Likelihood: @ri.get("riskLikelihood")
     <br/>
     Risk Types: @ri.get("riskTypes")
+    </h4>
+    
+    <h4>
+    Priority: @ri.get("priority")
     <br/>
     Status: @ri.get("status")
+    </h4>
+    
+    <h4>
+    Created: @{new Date(ri.getLong("created"))}
+    <br/>
+    Due Date: @{new Date(ri.getLong("dueDate"))}
     <br/>
     Updated: @{new Date(ri.getLong("updated"))}
-    <br/>
-    Watchers: @ri.get("watchers")
+    </h4>
+   
+    <h4>
+    Labels: @ri.get("labels")
     <br/>
     Work Breakdown Parent: @ri.get("workBreakdownParent")
+    </h4>
     }
  </div>
 	

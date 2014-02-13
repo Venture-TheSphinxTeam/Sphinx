@@ -2,11 +2,7 @@ package controllers;
 
 import java.util.List;
 
-import models.EntityCollection;
-import models.GetEntitiesForm;
-import models.Initiative;
-import models.Milestone;
-import models.Risk;
+import models.*;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -35,7 +31,23 @@ public class AdminController extends Controller{
 		for(Risk r : lr){
 			r.upsert();
 		}
-		return ok(adminTools.render("Migration Started",entitForm ));
+
+        EventCollection events = ingester.getEventsSince(ff.get().date);
+        List<ChangeEvent> ce = events.getChangeEvents();
+        for(ChangeEvent c : ce){
+        	c.insert();
+        }
+        
+        List<ReportEvent> re = events.getReportEvents();
+        for(ReportEvent rep: re){
+        	rep.insert();
+        }
+        
+        List<TimeSpentEvent> tse = events.getTimeSpentEvents();
+        for(TimeSpentEvent ts : tse){
+        	ts.insert();
+        }
+		return ok(adminTools.render("Migration Started", entitForm));
 	}
 
 }
