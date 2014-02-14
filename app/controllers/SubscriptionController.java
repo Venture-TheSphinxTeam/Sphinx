@@ -24,15 +24,13 @@ public class SubscriptionController extends Controller{
 		String username = json.get("username").asText();
 		
 		User user = User.findByName(username);
-		// TODO this is totally a huge problem that appears to break everything!!!!
-
 
 		// create return object
 		ObjectNode result = Json.newObject();
 
-		//boolean resulted = User.doesUserSubscribeToEntity(user,entityId,entityType);
-		//result.put("newState",resulted);
-		result.put("newState", "true");
+		boolean resulted = User.doesUserSubscribeToEntity(user,entityId,entityType);
+		result.put("newState",resulted);
+		//result.put("newState", "true");
 
 		// swap subscription status
 		/*if( User.doesUserSubscribeToEntity(user, entityId, entityType )){
