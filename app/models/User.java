@@ -55,58 +55,53 @@ public class User {
     private int updateFrequency;
 
     /**
-     * Add an entity to subscribe to.
-     * IN PROGRESS
+     * Returns whether the user is already subscribed to the entity or not.
+     */
+    public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){
+    	boolean retVal = false;
+
+        if( entityType.equals("initiative") ){
+            retVal = user.initiativeSubscriptions.contains(entityId) ;
+        } else if( entityType.equals("milestone") ){
+        	retVal = user.milestoneSubscriptions.contains(entityId) ;
+        } else {
+        	retVal = user.riskSubscriptions.contains(entityId) ;
+        }
+		
+    	return retVal;
+    }
+    
+    /**
+     * Subscribe to or unsubscribe from an entity. 
      *
-     * @input entityType of entity to be inserted
-     * @input entityId   of entity to be inserted
-     * @input userName   of the user to have the subscription added to
-     */ // TODO : FIX
-    /*public void addEntitySubscription(String entityType, String entityId) {
-        if(entityType=="initiative"){
-            this.initiativeSubscriptions.add(entityId);
-        } else if(entityType=="milestone"){
-            this.milestoneSubscriptions.add(entityId);
-        } else {
-            this.riskSubscriptions.add(entityId);
-        }
-    }
+     * @return				the new status of the subscription
+     */
+    public static void setUserEntitySubscriptionStatus(boolean status, User user, String entityId, String entityType){
 
-    public boolean isEntitySubscribed(String entityType, String entityId){
-        boolean retVal;
-        if(entityType=="initiative"){
-            if(this.initiativeSubscriptions.contains(entityId)){
-                retVal = true;
-            }else{
-                retVal = false;
-            }
-        } else if(entityType=="milestone"){
-            if(this.milestoneSubscriptions.contains(entityId)){
-                retVal = true;
-            }else{
-                retVal = false;
-            }
-        } else {
-            if(this.riskSubscriptions.contains(entityId)){
-                retVal = true;
-            }else{
-                retVal = false;
-            }
-        }
-        return retVal;
-    }
+        // Add subscription
+		if( status == true ){
+	        if( entityType.equals("initiative") ){
+	        	user.initiativeSubscriptions.add(entityId) ;
+	        } else if( entityType.equals("milestone") ){
+	        	user.milestoneSubscriptions.add(entityId) ;
+	        } else {
+	        	user.riskSubscriptions.add(entityId) ;
+	        }
+		}
+        // Remove subscription
+		else {
+	        if( entityType.equals("initiative") ){
+            	user.initiativeSubscriptions.remove(entityId) ;
+	        } else if( entityType.equals("milestone") ){
+	        	user.milestoneSubscriptions.remove(entityId) ;
+	        } else {
+	        	user.riskSubscriptions.remove(entityId) ;
+	        }
+		}
 
-    public List<String> getInitiativeSubscriptions(){
-        return this.initiativeSubscriptions;
-    }
+        users().save(user);
 
-    public void setUpdateFrequency(int updateFrequency){
-        this.updateFrequency = updateFrequency;
     }
-
-    public int getUpdateFrequency(){
-        return this.updateFrequency;
-    }*/
 
     public String getUsername() {
         return username;
@@ -211,5 +206,6 @@ public class User {
     public void setUpdateFrequency(int updateFrequency) {
         this.updateFrequency = updateFrequency;
     }
+
 }
 

@@ -1,43 +1,31 @@
 /** 
  * Subscribe to an entity
  */
-function subscribeToEntity(entityType,entityId,username){
+function updateEntitySubscriptionStatus(entityType,entityId,username){
 	alert("Entity Type: " + entityType + "\nEntity ID: " + entityId + "\nUsername: " + username);
 
-	// Get current status of button
-	alert(entityType + "-" + entityId + "-subscribe");
-	currentClass = document.getElementById( entityType + "-" + entityId + "-subscribe" ).className;
+	// Get current class so can get current status of button
+	//alert(entityType + "-" + entityId + "-subscribe");
+	//currentClass = document.getElementById( entityType + "-" + entityId + "-subscribe" ).className;
 
-	// Based on current status subscribe or unsubscribe user
-	if (currentClass == "btn btn-primary active") {
-		
-		//unsubscribe user
-		alert("unsubscribing");
+	// Update entity subscription in the backend aka subscribe to or unsubscribe from
+	var json = { 'entityType': entityType, 
+				 'entityId': 	 entityId,
+				 'username':   username };
 
-		//update the status of each subscribe button related to type TYPE-ID
-		//document.getElementById( entityType + "-" + entityId + "-subscribe" )
-	}
-	else{
-		//subscribe user
-		alert("subscribing")
+	$.ajax({
+		type: "POST",
+		url: "/updateSubscription",
+		data: JSON.stringify(json),
+		datatype: "json",
+		contentType: 'application/json; charset=utf-8',
+		success: function (data){
+			alert("This was a success!!!\nSubscribe Status is now :" + data['newState']);
+		}
+	})
 
-		var json = { 'entityType': entityType, 
-					 'entityId': 	 entityId,
-					 'username':   username };
+	//update the status of each subscribe button related to type TYPE-ID
 
-		$.ajax({
-			type: "POST",
-			url: "/updateSubscription",
-			data: JSON.stringify(json),
-			datatype: "json",
-			contentType: 'application/json; charset=utf-8',
-			success: function (data){
-				alert("this was a success!!!");
-				alert(data['test']);
-			}
-		})
 
-		//update the status of each subscribe button related to type TYPE-ID
-
-	}
+	// Update all subscription buttons of events for this type-id
 }
