@@ -16,7 +16,11 @@
                <div class="tab-pane active" id="1">	
                   <br/>
                   <ul class="thumbnails">
+                  <div id="page_container">
+            	  <div class="page_navigation"></div>
+            	  <ul class="content">
                   @for(field <- userEntities){
+                	  <li>
                   <div class="thumbnail">
                      @defining(field.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
                      @defining(init.get("entity").asInstanceOf[com.mongodb.BasicDBObject]){ entity=> 
@@ -71,7 +75,7 @@
 		                     <br/>
 	                  	</div>
                         
-	                }}</div>}
+	                }}</div></li>}</ul></div>
                    	               	  
                   <br/>
                </div>
@@ -235,4 +239,15 @@ $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
 var hash = window.location.hash;
 $('#dashTab a[href="' + hash + '"]').tab('show');
 </script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#page_container').pajinate({
+	items_per_page : 1
+	});
+});
+ 
+</script>
+
+
 }
