@@ -11,8 +11,9 @@ import play.mvc.Result;
 public class SubscriptionController extends Controller{
 	
 	/**
-	 * 
-	 * @return
+	 * If the user is subscribed to an entity, unsubscribe or vice versa.
+	 *
+	 * @return	New state of button
 	 */
 	public static Result UpdateSubscriptionStatus(){
 		
@@ -43,4 +44,25 @@ public class SubscriptionController extends Controller{
 		return ok(result);
 	}
 
+	/**
+	 *   Returns current status of if entityType-entityName is already subscribed 
+	 * to by inputted user.
+	 */
+	public static Result GetSubscriptionStatus(){
+
+		JsonNode json = request().body().asJson();
+		
+		String entityType = json.get("entityType").asText();
+		String entityId = json.get("entityId").asText();
+		String username = json.get("username").asText();
+		
+		User user = User.findByName(username);
+
+		// create return object
+		ObjectNode result = Json.newObject();
+
+		result.put("status", User.doesUserSubscribeToEntity(user, entityId, entityType ) );
+
+		return ok(result);
+	}
 }
