@@ -35,3 +35,8 @@
 li{
 	list-style: none;	
 }
+
+.active_page{
+	background-color:white !important;
+	color:black !important;
+}	

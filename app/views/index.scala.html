@@ -16,6 +16,8 @@
                   <br/>
                   <div id="page_container">
                      <div class="page_navigation"></div>
+                     <br/>
+                     <div class="info_text"></div>
                      <ul class="thumbnails">
                         <ul class="content">
                            @for(field <- userEntities){
@@ -78,6 +80,8 @@
                   <br/>
                   <div id="page_container2">
                      <div class="page_navigation"></div>
+                     <br/>
+                     <div class="info_text"></div>
                      <ul class="thumbnails">
                      <ul class="content">
                      @for(field <- teamEntities){
@@ -126,7 +130,6 @@
                            }
                         </div>
                      </li>
-                     <br/>
                      }
                      <ul/>
                      <ul/>
@@ -138,6 +141,8 @@
                   <br/>
                   <div id="page_container3">
                      <div class="page_navigation"></div>
+                     <br/>
+                     <div class="info_text"></div>
                      <ul class="thumbnails">
                      <ul class="content">
                      @for(field <- orgEntities){
@@ -216,21 +221,24 @@
 <script type="text/javascript">
    $(document).ready(function(){
    	$('#page_container').pajinate({
-   	items_per_page : 3
+   	items_per_page : 3,
+   	abort_on_small_lists: true
    	});
    });
    
    
    $(document).ready(function(){
    	$('#page_container2').pajinate({
-   	items_per_page : 3
+   	items_per_page : 3,
+   	abort_on_small_lists: true
    	});
    });
     
    
    $(document).ready(function(){
    	$('#page_container3').pajinate({
-   	items_per_page : 3
+   	items_per_page : 3,
+   	abort_on_small_lists: true
    	});
    });
    
