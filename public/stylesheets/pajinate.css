@@ -40,3 +40,24 @@ li{
 	background-color:white !important;
 	color:black !important;
 }	
+
+#page_container .no_more{
+    background-color: white;
+    color: gray;
+    cursor: default;
+}
+
+#page_container2 .no_more{
+    background-color: white;
+    color: gray;
+    cursor: default;
+}
+
+#page_container3 .no_more{
+    background-color: white;
+    color: gray;
+    cursor: default;
+}
+
+
+
