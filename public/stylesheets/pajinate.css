@@ -9,31 +9,8 @@
 	width: 960px;
 }
 
-#paging_container1{
-	height: 320px;	
-}
-
-#paging_container2{
-	height: 356px;	
-}
-
-#paging_container3{
-	height: 190px;
-}
-
-#paging_container4{
-	height: 307px;	
-	overflow: hidden;
-}
-
-#paging_container8 .no_more{
-    background-color: white;
-    color: gray;
-    cursor: default;
-}
-
 .page_navigation , .alt_page_navigation{
-	padding-bottom: 10px;
+	padding-bottom: 25px;
 }
 
 .page_navigation a, .alt_page_navigation a{
@@ -46,4 +23,41 @@
 	font-size: 12px;
 	background-color:#DB5C04;
 }
+
+.content, .alt_content{
+	color: black;
+}
+
+.content li, .alt_content li, .content > p{
+	padding: 5px
+}
+
+li{
+	list-style: none;	
+}
+
+.active_page{
+	background-color:white !important;
+	color:black !important;
+}	
+
+#page_container .no_more{
+    background-color: white;
+    color: gray;
+    cursor: default;
+}
+
+#page_container2 .no_more{
+    background-color: white;
+    color: gray;
+    cursor: default;
+}
+
+#page_container3 .no_more{
+    background-color: white;
+    color: gray;
+    cursor: default;
+}
+
+
 

@@ -1,11 +1,13 @@
 package controllers;
 
+import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import helpers.JSONParser;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -71,24 +73,36 @@ public class Ingester {
 	  return r.readEntity(String.class);
 	}
         
-    public EntityCollection getEntitiesSince(Date date){
+    public EntityCollection getEntitiesSince(Date date) throws ProcessingException{
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     	WebTarget target = client.target(Play.application().configuration().getString("external.json.source")+
     			"/entity/"+format.format(date));
     	Invocation.Builder ib = target.request();
-    	Response r = ib.get();
+    	Response r  = null;
+    	try{
+    	r = ib.get();
+    	}catch(ProcessingException e){
+    		//TODO: Logging
+    		throw e;
+    	}
     	
     	JSONParser j = new JSONParser();
     	
     	return j.extractEntities(r.readEntity(String.class));
     }
 
-    public EventCollection getEventsSince(Date date){
+    public EventCollection getEventsSince(Date date) throws ProcessingException{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         WebTarget target = client.target(Play.application().configuration().getString("external.json.source") +
                 "/event/"+ format.format(date));
         Invocation.Builder ib = target.request();
-        Response r = ib.get();
+        Response r = null;
+        try{
+        r = ib.get();
+        }catch (ProcessingException e){
+        	//TODO: Logging
+        	throw e;
+        }
 
         JSONParser j = new JSONParser();
 
