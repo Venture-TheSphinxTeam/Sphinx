@@ -269,7 +269,7 @@ public class MongoControlCenter {
 
 		DBObject baseQuery = new QueryBuilder()
 				.or(new BasicDBObject("allowedAccessUsers", user))
-				.or(new BasicDBObject("allowedAccessUsers", null)).get();
+				.or(new BasicDBObject("allowedAccessUsers", new BasicDBObject("$size", 0))).get();
 
 		/* ------------- Get Results --------------- */
 
@@ -291,7 +291,7 @@ public class MongoControlCenter {
 
 		queryCursor = risks.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-
+		
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
 
