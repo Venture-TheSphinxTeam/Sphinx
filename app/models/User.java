@@ -33,6 +33,10 @@ public class User {
     public void remove() {
         users().remove(this.id);
     }
+    
+    public static void removeAll(){
+    	users().remove();
+    }
 
     public static User findByName(String name) {
         return users().findOne("{username: #}", name).as(User.class);
@@ -206,6 +210,7 @@ public class User {
     public void setUpdateFrequency(int updateFrequency) {
         this.updateFrequency = updateFrequency;
     }
+    
 
 }
 

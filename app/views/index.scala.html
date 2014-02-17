@@ -1,4 +1,4 @@
-@(userEntities: Array[Object])(teamEntities: Array[Object])(orgEntities: Array[Object])(username: String)
+@(userEntities: Array[Object])(teamEntities: Array[Object])(orgEntities: Array[Object])(username: String)(subscribed: List[models.Event])
 @main("Sphinx: Connecting Projects to People")(username) {
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="container">
@@ -9,6 +9,7 @@
                <li class="active"><a href="#1" data-toggle="tab">My Projects</a></li>
                <li class=""><a href="#2" data-toggle="tab">Team Projects</a></li>
                <li class=""><a href="#3" data-toggle="tab">Projects Across the Firm</a></li>
+               <li class=""><a href="#4" data-toggle="tab">Subscribed Entities</a></li>
             </ul>
             <div class="tab-content">
                <!--  MY PROJECTS  -->
@@ -180,11 +181,47 @@
                   <br/>
                </div>
                <!--  MY SUBSCRIPTIONS  -->
-               <!--  <div class="tab-pane" id="4">
+               <div class="tab-pane" id="4">
                   <br/>
-                  <ul class="thumbnails">
-                  </ul>
-                  </div> -->
+                  <div id="page_container4">
+                     <div class="page_navigation"></div>
+                     <ul class="thumbnails">
+                     <ul class="content">
+                     @for(event <- subscribed){
+                     <li>
+                        <div class="thumbnail">
+                           @defining(event.getEntity()){ entity=>
+                           <div class="entityStateButtons" align="right">
+                              <!-- SUBSCRIBE BUTTON -->
+                              <button type="button" class="btn btn-primary" data-toggle="button">     
+                              <span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+                              </button>
+                              <!-- VOTE BUTTON -->
+                              <button type="button" class="btn btn-primary" data-toggle="button">
+                              <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+                              </button>
+                              <!-- WATCH BUTTON -->
+                              <button type="button" class="btn btn-primary" data-toggle="button">
+                              <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+                              </button>
+                           </div>
+                           <div>
+                              <h3>@entity.getSummary()</h3>
+                              <h4>User has performed a event!</h4>
+                              <p>@entity.getKey()
+                                 <br/> 
+                              </p>
+                              <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn more &raquo;</a>
+                           </div>
+                           }
+                        </div>
+                     </li>
+                     }
+                     <ul/>
+                     <ul/>
+                  </div>
+                  <br/>
+               </div>
             </div>
          </div>
       </div>

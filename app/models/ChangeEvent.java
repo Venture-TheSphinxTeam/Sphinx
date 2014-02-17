@@ -16,25 +16,28 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChangeEvent extends Event{
 	
-	private static MongoCollection _events(){
-		return PlayJongo.getCollection("events");
-	}
+	public static final String TYPE_SELECTOR = "eventType: {$in: [\"CREATE\", \"UPDATE\",\"DELETE\"]}";
 	
 	public void remove(){
         _events().remove(this.id);
     }
 
-    public void removeAll(){
-        _events().remove();
+    public static void removeAll(){
+        _events().remove("{"+ TYPE_SELECTOR + "}");
     }
 
     public ChangeEvent insert(){
         _events().save(this);
         return this;
     }
+    
+    
+    public static Iterable<ChangeEvent> findCEby(String query){
+    	return _events().find("{"+TYPE_SELECTOR +","+query+"}").as(ChangeEvent.class);
+    }
 
 
-    public ChangeEvent(){}
+    public ChangeEvent(){    }
 
 
     protected long eventDate;
@@ -55,4 +58,5 @@ public class ChangeEvent extends Event{
     public void setChangedBy(String changedBy) {
         this.changedBy = changedBy;
     }
+    
 }

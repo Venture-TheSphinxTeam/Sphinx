@@ -9,9 +9,6 @@ import uk.co.panaxiom.playjongo.PlayJongo;
  */
 public class ReportEvent extends Event  {
 	
-	private static MongoCollection _events(){
-		return PlayJongo.getCollection("events");
-	}
 	
 	public void remove(){
         _events().remove(this.id);

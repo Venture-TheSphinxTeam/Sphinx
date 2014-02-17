@@ -12,9 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TimeSpentEvent extends Event{
 	
-	private static MongoCollection _events(){
-		return PlayJongo.getCollection("events");
-	}
 	
 	public void remove(){
         _events().remove(this.id);
