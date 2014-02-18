@@ -95,9 +95,9 @@ public class User {
     public void setUpdateFrequency(int updateFrequency){
         this.updateFrequency = updateFrequency;
     }
-
+*/
     public int getUpdateFrequency(){
         return this.updateFrequency;
-    }*/
+    }
 }
 

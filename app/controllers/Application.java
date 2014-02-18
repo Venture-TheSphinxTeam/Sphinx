@@ -5,6 +5,8 @@ import helpers.MongoControlCenter;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
+import akka.actor.FSM.Timer;
+
 import com.mongodb.BasicDBObject;
 
 import play.libs.F.Callback;
@@ -14,46 +16,58 @@ import views.html.*;
 import views.html.defaultpages.error;
 
 public class Application extends Controller {
-	
-	public static WebSocket<String> webbysockets(){
-	    return new WebSocket<String>() {
 
-	        // Called when the Websocket Handshake is done.
-	        public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
+	public static WebSocket<String> webbysockets() {
+		return new WebSocket<String>() {
+			final int MINUTES_TO_MILLISECONDS = 60*1000;
+			Integer userRate;
+			Integer update;
 
-	            // For each event received on the socket,
-	            in.onMessage(new Callback<String>() {
-	                public void invoke(String event) {
+			// Called when the Websocket Handshake is done.
+			public void onReady(WebSocket.In<String> in,
+					final WebSocket.Out<String> out) {
 
-	                    // Log events to the console
-	                    //System.out.println(event.toString());
-	                	
-	                	try {
-							index();
-						} catch (UnknownHostException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				// For each event received on the socket,
+				in.onMessage(new Callback<String>() {
+					public void invoke(String event)
+							throws UnknownHostException {
+
+						MongoControlCenter control = new MongoControlCenter(
+								"venture.se.rit.edu", 27017);
+						control.setDatabase("dev");
+
+						//find current user
+						userRate = control
+								.getUserRefreshRate("RickyWinterborn");
+
+						control.closeConnection();
+
+						//set min value if something goes wrong
+						if (userRate == null || userRate < 5) {
+							update = 5;
+						} else {
+							update = userRate;
 						}
 
-	                }
-	            });
+						update *= MINUTES_TO_MILLISECONDS;
+						out.write(update.toString());
+					}
 
-	            // When the socket is closed.
-	            in.onClose(new Callback0() {
-	                public void invoke() {
+				});
 
-	                    System.out.println("Disconnected");
+				// When the socket is closed.
+				in.onClose(new Callback0() {
+					public void invoke() {
 
-	                }
-	            });
+						System.out.println("Disconnected");
 
-	            // Send a single 'Hello!' message
-	            out.write("Haz pulled data for");
+					}
+				});
 
-	        }
+			}
 
-	    };
-	    
+		};
+
 	}
 
 	public static Result index() throws UnknownHostException {
@@ -100,17 +114,16 @@ public class Application extends Controller {
 
 		if (type.equals("INITIATIVE")) {
 
-			BasicDBObject testInitiative = (BasicDBObject) control.getInitiativeById(arg);
-			
-			if(testInitiative.get("assignee").equals("jay-z")){
-				
+			BasicDBObject testInitiative = (BasicDBObject) control
+					.getInitiativeById(arg);
+
+			if (testInitiative.get("assignee").equals("jay-z")) {
+
 				return ok(initiative.render(testInitiative));
-			}
-			else{
+			} else {
 				return ok(accessError.render());
 			}
-			
-			
+
 		}
 
 		else if (type.equals("MILESTONE")) {
