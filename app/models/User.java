@@ -56,77 +56,51 @@ public class User {
 
     /**
      * Returns whether the user is already subscribed to the entity or not.
-     * 
-     * @param user			user object
-     * @param entityId		id of entity to look up
-     * @param entityType	type of entity to look up
-     * @return
      */
     public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){
-		boolean retVal = false;
-    	
-        /*if(entityType=="initiative"){
-        	if( user.initiativeSubscriptions.findOne("{entityId: #}", entityId) ){
-        		retVal = true;
-        	}
-        } else if(entityType=="milestone"){
-        	if( user.milestoneSubscriptions.findOne("{entityId: #}", entityId) ){
-        		retVal = true;
-        	}
+    	boolean retVal = false;
+
+        if( entityType.toLowerCase().equals("initiative") ){
+            retVal = user.initiativeSubscriptions.contains(entityId) ;
+        } else if( entityType.toLowerCase().equals("milestone") ){
+        	retVal = user.milestoneSubscriptions.contains(entityId) ;
         } else {
-        	if( user.riskSubscriptions.findOne("{entityId: #}", entityId) ){
-        		retVal = true;
-        	}
-        }*/
+        	retVal = user.riskSubscriptions.contains(entityId) ;
+        }
 		
     	return retVal;
     }
     
     /**
      * Subscribe to or unsubscribe from an entity. 
-     * 
-     * @param status		whether you would like to subscribe (true) or unsubscribe (false)
-     * @param user			user object
-     * @param entityId		id of entity
-     * @param entityType	entity's type
+     *
      * @return				the new status of the subscription
      */
-    public static boolean setUserEntitySubscriptionStatus(boolean status, User user, String entityId, String entityType){
-		boolean retVal = false;
-    	
-		// TODO : make this work
-		if( status = true ){
-	        /*if(entityType=="initiative"){
-	        	if( user.initiativeSubscriptions.add("{entityId: #}", entityId) ){
-	        		retVal = true;
-	        	}
-	        } else if(entityType=="milestone"){
-	        	if( user.milestoneSubscriptions.add("{entityId: #}", entityId) ){
-	        		retVal = true;
-	        	}
+    public static void setUserEntitySubscriptionStatus(boolean status, User user, String entityId, String entityType){
+
+        // Add subscription
+		if( status == true ){
+	        if( entityType.toLowerCase().equals("initiative") ){
+	        	user.initiativeSubscriptions.add(entityId) ;
+	        } else if( entityType.toLowerCase().equals("milestone") ){
+	        	user.milestoneSubscriptions.add(entityId) ;
 	        } else {
-	        	if( user.riskSubscriptions.add("{entityId: #}", entityId) ){
-	        		retVal = true;
-	        	}
-	        }*/
+	        	user.riskSubscriptions.add(entityId) ;
+	        }
 		}
+        // Remove subscription
 		else {
-	        /*if(entityType=="initiative"){
-        	if( user.initiativeSubscriptions.remove("{entityId: #}", entityId) ){
-        		retVal = true;
-        	}
-	        } else if(entityType=="milestone"){
-	        	if( user.milestoneSubscriptions.remove("{entityId: #}", entityId) ){
-	        		retVal = true;
-	        	}
+	        if( entityType.toLowerCase().equals("initiative") ){
+            	user.initiativeSubscriptions.remove(entityId) ;
+	        } else if( entityType.toLowerCase().equals("milestone") ){
+	        	user.milestoneSubscriptions.remove(entityId) ;
 	        } else {
-	        	if( user.riskSubscriptions.remove("{entityId: #}", entityId) ){
-	        		retVal = true;
-	        	}
-	        }*/			
+	        	user.riskSubscriptions.remove(entityId) ;
+	        }
 		}
-		
-    	return retVal;
+
+        users().save(user);
+
     }
 
     public String getUsername() {
@@ -232,6 +206,5 @@ public class User {
     public void setUpdateFrequency(int updateFrequency) {
         this.updateFrequency = updateFrequency;
     }
-
 }
 

@@ -269,7 +269,7 @@ public class MongoControlCenter {
 
 		DBObject baseQuery = new QueryBuilder()
 				.or(new BasicDBObject("allowedAccessUsers", user))
-				.or(new BasicDBObject("allowedAccessUsers", null)).get();
+				.or(new BasicDBObject("allowedAccessUsers", new BasicDBObject("$size", 0))).get();
 
 		/* ------------- Get Results --------------- */
 
@@ -291,7 +291,7 @@ public class MongoControlCenter {
 
 		queryCursor = risks.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-
+		
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
 
@@ -316,6 +316,31 @@ public class MongoControlCenter {
 		return results.toArray();
 	}
 
+	
+
+	@SuppressWarnings("unchecked")
+	public Integer getUserRefreshRate(String user) {
+
+		BasicDBObject refreshRateQuery = new BasicDBObject("username", user);
+		DBCursor cursor = users.find(refreshRateQuery);
+
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+		
+		try {
+			while (cursor.hasNext()) {
+				temp.add((Integer) cursor.next().get("updateFrequency"));
+				
+			}
+		} finally {
+			cursor.close();
+		}
+		
+		if(temp.size() != 1){
+			temp.add(0, null);
+		}
+		return temp.get(0);
+
+	}
 	/*
 	 * -----------Helper Functions--------------
 	 */

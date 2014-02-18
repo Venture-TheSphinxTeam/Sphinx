@@ -5,22 +5,77 @@ import helpers.MongoControlCenter;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
+import akka.actor.FSM.Timer;
+
 import com.mongodb.BasicDBObject;
 
+import play.libs.F.Callback;
+import play.libs.F.Callback0;
 import play.mvc.*;
-
 import views.html.*;
 import views.html.defaultpages.error;
 
 public class Application extends Controller {
+	public static final String USERNAME = "RickyWinterborn";
+
+	public static WebSocket<String> webbysockets() {
+		return new WebSocket<String>() {
+			final int MINUTES_TO_MILLISECONDS = 60 * 1000;
+			Integer userRate;
+			Integer update;
+
+			// Called when the Websocket Handshake is done.
+			public void onReady(WebSocket.In<String> in,
+					final WebSocket.Out<String> out) {
+
+				// For each event received on the socket,
+				in.onMessage(new Callback<String>() {
+					public void invoke(String event)
+							throws UnknownHostException {
+
+						MongoControlCenter control = new MongoControlCenter(
+								"venture.se.rit.edu", 27017);
+						control.setDatabase("dev");
+
+						// find current user
+						userRate = control
+								.getUserRefreshRate("RickyWinterborn");
+
+						control.closeConnection();
+
+						// set min value if something goes wrong
+						if (userRate == null || userRate < 5) {
+							update = 5;
+						} else {
+							update = userRate;
+						}
+
+						update *= MINUTES_TO_MILLISECONDS;
+						out.write(update.toString());
+					}
+
+				});
+
+				// When the socket is closed.
+				in.onClose(new Callback0() {
+					public void invoke() {
+
+					}
+				});
+
+			}
+
+		};
+
+	}
 
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 
-		String username = "RickyWinterborn"; // TODO : Make this pull current
-												// user name
+		// String username = "RickyWinterborn"; // TODO : Make this pull current
+		// user name
 
 		Object[] userEntities = control.getEventsForUser("jay-z");
 		Object[] teamEntities = control.getTeamEventsForUser("RickyWinterborn");
@@ -30,7 +85,7 @@ public class Application extends Controller {
 		control.closeConnection();
 
 		return ok(index.render(userEntities, teamEntities, orgEntities,
-				username));
+				USERNAME));
 	}
 
 	public static Result search() {
@@ -57,29 +112,54 @@ public class Application extends Controller {
 		control.setDatabase("dev");
 
 		if (type.equals("INITIATIVE")) {
+			BasicDBObject entity_Initiative = (BasicDBObject) control
+					.getInitiativeById(arg);
 
-			BasicDBObject testInitiative = (BasicDBObject) control.getInitiativeById(arg);
-			
-			if(testInitiative.get("assignee").equals("jay-z")){
-				
-				return ok(initiative.render(testInitiative));
-			}
-			else{
+			if (((com.mongodb.BasicDBList) (entity_Initiative
+					.get("allowedAccessUsers"))).contains("jay-z")
+					|| ((com.mongodb.BasicDBList) (entity_Initiative
+							.get("allowedAccessUsers"))).isEmpty()) {
+
+				return ok(initiative.render(entity_Initiative, USERNAME));
+			} else {
 				return ok(accessError.render());
 			}
-			
-			
+
 		}
 
 		else if (type.equals("MILESTONE")) {
-			Object testMilestone = control.getMilestoneById(arg);
-			return ok(milestone.render(testMilestone));
+			BasicDBObject entity_Milestone = (BasicDBObject) control
+					.getMilestoneById(arg);
 
+			if (((com.mongodb.BasicDBList) (entity_Milestone
+					.get("allowedAccessUsers"))).contains("jay-z")
+					|| ((com.mongodb.BasicDBList) (entity_Milestone
+							.get("allowedAccessUsers"))).isEmpty()) {
+
+				return ok(milestone.render(entity_Milestone, USERNAME));
+			}
+
+			else {
+				return ok(accessError.render());
+			}
 		}
 
 		else {
-			Object testRisk = control.getRiskById(arg);
-			return ok(risk.render(testRisk));
+			BasicDBObject entity_Risk = (BasicDBObject) control
+					.getRiskById(arg);
+
+			if (((com.mongodb.BasicDBList) (entity_Risk
+					.get("allowedAccessUsers"))).contains("jay-z")
+					|| ((com.mongodb.BasicDBList) (entity_Risk
+							.get("allowedAccessUsers"))).isEmpty()) {
+
+				return ok(risk.render(entity_Risk, USERNAME));
+			}
+
+			else {
+				return ok(accessError.render());
+
+			}
 		}
 
 	}
