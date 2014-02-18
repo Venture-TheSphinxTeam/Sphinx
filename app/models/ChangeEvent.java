@@ -8,6 +8,7 @@ import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,25 +17,35 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChangeEvent extends Event{
 	
-	private static MongoCollection _events(){
-		return PlayJongo.getCollection("events");
+	public static final String TYPE_SELECTOR = "eventType: {$in: [\"CREATE\", \"UPDATE\",\"DELETE\"]}";
+	
+	
+	public static Iterable<ChangeEvent> findCEBy(String query){
+		String q = "{"+ChangeEvent.TYPE_SELECTOR+","+query+"}";
+		return _events().find(q).as(ChangeEvent.class);
+		
 	}
 	
 	public void remove(){
         _events().remove(this.id);
     }
 
-    public void removeAll(){
-        _events().remove();
+    public static void removeAll(){
+        _events().remove("{"+ TYPE_SELECTOR + "}");
     }
 
     public ChangeEvent insert(){
         _events().save(this);
         return this;
     }
+    
+    
+    public static Iterable<ChangeEvent> findCEby(String query){
+    	return _events().find("{"+TYPE_SELECTOR +","+query+"}").as(ChangeEvent.class);
+    }
 
 
-    public ChangeEvent(){}
+    public ChangeEvent(){    }
 
 
     protected long eventDate;
@@ -55,4 +66,32 @@ public class ChangeEvent extends Event{
     public void setChangedBy(String changedBy) {
         this.changedBy = changedBy;
     }
+    
+    @Override
+    public String getEventDetails(){
+    	String result ="";
+    	
+    	result += changedBy;
+    	
+    	if(eventType.equals("CREATE")){
+    		result += " created ";
+    	}
+    	else if(eventType.equals("UPDATE")){
+    		result += " updated ";
+    	}
+    	else{
+    		result += " deleted ";
+    	}
+    	
+    	result += entity.getEntityType().toLowerCase();
+    	result += entity.getSummary();
+    	
+		return result;
+    }
+    
+    @Override
+    public Date getDate(){
+    	return new Date(eventDate);
+    }
+    
 }

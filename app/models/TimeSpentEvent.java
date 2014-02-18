@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
@@ -12,16 +14,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TimeSpentEvent extends Event{
 	
-	private static MongoCollection _events(){
-		return PlayJongo.getCollection("events");
+	
+	private static final String TYPE_SELECTOR = "eventType: \"TIMESPENT\"";
+
+	public static Iterable<TimeSpentEvent> findTSEBy(String query){
+		String q = "{"+TimeSpentEvent.TYPE_SELECTOR+","+query+"}";
+		return _events().find(q).as(TimeSpentEvent.class);
+		
 	}
+	
 	
 	public void remove(){
         _events().remove(this.id);
     }
 
     public void removeAll(){
-        _events().remove();
+        _events().remove("{"+TYPE_SELECTOR+"}");
     }
 
     public TimeSpentEvent insert(){
@@ -48,6 +56,23 @@ public class TimeSpentEvent extends Event{
 
     public void setPeriodEndDate(long periodEndDate) {
         this.periodEndDate = periodEndDate;
+    }
+    
+    
+    @Override
+    public String getEventDetails(){
+    	String result ="";
+    	
+    	result += "Work was performed from " + new Date(periodStartDate) +
+    			" to " + new Date(periodEndDate);
+    	
+    	
+		return result;
+    }
+    
+    @Override
+    public Date getDate(){
+    	return new Date(periodEndDate);
     }
 
 

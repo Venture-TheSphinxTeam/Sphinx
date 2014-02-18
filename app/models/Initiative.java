@@ -74,6 +74,7 @@ public class Initiative extends Entity{
     private long desiredStartDate;
     private long startDate;
     private long desiredDueDate;
+    public static final String TYPE_STRING = "INITIATIVE"; 
 
     public String getProjectType() {
         return projectType;
