@@ -13,13 +13,14 @@ import views.html.*;
 import views.html.defaultpages.error;
 
 public class Application extends Controller {
+	public static final String USERNAME = "RickyWinterborn";
 
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 
-		String username = "RickyWinterborn"; // TODO : Make this pull current
+		//String username = "RickyWinterborn"; // TODO : Make this pull current
 												// user name
 
 		Object[] userEntities = control.getEventsForUser("jay-z");
@@ -30,7 +31,7 @@ public class Application extends Controller {
 		control.closeConnection();
 
 		return ok(index.render(userEntities, teamEntities, orgEntities,
-				username));
+				USERNAME));
 	}
 
 	public static Result search() {
@@ -62,7 +63,7 @@ public class Application extends Controller {
 			
 			if(testInitiative.get("assignee").equals("jay-z")){
 				
-				return ok(initiative.render(testInitiative));
+				return ok(initiative.render(testInitiative, USERNAME));
 			}
 			else{
 				return ok(accessError.render());
@@ -73,13 +74,13 @@ public class Application extends Controller {
 
 		else if (type.equals("MILESTONE")) {
 			Object testMilestone = control.getMilestoneById(arg);
-			return ok(milestone.render(testMilestone));
+			return ok(milestone.render(testMilestone, USERNAME));
 
 		}
 
 		else {
 			Object testRisk = control.getRiskById(arg);
-			return ok(risk.render(testRisk));
+			return ok(risk.render(testRisk, USERNAME));
 		}
 
 	}

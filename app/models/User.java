@@ -60,9 +60,9 @@ public class User {
     public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){
     	boolean retVal = false;
 
-        if( entityType.equals("initiative") ){
+        if( entityType.toLowerCase().equals("initiative") ){
             retVal = user.initiativeSubscriptions.contains(entityId) ;
-        } else if( entityType.equals("milestone") ){
+        } else if( entityType.toLowerCase().equals("milestone") ){
         	retVal = user.milestoneSubscriptions.contains(entityId) ;
         } else {
         	retVal = user.riskSubscriptions.contains(entityId) ;
@@ -80,9 +80,9 @@ public class User {
 
         // Add subscription
 		if( status == true ){
-	        if( entityType.equals("initiative") ){
+	        if( entityType.toLowerCase().equals("initiative") ){
 	        	user.initiativeSubscriptions.add(entityId) ;
-	        } else if( entityType.equals("milestone") ){
+	        } else if( entityType.toLowerCase().equals("milestone") ){
 	        	user.milestoneSubscriptions.add(entityId) ;
 	        } else {
 	        	user.riskSubscriptions.add(entityId) ;
@@ -90,9 +90,9 @@ public class User {
 		}
         // Remove subscription
 		else {
-	        if( entityType.equals("initiative") ){
+	        if( entityType.toLowerCase().equals("initiative") ){
             	user.initiativeSubscriptions.remove(entityId) ;
-	        } else if( entityType.equals("milestone") ){
+	        } else if( entityType.toLowerCase().equals("milestone") ){
 	        	user.milestoneSubscriptions.remove(entityId) ;
 	        } else {
 	        	user.riskSubscriptions.remove(entityId) ;
