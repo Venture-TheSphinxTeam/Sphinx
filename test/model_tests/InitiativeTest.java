@@ -22,8 +22,6 @@ public class InitiativeTest extends WithApplication {
 	running(fakeApplication(), new Runnable(){
 	  public void run(){
 		Initiative.removeAll();
-		Initiative.removeAll();
-		Initiative.removeAll();
 		i = new Initiative();
     	i.setKey(TEST_STRING);
     	}});

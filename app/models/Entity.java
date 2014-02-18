@@ -172,5 +172,6 @@ public class Entity {
     public void setAllowedAccessUsers(List<String> allowedAccessUsers) {
         this.allowedAccessUsers = allowedAccessUsers;
     }
+    
 }
 

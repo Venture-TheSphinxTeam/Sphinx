@@ -1,5 +1,9 @@
 package models;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
@@ -9,16 +13,21 @@ import uk.co.panaxiom.playjongo.PlayJongo;
  */
 public class ReportEvent extends Event  {
 	
-	private static MongoCollection _events(){
-		return PlayJongo.getCollection("events");
+	
+	public static Iterable<ReportEvent> findREBy(String query){
+		String q = "{"+ReportEvent.TYPE_SELECTOR+","+query+"}";
+		return _events().find(q).as(ReportEvent.class);
+		
 	}
+	
 	
 	public void remove(){
         _events().remove(this.id);
     }
 
-    public void removeAll(){
-        _events().remove();
+	
+    public static void removeAll(){
+        _events().remove("{"+ReportEvent.TYPE_SELECTOR+"}");
     }
 
     public ReportEvent insert(){
@@ -26,12 +35,15 @@ public class ReportEvent extends Event  {
         return this;
     }
 
-    public ReportEvent(){}
+    public ReportEvent(){
+    	eventType = "REPORT";
+    }
 
     protected long reportDate;
     protected String reportedBy;
     protected String reportType;
     protected String reportText;
+    public static final String TYPE_SELECTOR = "eventType: \"REPORT\"";
 
     public long getReportDate() {
         return reportDate;
@@ -63,5 +75,30 @@ public class ReportEvent extends Event  {
 
     public void setReportText(String reportText) {
         this.reportText = reportText;
+    }
+    
+    public static String prettifyReportType(String rType){
+    	if(rType == null){return null;}
+    	
+    	String result = rType.toLowerCase();
+    			
+    	
+    	return result;
+    }
+    
+    @Override
+    public String getEventDetails(){
+    	String result ="";
+    	
+    	result += "A " + prettifyReportType(reportType) + 
+    			" report was submitted by " + reportedBy + " showing that: </br></br>"+reportText;
+    	
+		return result;
+    	
+    }
+    
+    @Override
+    public Date getDate(){
+    	return new Date(reportDate);
     }
 }
