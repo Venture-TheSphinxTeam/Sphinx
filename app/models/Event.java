@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,13 +34,24 @@ public class Event {
     	return _events().find("{" + query+"}").as(Event.class);
     }
     
-    public static Iterable< ? extends Event> findByIDListAndEntityType(List<String> ids, String type){
-    	String s = "\"entity.entityId\": {$in:"+listToMongoString(ids)+"},"
+    public static List< ? extends Event> findByIDListAndEntityType(List<String> ids, String type){
+    	String idString = listToMongoString(ids);
+    	
+    	String s = "\"entity.entityId\": {$in:"+idString+"},"
     			+ "\"entity.entityType\": \""+type+"\"";
     	
+    	ArrayList<Event> result;
+    	Iterable<? extends Event> events = ReportEvent.findREBy(s);
+    	result = Event.eventIterToList(events.iterator());
+    	
+    	events = ChangeEvent.findCEby(s);
+    	result.addAll(eventIterToList(events.iterator()));
+    	
+    	events = TimeSpentEvent.findCEBy(s);
+    	result.addAll(eventIterToList(events.iterator()));
     	
     	
-    	return ReportEvent.findREBy(s);
+    	return result;
     }
 
     public ObjectId getId() {
@@ -66,7 +78,7 @@ public class Event {
         this.entity = entity;
     }
     
-    public static List<Event>getSubscribedEventsForUser(String username){
+    public static Iterator<? extends Event> getSubscribedEventsForUser(String username){
     	List<Event> result = new ArrayList<Event>();
     	
     	User user = User.findByName(username); 
@@ -74,24 +86,21 @@ public class Event {
     	List<String> mileIdList = user.getMilestoneSubscriptions();
     	List<String> riskIdList = user.getRiskSubscriptions();
     	
-    	Iterable<? extends Event> ce = Event.findByIDListAndEntityType(initIdList, "INITIATIVE");
-    	for(Event c: ce){
-    		result.add(c);
-    	}
-    	ce =null;
-    	ce = Event.findByIDListAndEntityType(mileIdList, "MILESTONE");
+    	Iterator<? extends Event> initIter,mileIter,riskIter,resultIter;
+    	List<? extends Event> i,m,r;
     	
-    	for(Event c: ce){
-    		result.add(c);
-    	}
-    	ce=null;
-    	ce = Event.findByIDListAndEntityType(riskIdList, "RISK");
+    	i = Event.findByIDListAndEntityType(initIdList, Initiative.TYPE_STRING);
+
+    	m = Event.findByIDListAndEntityType(mileIdList, "MILESTONE");
     	
-    	for(Event c: ce){
-    		result.add(c);
-    	}
+
+    	r = Event.findByIDListAndEntityType(riskIdList, "RISK");
+
+    	result.addAll(i);
+    	result.addAll(m);
+    	result.addAll(r);
     	
-    	return result;
+    	return result.iterator();
     }
     
     public static String listToMongoString(List<String> list){
@@ -128,4 +137,64 @@ public class Event {
     	
     	return new Date(date);
     }
+    
+    public static ArrayList<Event> eventIterToList(Iterator<? extends Event> iter){
+    	ArrayList<Event> result = new ArrayList<Event>();
+    	
+    	while(iter.hasNext()){
+    		result.add(iter.next());
+    	}
+    	
+    	return result;
+    }
+    
+    public static Iterator<? extends Event> mergeIterators(Iterator<? extends Event> i1, Iterator<? extends Event>i2){
+		
+    	ArrayList<Event> result = new ArrayList<Event>();
+    	
+    	Event e1 = null;
+    	Event e2 =null;
+    	while(i1.hasNext() || i2.hasNext()){
+    		if(i1.hasNext() && e1 == null){
+    			e1 = i1.next();
+    		}
+    		if(i2.hasNext() && e2 == null){
+    			e2 = i2.next();
+    		}
+    		if(e1 != null && e2 != null){
+    			if(e1.getDateAsLong() > e2.getDateAsLong() ){
+    				result.add(e1);
+    				e1 =null;
+    			}
+    			else{
+    				result.add(e2);
+    				e2 =null;
+    			}
+    		}
+    		else if(e1 != null){
+    			result.add(e1);
+    			e1 = null;
+    		}
+    		else{
+    			result.add(e2);
+    			e2 = null;
+    		}
+    		
+    		
+    	}
+    	
+    	
+    	return result.iterator();
+    	
+    }
+
+	public long getDateAsLong() {
+		
+		if(entity == null){
+			return 0;
+		}
+		else{
+			return entity.getUpdated();
+		}
+	}
 }

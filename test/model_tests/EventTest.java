@@ -5,6 +5,7 @@ import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.running;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import models.ChangeEvent;
@@ -31,11 +32,12 @@ public class EventTest extends WithApplication{
 		   public void run(){
 			   Initiative.removeAll();
 			   ChangeEvent.removeAll();
+			   ReportEvent.removeAll();
 			   User.removeAll();
 			   
 				Initiative i = new Initiative();
 				i.setAllowedAccessUsers(new ArrayList<String>());
-				i.setEntityType("INITIATIVE");
+				i.setEntityType(Initiative.TYPE_STRING);
 				i.setEntityId(_init_id);
 				i.upsert();
 				
@@ -44,13 +46,6 @@ public class EventTest extends WithApplication{
 				e.setEntity(i);
 				e.insert();
 				
-				ReportEvent re = new ReportEvent();
-				re.setEventType("REPORT");
-				re.setEntity(i);
-				re.setReportedBy("RickyWinterboard");
-				re.setReportText("<p>I'm cooler than crystal</p>");
-				re.setReportType("WEEKLY_REPORT");
-				re.insert();
 				
 				ArrayList<String> id = new ArrayList<String>();
 				id.add(i.getEntityId());
@@ -72,12 +67,13 @@ public class EventTest extends WithApplication{
 		running(fakeApplication(), new Runnable(){
 			public void run(){
 		
-				List<Event> events = Event.getSubscribedEventsForUser(user.getUsername());
+				Iterator<? extends Event> events = Event.getSubscribedEventsForUser(user.getUsername());
 				
 				assertNotNull(events);
-				assertTrue(events.size()>0);
 				
-				Event event = events.get(0);
+				assertTrue(events.hasNext());
+				
+				Event event = events.next();
 				
 				assertEquals(event.getEventType(), "CREATE");
 				
@@ -85,12 +81,17 @@ public class EventTest extends WithApplication{
 				
 				assertNotNull(entity);
 				
-				assertEquals(entity.getEntityType(), "INITIATIVE");
+				assertEquals(entity.getEntityType(), Initiative.TYPE_STRING);
 				assertEquals(entity.getEntityId(), _init_id);
+				
+				assertFalse(events.hasNext());
 				
 				
 				
 			}});
 	}
+	
+	
+	
 
 }

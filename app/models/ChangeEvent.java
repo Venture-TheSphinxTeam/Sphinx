@@ -18,6 +18,13 @@ public class ChangeEvent extends Event{
 	
 	public static final String TYPE_SELECTOR = "eventType: {$in: [\"CREATE\", \"UPDATE\",\"DELETE\"]}";
 	
+	
+	public static Iterable<ChangeEvent> findCEBy(String query){
+		String q = "{"+ChangeEvent.TYPE_SELECTOR+","+query+"}";
+		return _events().find(q).as(ChangeEvent.class);
+		
+	}
+	
 	public void remove(){
         _events().remove(this.id);
     }

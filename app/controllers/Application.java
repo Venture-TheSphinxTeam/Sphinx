@@ -4,6 +4,7 @@ import helpers.MongoControlCenter;
 
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import com.mongodb.BasicDBObject;
@@ -25,7 +26,7 @@ public class Application extends Controller {
 		Object[] userEntities = control.getEventsForUser("jay-z");
 		Object[] teamEntities = control.getTeamEventsForUser("RickyWinterborn");
 		Object[] orgEntities = control.getOrgEventsForUser("jay-z");
-		List<models.Event> subscribedEvents = models.Event.getSubscribedEventsForUser("jay-z");
+		Iterator<? extends models.Event> subscribedEvents = models.Event.getSubscribedEventsForUser("jay-z");
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();

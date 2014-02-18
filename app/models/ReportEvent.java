@@ -15,9 +15,8 @@ public class ReportEvent extends Event  {
 	
 	
 	public static Iterable<ReportEvent> findREBy(String query){
-		
-		return _events().find("{"+ReportEvent.TYPE_SELECTOR+","+query+"}")
-				.as(ReportEvent.class);
+		String q = "{"+ReportEvent.TYPE_SELECTOR+","+query+"}";
+		return _events().find(q).as(ReportEvent.class);
 		
 	}
 	
@@ -26,8 +25,9 @@ public class ReportEvent extends Event  {
         _events().remove(this.id);
     }
 
-    public void removeAll(){
-        _events().remove();
+	
+    public static void removeAll(){
+        _events().remove("{"+ReportEvent.TYPE_SELECTOR+"}");
     }
 
     public ReportEvent insert(){
@@ -35,13 +35,15 @@ public class ReportEvent extends Event  {
         return this;
     }
 
-    public ReportEvent(){}
+    public ReportEvent(){
+    	eventType = "REPORT";
+    }
 
     protected long reportDate;
     protected String reportedBy;
     protected String reportType;
     protected String reportText;
-    public static final String TYPE_SELECTOR = "eventType: \"REPORT\"}";
+    public static final String TYPE_SELECTOR = "eventType: \"REPORT\"";
 
     public long getReportDate() {
         return reportDate;

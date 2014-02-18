@@ -13,12 +13,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class TimeSpentEvent extends Event{
 	
 	
+	private static final String TYPE_SELECTOR = "eventType: \"TIMESPENT\"";
+
+	public static Iterable<TimeSpentEvent> findCEBy(String query){
+		String q = "{"+TimeSpentEvent.TYPE_SELECTOR+","+query+"}";
+		return _events().find(q).as(TimeSpentEvent.class);
+		
+	}
+	
+	
 	public void remove(){
         _events().remove(this.id);
     }
 
     public void removeAll(){
-        _events().remove();
+        _events().remove("{"+TYPE_SELECTOR+"}");
     }
 
     public TimeSpentEvent insert(){
