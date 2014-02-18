@@ -1,6 +1,9 @@
 package controllers;
 
+import java.net.ConnectException;
 import java.util.List;
+
+import javax.ws.rs.ProcessingException;
 
 import models.*;
 import play.data.Form;
@@ -12,42 +15,58 @@ public class AdminController extends Controller{
 	public static Form<GetEntitiesForm> entitForm = Form.form(GetEntitiesForm.class);
 	
 	public static Result forceGetEntities(){
+		String message = "";
 		Form<GetEntitiesForm> ff = entitForm.bindFromRequest();
 		Ingester ingester = new Ingester();
-		EntityCollection ec = ingester.getEntitiesSince(ff.get().date);
-		List<Initiative> li = ec.getInitiatives();
-		for(Initiative i : li){
-			i.upsert();
+		EntityCollection ec = null;
+		try {
+			ec = ingester.getEntitiesSince(ff.get().date);
+		} catch (ProcessingException e) {
+			message += "\n"+e.getMessage();
 		}
+		if(ec != null){
+			List<Initiative> li = ec.getInitiatives();
+			for(Initiative i : li){
+				i.upsert();
+			}
 		
-		List<Milestone> lm = ec.getMilestones();
+			List<Milestone> lm = ec.getMilestones();
 		
-		for(Milestone m : lm){
-			m.upsert();
+			for(Milestone m : lm){
+				m.upsert();
+			}
+		
+			List<Risk> lr = ec.getRisks();
+		
+			for(Risk r : lr){
+				r.upsert();
+			}
+			message += "\nEntities pulled";
 		}
-		
-		List<Risk> lr = ec.getRisks();
-		
-		for(Risk r : lr){
-			r.upsert();
-		}
-
-        EventCollection events = ingester.getEventsSince(ff.get().date);
-        List<ChangeEvent> ce = events.getChangeEvents();
-        for(ChangeEvent c : ce){
-        	c.insert();
+        EventCollection events =null;
+        try{
+        	events =ingester.getEventsSince(ff.get().date);
+        }catch(ProcessingException e){
+        	message += "\n"+e.getMessage();
         }
-        
-        List<ReportEvent> re = events.getReportEvents();
-        for(ReportEvent rep: re){
-        	rep.insert();
+        if(events != null){
+	        List<ChangeEvent> ce = events.getChangeEvents();
+	        for(ChangeEvent c : ce){
+	        	c.insert();
+	        }
+	        
+	        List<ReportEvent> re = events.getReportEvents();
+	        for(ReportEvent rep: re){
+	        	rep.insert();
+	        }
+	        
+	        List<TimeSpentEvent> tse = events.getTimeSpentEvents();
+	        for(TimeSpentEvent ts : tse){
+	        	ts.insert();
+	        }
+	        message+= "\nEvents pulled";
         }
-        
-        List<TimeSpentEvent> tse = events.getTimeSpentEvents();
-        for(TimeSpentEvent ts : tse){
-        	ts.insert();
-        }
-		return ok(adminTools.render("Migration Started", entitForm));
+		return ok(adminTools.render(message, entitForm));
 	}
 
 }
