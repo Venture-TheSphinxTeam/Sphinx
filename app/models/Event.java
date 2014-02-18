@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,9 +33,13 @@ public class Event {
     	return _events().find("{" + query+"}").as(Event.class);
     }
     
-    public static Iterable<Event> findByIDListAndEntityType(List<String> ids, String type){
-    	return findBy("\"entity.entityId\": {$in:"+listToMongoString(ids)+"},"
-    			+ "\"entity.entityType\": \""+type+"\"");
+    public static Iterable< ? extends Event> findByIDListAndEntityType(List<String> ids, String type){
+    	String s = "\"entity.entityId\": {$in:"+listToMongoString(ids)+"},"
+    			+ "\"entity.entityType\": \""+type+"\"";
+    	
+    	
+    	
+    	return ReportEvent.findREBy(s);
     }
 
     public ObjectId getId() {
@@ -69,15 +74,17 @@ public class Event {
     	List<String> mileIdList = user.getMilestoneSubscriptions();
     	List<String> riskIdList = user.getRiskSubscriptions();
     	
-    	Iterable<Event> ce = Event.findByIDListAndEntityType(initIdList, "INITIATIVE");
+    	Iterable<? extends Event> ce = Event.findByIDListAndEntityType(initIdList, "INITIATIVE");
     	for(Event c: ce){
     		result.add(c);
     	}
+    	ce =null;
     	ce = Event.findByIDListAndEntityType(mileIdList, "MILESTONE");
     	
     	for(Event c: ce){
     		result.add(c);
     	}
+    	ce=null;
     	ce = Event.findByIDListAndEntityType(riskIdList, "RISK");
     	
     	for(Event c: ce){
@@ -89,7 +96,7 @@ public class Event {
     
     public static String listToMongoString(List<String> list){
     	String result="[";
-    	if(list == null){
+    	if(list == null || list.size() == 0){
     		return result +"]";
     	}
     	
@@ -99,5 +106,26 @@ public class Event {
     	result = result.substring(0, result.lastIndexOf(','))+ "]";
     	
     	return result;
+    }
+    
+    public String getEventDetails(){
+    	String result ="";
+    	
+    	result ="An event of type " +eventType + "has been performed on" + entity.getSummary();
+    	
+    	return result;
+    }
+    
+    public Date getDate(){
+    	long date=0;
+    
+    	if(entity.getUpdated() > 0){
+    		date = entity.getUpdated();
+    	}
+    	else{
+    		date = entity.getCreated();
+    	}
+    	
+    	return new Date(date);
     }
 }

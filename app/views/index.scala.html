@@ -207,9 +207,9 @@
                            </div>
                            <div>
                               <h3>@entity.getSummary()</h3>
-                              <h4>User has performed a event!</h4>
+                              <h4>@Html(event.getEventDetails())</h4>
                               <p>@entity.getKey()
-                                 <br/> 
+                                 <br/>@event.getDate()
                               </p>
                               <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn more &raquo;</a>
                            </div>

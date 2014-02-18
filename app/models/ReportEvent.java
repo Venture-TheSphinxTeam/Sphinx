@@ -1,5 +1,9 @@
 package models;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
@@ -8,6 +12,14 @@ import uk.co.panaxiom.playjongo.PlayJongo;
  * Created by Striker on 2/4/14.
  */
 public class ReportEvent extends Event  {
+	
+	
+	public static Iterable<ReportEvent> findREBy(String query){
+		
+		return _events().find("{"+ReportEvent.TYPE_SELECTOR+","+query+"}")
+				.as(ReportEvent.class);
+		
+	}
 	
 	
 	public void remove(){
@@ -29,6 +41,7 @@ public class ReportEvent extends Event  {
     protected String reportedBy;
     protected String reportType;
     protected String reportText;
+    public static final String TYPE_SELECTOR = "eventType: \"REPORT\"}";
 
     public long getReportDate() {
         return reportDate;
@@ -60,5 +73,30 @@ public class ReportEvent extends Event  {
 
     public void setReportText(String reportText) {
         this.reportText = reportText;
+    }
+    
+    public static String prettifyReportType(String rType){
+    	if(rType == null){return null;}
+    	
+    	String result = rType.toLowerCase();
+    			
+    	
+    	return result;
+    }
+    
+    @Override
+    public String getEventDetails(){
+    	String result ="";
+    	
+    	result += "A " + prettifyReportType(reportType) + 
+    			" report was submitted by " + reportedBy + " showing that: </br></br>"+reportText;
+    	
+		return result;
+    	
+    }
+    
+    @Override
+    public Date getDate(){
+    	return new Date(reportDate);
     }
 }

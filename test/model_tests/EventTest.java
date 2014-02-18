@@ -10,6 +10,7 @@ import java.util.List;
 import models.ChangeEvent;
 import models.Entity;
 import models.Initiative;
+import models.ReportEvent;
 import models.User;
 import models.Event;
 
@@ -43,6 +44,14 @@ public class EventTest extends WithApplication{
 				e.setEntity(i);
 				e.insert();
 				
+				ReportEvent re = new ReportEvent();
+				re.setEventType("REPORT");
+				re.setEntity(i);
+				re.setReportedBy("RickyWinterboard");
+				re.setReportText("<p>I'm cooler than crystal</p>");
+				re.setReportType("WEEKLY_REPORT");
+				re.insert();
+				
 				ArrayList<String> id = new ArrayList<String>();
 				id.add(i.getEntityId());
 				
@@ -50,7 +59,7 @@ public class EventTest extends WithApplication{
 				u.setInitiativeSubscriptions(id);
 				u.setUsername("jay-z");
 				user = u.insert();
-		
+
 			   }});
 		
 		
@@ -78,6 +87,9 @@ public class EventTest extends WithApplication{
 				
 				assertEquals(entity.getEntityType(), "INITIATIVE");
 				assertEquals(entity.getEntityId(), _init_id);
+				
+				
+				
 			}});
 	}
 
