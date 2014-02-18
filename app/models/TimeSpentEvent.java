@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
@@ -15,7 +17,7 @@ public class TimeSpentEvent extends Event{
 	
 	private static final String TYPE_SELECTOR = "eventType: \"TIMESPENT\"";
 
-	public static Iterable<TimeSpentEvent> findCEBy(String query){
+	public static Iterable<TimeSpentEvent> findTSEBy(String query){
 		String q = "{"+TimeSpentEvent.TYPE_SELECTOR+","+query+"}";
 		return _events().find(q).as(TimeSpentEvent.class);
 		
@@ -54,6 +56,23 @@ public class TimeSpentEvent extends Event{
 
     public void setPeriodEndDate(long periodEndDate) {
         this.periodEndDate = periodEndDate;
+    }
+    
+    
+    @Override
+    public String getEventDetails(){
+    	String result ="";
+    	
+    	result += "Work was performed from " + new Date(periodStartDate) +
+    			" to " + new Date(periodEndDate);
+    	
+    	
+		return result;
+    }
+    
+    @Override
+    public Date getDate(){
+    	return new Date(periodEndDate);
     }
 
 

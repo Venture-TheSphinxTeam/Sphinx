@@ -8,6 +8,7 @@ import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +65,33 @@ public class ChangeEvent extends Event{
 
     public void setChangedBy(String changedBy) {
         this.changedBy = changedBy;
+    }
+    
+    @Override
+    public String getEventDetails(){
+    	String result ="";
+    	
+    	result += changedBy;
+    	
+    	if(eventType.equals("CREATE")){
+    		result += " created ";
+    	}
+    	else if(eventType.equals("UPDATE")){
+    		result += " updated ";
+    	}
+    	else{
+    		result += " deleted ";
+    	}
+    	
+    	result += entity.getEntityType().toLowerCase();
+    	result += entity.getSummary();
+    	
+		return result;
+    }
+    
+    @Override
+    public Date getDate(){
+    	return new Date(eventDate);
     }
     
 }

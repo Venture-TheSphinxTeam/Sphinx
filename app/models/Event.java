@@ -47,7 +47,7 @@ public class Event {
     	events = ChangeEvent.findCEby(s);
     	result.addAll(eventIterToList(events.iterator()));
     	
-    	events = TimeSpentEvent.findCEBy(s);
+    	events = TimeSpentEvent.findTSEBy(s);
     	result.addAll(eventIterToList(events.iterator()));
     	
     	
