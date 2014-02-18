@@ -116,7 +116,8 @@ public class Application extends Controller {
 		if (type.equals("INITIATIVE")) {
 			BasicDBObject testInitiative = (BasicDBObject) control.getInitiativeById(arg);
 			
-			if(testInitiative.get("assignee").equals("jay-z")){
+			
+			if(((com.mongodb.BasicDBList)(testInitiative.get("allowedAccessUsers"))).contains("jay-z")){
 			
 				return ok(initiative.render(testInitiative, USERNAME));
 			}
