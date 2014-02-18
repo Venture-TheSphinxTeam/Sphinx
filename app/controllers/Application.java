@@ -20,7 +20,7 @@ public class Application extends Controller {
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {
-			final int MINUTES_TO_MILLISECONDS = 60*1000;
+			final int MINUTES_TO_MILLISECONDS = 60 * 1000;
 			Integer userRate;
 			Integer update;
 
@@ -37,13 +37,13 @@ public class Application extends Controller {
 								"venture.se.rit.edu", 27017);
 						control.setDatabase("dev");
 
-						//find current user
+						// find current user
 						userRate = control
 								.getUserRefreshRate("RickyWinterborn");
 
 						control.closeConnection();
 
-						//set min value if something goes wrong
+						// set min value if something goes wrong
 						if (userRate == null || userRate < 5) {
 							update = 5;
 						} else {
@@ -60,8 +60,6 @@ public class Application extends Controller {
 				in.onClose(new Callback0() {
 					public void invoke() {
 
-						System.out.println("Disconnected");
-
 					}
 				});
 
@@ -76,8 +74,8 @@ public class Application extends Controller {
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 
-		//String username = "RickyWinterborn"; // TODO : Make this pull current
-												// user name
+		// String username = "RickyWinterborn"; // TODO : Make this pull current
+		// user name
 
 		Object[] userEntities = control.getEventsForUser("jay-z");
 		Object[] teamEntities = control.getTeamEventsForUser("RickyWinterborn");
@@ -114,28 +112,54 @@ public class Application extends Controller {
 		control.setDatabase("dev");
 
 		if (type.equals("INITIATIVE")) {
-			BasicDBObject testInitiative = (BasicDBObject) control.getInitiativeById(arg);
-			
-			
-			if(((com.mongodb.BasicDBList)(testInitiative.get("allowedAccessUsers"))).contains("jay-z")){
-			
-				return ok(initiative.render(testInitiative, USERNAME));
-			}
-			else{
+			BasicDBObject entity_Initiative = (BasicDBObject) control
+					.getInitiativeById(arg);
+
+			if (((com.mongodb.BasicDBList) (entity_Initiative
+					.get("allowedAccessUsers"))).contains("jay-z")
+					|| ((com.mongodb.BasicDBList) (entity_Initiative
+							.get("allowedAccessUsers"))).isEmpty()) {
+
+				return ok(initiative.render(entity_Initiative, USERNAME));
+			} else {
 				return ok(accessError.render());
 			}
 
 		}
 
 		else if (type.equals("MILESTONE")) {
-			Object testMilestone = control.getMilestoneById(arg);
-			return ok(milestone.render(testMilestone, USERNAME));
+			BasicDBObject entity_Milestone = (BasicDBObject) control
+					.getMilestoneById(arg);
 
+			if (((com.mongodb.BasicDBList) (entity_Milestone
+					.get("allowedAccessUsers"))).contains("jay-z")
+					|| ((com.mongodb.BasicDBList) (entity_Milestone
+							.get("allowedAccessUsers"))).isEmpty()) {
+
+				return ok(milestone.render(entity_Milestone, USERNAME));
+			}
+
+			else {
+				return ok(accessError.render());
+			}
 		}
 
 		else {
-			Object testRisk = control.getRiskById(arg);
-			return ok(risk.render(testRisk, USERNAME));
+			BasicDBObject entity_Risk = (BasicDBObject) control
+					.getRiskById(arg);
+
+			if (((com.mongodb.BasicDBList) (entity_Risk
+					.get("allowedAccessUsers"))).contains("jay-z")
+					|| ((com.mongodb.BasicDBList) (entity_Risk
+							.get("allowedAccessUsers"))).isEmpty()) {
+
+				return ok(risk.render(entity_Risk, USERNAME));
+			}
+
+			else {
+				return ok(accessError.render());
+
+			}
 		}
 
 	}
