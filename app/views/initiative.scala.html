@@ -1,75 +1,112 @@
-@(initiative: Object)
+@(initiative: Object)(username: String)
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
-    @defining(initiative.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
-    <p>
-    <h1>Key: @init.get("key") - Summary: @init.get("summary")</h1>
-    <h2>Description: @init.get("description")</h2>
-    
-    <h3>Entity ID: @init.get("entityId")
-    <br/>
-    Entity Type: @init.get("entityType")
-    </h3>
-    <br/>
-    
-    <h4>
-    Assignee: @init.get("assignee")
-    <br/>
-    Reporter: @init.get("reporter")
-    <br/>
-    Watchers: @init.get("watchers")   
-    </h4>
-    
-    
-    <h4>
-    Business Goals: @init.get("businessGoals")
-    <br/>
-    Business Groups: @init.get("businessGroups")
-    <br/>
-    Business Owner: @init.get("businessOwner")
-    <br/>
-    Business Unit: @init.get("businessUnit")
-    <br/>
-    </h4>
-    
-    
-    <h4>
-    Priority: @init.get("priority")
-    <br/>
-    Status: @init.get("status")
-    <br/>
-    Complexity: @init.get("complexity")
-    <br/>
-    Health: @init.get("health")
-    </h4>
-    
-    
-    <h4>
-    Created: @{new Date(init.getLong("created"))}
-    <br/>
-    Start Date: @{new Date(init.getLong("startDate"))}
-    <br/>
-    Desired Due Date: @{new Date(init.getLong("desiredDueDate"))}
-    <br/>
-    Desired Start Date: @{new Date(init.getLong("desiredStartDate"))}
-    <br/>
-    Due Date: @{new Date(init.getLong("dueDate"))}
-    <br/>
-    Updated: @{new Date(init.getLong("updated"))}
-    </h4>
-    
-    <h4>
-    Labels: @init.get("labels")
-    <br/>
-    Project Type: @init.get("projectType")
-    <br/>
-    Provider Groups: @init.get("providerGroups")
-    <br/>
-    Verification Steps: @init.get("verificationSteps")
-    </h4>
-    
-    }
- </div>
+        @defining(initiative.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
+            <div class="entityStateButtons" align="right">
+                <button 
+                   title="Subscribe/Unsubscribe"    
+                   id="subscribe"                    
+                   type="button" 
+                   class="btn btn-primary" 
+                   data-toggle="button" 
+                   onclick="updateEntitySubscriptionStatus( '@init.get("entityType")', '@init.get("entityId")', '@username' )">
+
+                   <span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+
+                </button>
+
+                <!-- VOTE BUTTON -->
+                <button 
+                   title="Vote/Unvote"
+                   id="vote" 
+                   type="button" 
+                   class="btn btn-primary" 
+                   data-toggle="button">
+
+                   <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+
+                </button>
+
+                <!-- WATCH BUTTON -->
+                <button 
+                   title="Watch/Unwatch"
+                   id="watch" 
+                   type="button" 
+                   class="btn btn-primary" 
+                   data-toggle="button">
+
+                   <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+
+                </button>
+            </div>
+            <div>
+                <h1>Key: @init.get("key") - Summary: @init.get("summary")</h1>
+                <h2>Description: @init.get("description")</h2>
+                
+                <h3>Entity ID: @init.get("entityId")
+                <br/>
+                Entity Type: @init.get("entityType")
+                </h3>
+                <br/>
+                
+                <h4>
+                Assignee: @init.get("assignee")
+                <br/>
+                Reporter: @init.get("reporter")
+                <br/>
+                Watchers: @init.get("watchers")   
+                </h4>
+                
+                
+                <h4>
+                Business Goals: @init.get("businessGoals")
+                <br/>
+                Business Groups: @init.get("businessGroups")
+                <br/>
+                Business Owner: @init.get("businessOwner")
+                <br/>
+                Business Unit: @init.get("businessUnit")
+                <br/>
+                </h4>
+                
+                
+                <h4>
+                Priority: @init.get("priority")
+                <br/>
+                Status: @init.get("status")
+                <br/>
+                Complexity: @init.get("complexity")
+                <br/>
+                Health: @init.get("health")
+                </h4>
+                
+                
+                <h4>
+                Created: @{new Date(init.getLong("created"))}
+                <br/>
+                Start Date: @{new Date(init.getLong("startDate"))}
+                <br/>
+                Desired Due Date: @{new Date(init.getLong("desiredDueDate"))}
+                <br/>
+                Desired Start Date: @{new Date(init.getLong("desiredStartDate"))}
+                <br/>
+                Due Date: @{new Date(init.getLong("dueDate"))}
+                <br/>
+                Updated: @{new Date(init.getLong("updated"))}
+                </h4>
+                
+                <h4>
+                Labels: @init.get("labels")
+                <br/>
+                Project Type: @init.get("projectType")
+                <br/>
+                Provider Groups: @init.get("providerGroups")
+                <br/>
+                Verification Steps: @init.get("verificationSteps")
+                </h4>
+            </div>
+        }
+     </div>
 	
 	
 	
