@@ -40,14 +40,23 @@
                 </button>
             </div>
             <div>
-                <h1>Key: @init.get("key") - Summary: @init.get("summary")</h1>
+                <h1>Key: @init.get("key")
+                <br/>
+                Summary: @init.get("summary")</h1>
                 <h2>Description: @init.get("description")</h2>
                 
-                <h3>Entity ID: @init.get("entityId")
-                <br/>
+                
+                <h3>
                 Entity Type: @init.get("entityType")
-                </h3>
                 <br/>
+                
+                Project Type: @init.get("projectType")
+                
+                <br/>
+               
+                Labels: @init.get("labels")
+                </h3>
+                
                 
                 <h4>
                 Assignee: @init.get("assignee")
@@ -55,12 +64,13 @@
                 Reporter: @init.get("reporter")
                 <br/>
                 Watchers: @init.get("watchers")   
+                <br/>
+                Provider Groups: @init.get("providerGroups")
+                <br/>
                 </h4>
                 
                 
                 <h4>
-                Business Goals: @init.get("businessGoals")
-                <br/>
                 Business Groups: @init.get("businessGroups")
                 <br/>
                 Business Owner: @init.get("businessOwner")
@@ -96,11 +106,7 @@
                 </h4>
                 
                 <h4>
-                Labels: @init.get("labels")
-                <br/>
-                Project Type: @init.get("projectType")
-                <br/>
-                Provider Groups: @init.get("providerGroups")
+                Business Goals: @init.get("businessGoals")
                 <br/>
                 Verification Steps: @init.get("verificationSteps")
                 </h4>
