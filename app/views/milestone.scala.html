@@ -40,12 +40,17 @@
                 </button>
             </div>
             <div>
-                <h1>Key: @mile.get("key") - Summary: @mile.get("summary")</h1>
+                <h1>Key: @mile.get("key")
+                <br/>
+                Summary: @mile.get("summary")</h1>
+                
                 <h2>Description: @mile.get("description")</h2>
                 
-                <h3>Entity ID: @mile.get("entityId")
-                <br/>
+                <h3>
                 Entity Type: @mile.get("entityType")
+                <br>
+                Labels: @mile.get("labels")
+                <br/>
                 </h3>
                 <br/>
                 
@@ -82,11 +87,15 @@
                 </h4>
                 
                 <h4>
-                Labels: @mile.get("labels")
-                <br/>
+                
                 Verification Steps: @mile.get("verificationSteps")
-                <br/>
-                Work Breakdown Parent: @mile.get("workBreakdownParent")
+                </h4>
+                
+                <h4>
+                @defining(mile.get("workBreakdownParent").asInstanceOf[com.mongodb.BasicDBObject]){ WBP=>
+                <a href="./entity?arg=@WBP.get("entityId")&entityType=@WBP.get("entityType")">Work Breakdown Parent</a>
+                
+                }
                 </h4>
             </div>
         }
