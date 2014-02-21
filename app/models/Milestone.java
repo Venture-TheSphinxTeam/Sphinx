@@ -1,8 +1,11 @@
 package models;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.*;
+
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
+
 import uk.co.panaxiom.playjongo.PlayJongo;
 
 
@@ -15,6 +18,11 @@ public class Milestone extends Entity{
 
     private static MongoCollection milestones(){
         return PlayJongo.getCollection("milestones");
+    }
+    
+    public static Iterable<Milestone> findBy(String query){
+    	return milestones().find("{entityType: \""+Milestone.TYPE_STRING+ 
+				"\","+query+"}").as(Milestone.class);
     }
 
     public void remove(){
@@ -49,6 +57,7 @@ public class Milestone extends Entity{
     private long desiredStartDate;
     private long startDate;
     private long desiredDueDate;
+    public static final String TYPE_STRING = "MILESTONE";
 
 
     public String getHealth() {
