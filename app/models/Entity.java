@@ -16,7 +16,9 @@ import uk.co.panaxiom.playjongo.PlayJongo;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Entity {
 
-    public Entity(){}
+    public Entity(){
+        allowedAccessUsers = new ArrayList<String>();
+    }
 
     protected String entityId;
     protected String entityType;//TODO: Change from String to Enum
