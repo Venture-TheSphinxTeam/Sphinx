@@ -3,10 +3,12 @@ package controllers;
 import helpers.MongoControlCenter;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import models.Event;
 import akka.actor.FSM.Timer;
 
 import com.mongodb.BasicDBObject;
@@ -79,15 +81,16 @@ public class Application extends Controller {
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
 		// user name
 
-		Object[] userEntities = control.getEventsForUser("jay-z");
-		Object[] teamEntities = control.getTeamEventsForUser("RickyWinterborn");
-		Object[] orgEntities = control.getOrgEventsForUser("jay-z");
+		//Object[] userEntities = control.getEventsForUser("jay-z");
+		ArrayList<Event> userEvents= control.getSingleEventsForUser("jay-z");
+		ArrayList<Event> teamEntities = control.getTeamEventsForUser("jay-z");
+		ArrayList<Event> orgEntities = control.getOrganizationEventsForUser("jay-z");
 		Iterator<? extends models.Event> subscribedEvents = models.Event.getSubscribedEventsForUser("jay-z");
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();
 
-		return ok(index.render(userEntities, teamEntities, orgEntities,
+		return ok(index.render(userEvents, teamEntities, orgEntities,
 				USERNAME, subscribedEvents));
 	}
 

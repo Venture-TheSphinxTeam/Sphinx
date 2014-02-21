@@ -2,6 +2,15 @@ package helpers;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import models.Entity;
+import models.Event;
+import models.Initiative;
+import models.Milestone;
+import models.Risk;
+import models.User;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -126,6 +135,82 @@ public class MongoControlCenter {
 
 		return temp;
 	}
+	
+	
+	public ArrayList<Event> getSingleEventsForUser(String user){
+		ArrayList<Event> result;
+		
+		String userQuery = "$or: [{assignee: \"" + user +
+				"\"}, {watchers: \"" + user + "\"},{reporter: \"" + user 
+				+ "\"},{ businessOwner: \"" + user +"\"}]";
+		
+		result = getEventsForQueriedEntities(userQuery);
+		
+		
+		return result;
+	}
+	
+	public ArrayList<Event> getOrganizationEventsForUser(String username){
+		ArrayList<Event> result;
+		
+		String query = "$or:[{allowedAccessUsers:\""+username+"\"},{allowedAccessUsers:{$size: 0}}]";
+		result = getEventsForQueriedEntities(query);
+		
+		return result;
+	}
+	
+	public ArrayList<Event> getEventsForQueriedEntities(String query){
+		ArrayList<Event> result = new ArrayList<Event>();
+		
+		Iterator<? extends Entity> entit = Initiative.findBy(query).iterator();
+		ArrayList<String> ids = entityIteratorToIdList(entit);
+		result.addAll( Event.findByIDListAndEntityType(ids, Initiative.TYPE_STRING));
+		
+		entit = Milestone.findBy(query).iterator();
+		ids = entityIteratorToIdList(entit);
+		result.addAll(Event.findByIDListAndEntityType(ids, Milestone.TYPE_STRING));
+		
+		entit = Risk.findBy(query).iterator();
+		ids = entityIteratorToIdList(entit);
+		result.addAll(Event.findByIDListAndEntityType(ids, Risk.TYPE_STRING));
+		
+		return result;
+	}
+	
+	private ArrayList<String> entityIteratorToIdList(Iterator<? extends Entity> it){
+		ArrayList<String> result = new ArrayList<String>();
+		
+		while(it.hasNext()){
+			result.add(it.next().getEntityId());
+		}
+		
+		return result;
+	}
+	
+	
+	public ArrayList<Event> getTeamEventsForUser(String username){
+		ArrayList<Event> result;
+		
+		User user = User.findByName(username);
+		
+		if(user == null){
+			return new ArrayList<Event>();
+		}
+		
+		List<String> groupList = user.getGroups();
+		if(groupList == null){
+			return new ArrayList<Event>();
+		}
+		String groups = Event.listToMongoString(groupList);
+		
+		String query = "$or: [{businessGroups: {$in: " + groups +
+			"}}, {providerGroups: {$in: " + groups + "}}]";
+		
+		result = getEventsForQueriedEntities(query);
+		
+		return result;
+		
+	}
 
 	/**
 	 * Gets events that the user is part of aka ones that they reported, are
@@ -144,6 +229,11 @@ public class MongoControlCenter {
 				// does this work because watchers is a list?
 				.or(new BasicDBObject("reporter", user))
 				.or(new BasicDBObject("businessOwner", user)).get();
+		
+		
+		
+		
+				
 
 		/* ------------- Get Results --------------- */
 
@@ -192,7 +282,7 @@ public class MongoControlCenter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object[] getTeamEventsForUser(String user) {
+	public Object[] getTeamEventsForAUser(String user) {
 		ArrayList<DBObject> results = new ArrayList<DBObject>();
 
 		DBObject query = new BasicDBObject("username", user);
