@@ -1,5 +1,3 @@
-
-
 package controllers;
 
 import helpers.MongoControlCenter;
@@ -11,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import models.Event;
+import models.Initiative;
 import akka.actor.FSM.Timer;
 
 import com.mongodb.BasicDBObject;
@@ -83,17 +82,19 @@ public class Application extends Controller {
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
 		// user name
 
-		//Object[] userEntities = control.getEventsForUser("jay-z");
-		ArrayList<Event> userEvents= control.getSingleEventsForUser("jay-z");
+		// Object[] userEntities = control.getEventsForUser("jay-z");
+		ArrayList<Event> userEvents = control.getSingleEventsForUser("jay-z");
 		ArrayList<Event> teamEntities = control.getTeamEventsForUser("jay-z");
-		ArrayList<Event> orgEntities = control.getOrganizationEventsForUser("jay-z");
-		Iterator<? extends models.Event> subscribedEvents = models.Event.getSubscribedEventsForUser("jay-z");
+		ArrayList<Event> orgEntities = control
+				.getOrganizationEventsForUser("jay-z");
+		Iterator<? extends models.Event> subscribedEvents = models.Event
+				.getSubscribedEventsForUser("jay-z");
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();
 
-		return ok(index.render(userEvents, teamEntities, orgEntities,
-				USERNAME, subscribedEvents));
+		return ok(index.render(userEvents, teamEntities, orgEntities, USERNAME,
+				subscribedEvents));
 	}
 
 	public static Result search() {
@@ -120,14 +121,11 @@ public class Application extends Controller {
 		control.setDatabase("dev");
 
 		if (type.equals("INITIATIVE")) {
-			BasicDBObject entity_Initiative = (BasicDBObject) control
-					.getInitiativeById(arg);
+			Initiative entity_Initiative = control.getInitiativeById(arg);
 
-			if (((com.mongodb.BasicDBList) (entity_Initiative
-					.get("allowedAccessUsers"))).contains("jay-z")
-					|| ((com.mongodb.BasicDBList) (entity_Initiative
-							.get("allowedAccessUsers"))).isEmpty()) {
-				
+			if (((entity_Initiative.getAllowedAccessUsers().contains("jay-z") || ((entity_Initiative
+					.getAllowedAccessUsers().isEmpty()))))) {
+				System.out.println(entity_Initiative + USERNAME);
 				return ok(initiative.render(entity_Initiative, USERNAME));
 			} else {
 				return ok(accessError.render());

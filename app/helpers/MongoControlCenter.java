@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import views.html.initiative;
+
 import models.Entity;
 import models.Event;
 import models.Initiative;
@@ -69,14 +71,9 @@ public class MongoControlCenter {
 		mongoClient.close();
 	}
 
-	public Object getInitiativeById(String entityId) {
+	public Initiative getInitiativeById(String entityId) {
 
-		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
-
-		DBCursor cursor = initiatives.find(entityIdQuery);
-
-		return getSingleResult(cursor);
-
+		return Initiative.getFirstInitiativeById(entityId);
 	}
 
 	/**

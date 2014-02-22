@@ -1,17 +1,17 @@
-@(initiative: Object)(username: String)
+@(initiative: Initiative)(username: String)
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
-        @defining(initiative.asInstanceOf[com.mongodb.BasicDBObject]){ init=>
+        @defining(initiative.asInstanceOf[Initiative]){ init=>
             <div class="entityStateButtons" align="right">
 
                 <!-- SUBSCRIBE BUTTON -->
                 <button 
                    title="Subscribe/Unsubscribe" 
-                   name='subscribe_b-@init.get("entityType")-@init.get("entityId")'
+                   name='subscribe_b-Initiative.TYPE_STRING-@init.getEntityId'
                    type="button"
                    class="" 
                    data-toggle="button" 
-                   onclick="updateEntitySubscriptionStatus( '@init.get("entityType")', '@init.get("entityId")', '@username' )">
+                   onclick="updateEntitySubscriptionStatus( 'Initiative.TYPE_STRING', '@init.getEntityId', '@username' )">
 
                    <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
 
@@ -40,82 +40,82 @@
                 </button>
 
                 <script>
-                   setStatusOfSubscriptionButtons('@init.get("entityType")', '@init.get("entityId")', '@username' )
+                   setStatusOfSubscriptionButtons('Initiative.TYPE_STRING', '@init.getEntityId', '@username' )
                    //setStatusOfWatchButtons();
                    //setStatusOfVoteButtons();
                 </script>
 
             </div>
             <div>
-                <h1>Key: @init.get("key")
+                <h1>Key: @init.getKey()
                 <br/>
-                Summary: @init.get("summary")</h1>
-                <h2>Description: @init.get("description")</h2>
+                Summary: @init.getSummary()</h1>
+                <h2>Description: @init.getDescription()</h2>
                 
                 
                 <h3>
-                Entity Type: @init.get("entityType")
+                Entity Type: Initiative.Type_String
                 <br/>
                 
-                Project Type: @init.get("projectType")
+                Project Type: @init.getProjectType()
                 
                 <br/>
                
-                Labels: @init.get("labels")
+                Labels: @init.getLabels()
                 </h3>
                 
                 
                 <h4>
-                Assignee: @init.get("assignee")
+                Assignee: @init.getAssignee()
                 <br/>
-                Reporter: @init.get("reporter")
+                Reporter: @init.getReporter()
                 <br/>
-                Watchers: @init.get("watchers")   
+                Watchers: @init.getWatchers()
                 <br/>
-                Provider Groups: @init.get("providerGroups")
-                <br/>
-                </h4>
-                
-                
-                <h4>
-                Business Groups: @init.get("businessGroups")
-                <br/>
-                Business Owner: @init.get("businessOwner")
-                <br/>
-                Business Unit: @init.get("businessUnit")
+                Provider Groups: @init.getProviderGroups()
                 <br/>
                 </h4>
                 
                 
                 <h4>
-                Priority: @init.get("priority")
+                Business Groups: @init.getBusinessGroups()
                 <br/>
-                Status: @init.get("status")
+                Business Owner: @init.getBusinessOwner()
                 <br/>
-                Complexity: @init.get("complexity")
+                Business Unit: @init.getBusinessUnit()
                 <br/>
-                Health: @init.get("health")
                 </h4>
                 
                 
                 <h4>
-                Created: @{new Date(init.getLong("created"))}
+                Priority: @init.getPriority()
                 <br/>
-                Start Date: @{new Date(init.getLong("startDate"))}
+                Status: @init.getStatus()
                 <br/>
-                Desired Due Date: @{new Date(init.getLong("desiredDueDate"))}
+                Complexity: @init.getComplexity()
                 <br/>
-                Desired Start Date: @{new Date(init.getLong("desiredStartDate"))}
+                Health: @init.getHealth()
+                </h4>
+                
+                
+                <h4>
+                Created: @{new Date(init.getCreated())}
                 <br/>
-                Due Date: @{new Date(init.getLong("dueDate"))}
+                Start Date: @{new Date(init.getStartDate())}
                 <br/>
-                Updated: @{new Date(init.getLong("updated"))}
+                Desired Due Date: @{new Date(init.getDesiredDueDate())}
+                <br/>
+                Desired Start Date: @{new Date(init.getDesiredStartDate())}
+                <br/>
+                Due Date: @{new Date(init.getDueDate())}
+                <br/>
+                Updated: @{new Date(init.getUpdated())}
                 </h4>
                 
                 <h4>
-                Business Goals: @init.get("businessGoals")
+                Business Goals: @init.getBusinessGoals()
                 <br/>
-                Verification Steps: @init.get("verificationSteps")
+                Verification Steps: @init.getVerificationSteps()
                 </h4>
             </div>
         }
