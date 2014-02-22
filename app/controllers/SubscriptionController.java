@@ -31,12 +31,10 @@ public class SubscriptionController extends Controller{
 
 		// swap subscription status
 		if( User.doesUserSubscribeToEntity(user, entityId, entityType )){
-			System.out.println("User already subscribes to entity, unsubscribe!");
 			User.setUserEntitySubscriptionStatus(false, user, entityId, entityType);
 			result.put("newState",false);
 		}
 		else{
-			System.out.println("User does not already subscribe, SUBSCRIBE AWAY!!!");
 			User.setUserEntitySubscriptionStatus(true, user, entityId, entityType);
 			result.put("newState",true);
 		}

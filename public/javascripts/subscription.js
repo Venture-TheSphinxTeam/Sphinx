@@ -16,18 +16,7 @@ function updateEntitySubscriptionStatus(entityType,entityId,username){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-
-			//update the status of each subscribe button related to type TYPE-ID
-			var buttonsToUpdate = document.getElementsByName("subscribe_b-"+entityType+"-"+entityId);
-
-			alert("Updating the all related buttons--TODO: TEST ME WITH MORE DATA");
-			if( data['newState'] == true ){
-				buttonsToUpdate.className = "btn btn-primary active"
-			} 
-			else {
-				buttonsToUpdate.className = "btn btn-primary"
-			}
-
+			updateSubscriptionButtonsOnPage(entityType,entityId,data['newState'] );
 		}
 	})
 
@@ -50,18 +39,27 @@ function setStatusOfSubscriptionButtons(entityType,entityId,username){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-
-			// Update all subscription buttons related to that entityType-entityid
-			var buttons = document.getElementsByName("subscribe_b-"+entityType+"-"+entityId);
-			if( data['status'] == false ){
-				for( var i = 0; i < buttons.length; i++ ) {
-					buttons[i].className = "btn btn-primary";
-				}
-			} else {
-				for( var i = 0; i < buttons.length; i++ ) {
-					buttons[i].className = "btn btn-primary active";
-				}
-			}
+			updateSubscriptionButtonsOnPage(entityType,entityId,data['status']);
 		}
 	})
+}
+
+//-------------------SUBFUNCTIONS-----------------------//
+
+/**
+ *  Update all subscription buttons related to that entityType-entityid
+ */
+function updateSubscriptionButtonsOnPage(entityType,entityId,status){
+
+	var buttons = document.getElementsByName("subscribe_b-"+entityType+"-"+entityId);
+	if( status == false ){
+		for( var i = 0; i < buttons.length; i++ ) {
+			buttons[i].className = "btn btn-primary";
+		}
+	} else {
+		for( var i = 0; i < buttons.length; i++ ) {
+			buttons[i].className = "btn btn-primary active";
+		}
+	}
+
 }
