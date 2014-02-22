@@ -1,3 +1,4 @@
+
 /** 
  * Subscribe to an entity
  */
@@ -15,28 +16,33 @@ function updateEntitySubscriptionStatus(entityType,entityId,username){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-			alert("This was a success!!!\nSubscribe Status is now :" + data['newState']);
+
+			//update the status of each subscribe button related to type TYPE-ID
+			var buttonsToUpdate = document.getElementsByName("subscribe_b-"+entityType+"-"+entityId);
+
+			alert("Updating the all related buttons--TODO: TEST ME WITH MORE DATA");
+			if( data['newState'] == true ){
+				buttonsToUpdate.className = "btn btn-primary active"
+			} 
+			else {
+				buttonsToUpdate.className = "btn btn-primary"
+			}
+
 		}
 	})
 
-	//update the status of each subscribe button related to type TYPE-ID
-
-
-	// Update all subscription buttons of events for this type-id
 }
 
 /**
  * Get the subscription status of entityType-entityId.
  *  Typically used for initially setting buttons.
  */
-function getEntitySubscriptionStatus(entityType,entityId,username){
-
-	System.out.println("I am getting the subscription state to set initial button.");
+function setStatusOfSubscriptionButtons(entityType,entityId,username){
 
 	var json = { 'entityType': entityType, 
 			 	 'entityId': 	 entityId,
 			 	 'username':   username };
-
+	//Need to get a hole of the button element itself.//
 	$.ajax({
 		type: "POST",
 		url: "/getSubscriptionStatus",
@@ -44,10 +50,17 @@ function getEntitySubscriptionStatus(entityType,entityId,username){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
+
+			// Update all subscription buttons related to that entityType-entityid
+			var buttons = document.getElementsByName("subscribe_b-"+entityType+"-"+entityId);
 			if( data['status'] == false ){
-				return "btn btn-primary";
+				for( var i = 0; i < buttons.length; i++ ) {
+					buttons[i].className = "btn btn-primary";
+				}
 			} else {
-				return "btn btn-primary active";
+				for( var i = 0; i < buttons.length; i++ ) {
+					buttons[i].className = "btn btn-primary active";
+				}
 			}
 		}
 	})

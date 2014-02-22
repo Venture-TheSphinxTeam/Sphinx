@@ -51,24 +51,25 @@ socket.onmessage = function(message){
                                  @defining(event.getEntity()){ entity=>                               
                                  <div class="entityStateButtons" align="right">
 
-
                                     <!-- SUBSCRIBE BUTTON -->
                                     <button 
-                                       title="Subscribe/Unsubscribe"    
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-subscribe"                       
-                                       type="button" 
-                                       class="btn btn-primary" 
+                                       title="Subscribe/Unsubscribe" 
+                                       name="subscribe_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button"
+                                       class="" 
                                        data-toggle="button" 
-                                       onclick="updateEntitySubscriptionStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )">
+                                       onclick="updateEntitySubscriptionStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )")>
 
-                                       <span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+                                       <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
+
+                                       <script>getEntitySubscriptionStatus('@entity.getEntityType()', '@entity.getEntityId()', '@username' )</script>
 
                                     </button>
 
                                     <!-- VOTE BUTTON -->
                                     <button 
                                        title="Vote/Unvote"
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-vote" 
+                                       id="tab1-@entity.getEntityType()-@entity.getEntityType()-@entity.getEntityId()-vote" 
                                        type="button" 
                                        class="btn btn-primary" 
                                        data-toggle="button">
@@ -80,7 +81,7 @@ socket.onmessage = function(message){
                                     <!-- WATCH BUTTON -->
                                     <button 
                                        title="Watch/Unwatch"
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-watch" 
+                                       id="tab1-@entity.getEntityType()-@entity.getEntityType()-@entity.getEntityId()-watch" 
                                        type="button" 
                                        class="btn btn-primary" 
                                        data-toggle="button">
@@ -88,6 +89,12 @@ socket.onmessage = function(message){
                                        <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
 
                                     </button>
+
+                                    <script>
+                                       setStatusOfSubscriptionButtons( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )
+                                       //setStatusOfWatchButtons();
+                                       //setStatusOfVoteButtons();
+                                    </script>
 
                                  </div>
                                  <div>
@@ -124,24 +131,25 @@ socket.onmessage = function(message){
                                  @defining(event.getEntity()){ entity=>                               
                                  <div class="entityStateButtons" align="right">
 
-
                                     <!-- SUBSCRIBE BUTTON -->
                                     <button 
-                                       title="Subscribe/Unsubscribe"    
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-subscribe"                       
-                                       type="button" 
-                                       class="btn btn-primary" 
+                                       title="Subscribe/Unsubscribe" 
+                                       name="subscribe_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button"
+                                       class="" 
                                        data-toggle="button" 
-                                       onclick="updateEntitySubscriptionStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )">
+                                       onclick="updateEntitySubscriptionStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )")>
 
-                                       <span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+                                       <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
+
+                                       <script>getEntitySubscriptionStatus('@entity.getEntityType()', '@entity.getEntityId()', '@username' )</script>
 
                                     </button>
 
                                     <!-- VOTE BUTTON -->
                                     <button 
                                        title="Vote/Unvote"
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-vote" 
+                                       name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
                                        type="button" 
                                        class="btn btn-primary" 
                                        data-toggle="button">
@@ -153,7 +161,6 @@ socket.onmessage = function(message){
                                     <!-- WATCH BUTTON -->
                                     <button 
                                        title="Watch/Unwatch"
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-watch" 
                                        type="button" 
                                        class="btn btn-primary" 
                                        data-toggle="button">
@@ -161,6 +168,12 @@ socket.onmessage = function(message){
                                        <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
 
                                     </button>
+
+                                    <script>
+                                       setStatusOfSubscriptionButtons( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )
+                                       //setStatusOfWatchButtons();
+                                       //setStatusOfVoteButtons();
+                                    </script>
 
                                  </div>
                                  <div>
@@ -193,65 +206,71 @@ socket.onmessage = function(message){
                      <ul class="thumbnails">
                      <ul class="content">
                      @for(event <- orgEntities){
-                           <li>
-                              <div class="thumbnail">
-                                 @defining(event.getEntity()){ entity=>                               
-                                 <div class="entityStateButtons" align="right">
+                        <li>
+                           <div class="thumbnail">
+                              @defining(event.getEntity()){ entity=>                               
+                              <div class="entityStateButtons" align="right">
 
+                                 <!-- SUBSCRIBE BUTTON -->
+                                 <button 
+                                    title="Subscribe/Unsubscribe" 
+                                    name="subscribe_b-@entity.getEntityType()-@entity.getEntityId()"
+                                    type="button"
+                                    class="" 
+                                    data-toggle="button" 
+                                    onclick="updateEntitySubscriptionStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )")>
 
-                                    <!-- SUBSCRIBE BUTTON -->
-                                    <button 
-                                       title="Subscribe/Unsubscribe"    
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-subscribe"                       
-                                       type="button" 
-                                       class="btn btn-primary" 
-                                       data-toggle="button" 
-                                       onclick="updateEntitySubscriptionStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )">
+                                    <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
 
-                                       <span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+                                    <script>getEntitySubscriptionStatus('@entity.getEntityType()', '@entity.getEntityId()', '@username' )</script>
 
-                                    </button>
+                                 </button>
 
-                                    <!-- VOTE BUTTON -->
-                                    <button 
-                                       title="Vote/Unvote"
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-vote" 
-                                       type="button" 
-                                       class="btn btn-primary" 
-                                       data-toggle="button">
+                                 <!-- VOTE BUTTON -->
+                                 <button 
+                                    title="Vote/Unvote"
+                                    name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
+                                    type="button" 
+                                    class="btn btn-primary" 
+                                    data-toggle="button">
 
-                                       <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+                                    <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
 
-                                    </button>
+                                 </button>
 
-                                    <!-- WATCH BUTTON -->
-                                    <button 
-                                       title="Watch/Unwatch"
-                                       id="tab1-@entity.getEntityType()-@entity.getEntityId()-watch" 
-                                       type="button" 
-                                       class="btn btn-primary" 
-                                       data-toggle="button">
+                                 <!-- WATCH BUTTON -->
+                                 <button 
+                                    title="Watch/Unwatch"
+                                    type="button" 
+                                    class="btn btn-primary" 
+                                    data-toggle="button">
 
-                                       <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+                                    <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
 
-                                    </button>
+                                 </button>
 
-                                 </div>
-                                 <div>
-                                    <h3>@entity.getKey()</h3>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
-                                    <p>@entity.getKey()
-                                       <br/> 
-                                       @event.getDate()           
-                                    </p>
-                                    <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn more &raquo;</a>
-                                    <br/>
-                                 </div>
-                                 }
+                                 <script>
+                                    setStatusOfSubscriptionButtons( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )
+                                    //setStatusOfWatchButtons();
+                                    //setStatusOfVoteButtons();
+                                 </script>
+
                               </div>
-                           </li>
-                           }
+                              <div>
+                                 <h3>@entity.getKey()</h3>
+                                 <h3>@entity.getSummary()</h3>
+                                 <h4>@Html(event.getEventDetails())</h4>
+                                 <p>@entity.getKey()
+                                    <br/> 
+                                    @event.getDate()           
+                                 </p>
+                                 <a class="btn btn-primary btn-sm" href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn more &raquo;</a>
+                                 <br/>
+                              </div>
+                              }
+                           </div>
+                        </li>
+                        }
                      <ul/>
                      <ul/>
                   </div>
@@ -268,20 +287,53 @@ socket.onmessage = function(message){
                      <li>
                         <div class="thumbnail">
                            @defining(event.getEntity()){ entity=>
-                           <div class="entityStateButtons" align="right">
-                              <!-- SUBSCRIBE BUTTON -->
-                              <button type="button" class="btn btn-primary" data-toggle="button">     
-                              <span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
-                              </button>
-                              <!-- VOTE BUTTON -->
-                              <button type="button" class="btn btn-primary" data-toggle="button">
-                              <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
-                              </button>
-                              <!-- WATCH BUTTON -->
-                              <button type="button" class="btn btn-primary" data-toggle="button">
-                              <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
-                              </button>
-                           </div>
+                               <div class="entityStateButtons" align="right">
+
+                                 <!-- SUBSCRIBE BUTTON -->
+                                 <button 
+                                    title="Subscribe/Unsubscribe" 
+                                    name="subscribe_b-@entity.getEntityType()-@entity.getEntityId()"
+                                    type="button"
+                                    class="" 
+                                    data-toggle="button" 
+                                    onclick="updateEntitySubscriptionStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )")>
+
+                                    <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
+
+                                    <script>getEntitySubscriptionStatus('@entity.getEntityType()', '@entity.getEntityId()', '@username' )</script>
+
+                                 </button>
+
+                                 <!-- VOTE BUTTON -->
+                                 <button 
+                                    title="Vote/Unvote"
+                                    name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
+                                    type="button" 
+                                    class="btn btn-primary" 
+                                    data-toggle="button">
+
+                                    <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+
+                                 </button>
+
+                                 <!-- WATCH BUTTON -->
+                                 <button 
+                                    title="Watch/Unwatch"
+                                    type="button" 
+                                    class="btn btn-primary" 
+                                    data-toggle="button">
+
+                                    <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+
+                                 </button>
+
+                                 <script>
+                                    setStatusOfSubscriptionButtons( '@entity.getEntityType()', '@entity.getEntityId()', '@username' )
+                                    //setStatusOfWatchButtons();
+                                    //setStatusOfVoteButtons();
+                                 </script>
+
+                              </div>
                            <div>
                               <h3>@entity.getSummary()</h3>
                               <h4>@Html(event.getEventDetails())</h4>
