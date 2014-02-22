@@ -1,3 +1,5 @@
+
+
 package controllers;
 
 import helpers.MongoControlCenter;
@@ -125,7 +127,7 @@ public class Application extends Controller {
 					.get("allowedAccessUsers"))).contains("jay-z")
 					|| ((com.mongodb.BasicDBList) (entity_Initiative
 							.get("allowedAccessUsers"))).isEmpty()) {
-
+				
 				return ok(initiative.render(entity_Initiative, USERNAME));
 			} else {
 				return ok(accessError.render());

@@ -2,6 +2,7 @@ package helpers;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -144,6 +145,20 @@ public class MongoControlCenter {
 		ids = entityIteratorToIdList(entit);
 		result.addAll(Event.findByIDListAndEntityType(ids, Risk.TYPE_STRING));
 
+		long unixTime = System.currentTimeMillis() / 1000L;
+		long threeMonths = 7776000L;
+		Iterator<Event> iEvent = result.iterator();
+
+		/** Code for filtering out non-relevant events. Will uncomment when can test.
+		while (iEvent.hasNext()) {
+			if (iEvent.next().getDateAsLong() <= (unixTime - threeMonths)) {
+				iEvent.remove();
+
+			}
+		}
+		**/
+
+		Collections.sort(result);
 		return result;
 	}
 
