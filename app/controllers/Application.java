@@ -10,6 +10,7 @@ import java.util.List;
 
 import models.Event;
 import models.Initiative;
+import models.Milestone;
 import akka.actor.FSM.Timer;
 
 import com.mongodb.BasicDBObject;
@@ -134,13 +135,10 @@ public class Application extends Controller {
 		}
 
 		else if (type.equals("MILESTONE")) {
-			BasicDBObject entity_Milestone = (BasicDBObject) control
-					.getMilestoneById(arg);
+			Milestone entity_Milestone = control.getMilestoneById(arg);
 
-			if (((com.mongodb.BasicDBList) (entity_Milestone
-					.get("allowedAccessUsers"))).contains("jay-z")
-					|| ((com.mongodb.BasicDBList) (entity_Milestone
-							.get("allowedAccessUsers"))).isEmpty()) {
+			if (((entity_Milestone.getAllowedAccessUsers()).contains("jay-z") || ((entity_Milestone
+					.getAllowedAccessUsers().isEmpty())))) {
 
 				return ok(milestone.render(entity_Milestone, USERNAME));
 			}

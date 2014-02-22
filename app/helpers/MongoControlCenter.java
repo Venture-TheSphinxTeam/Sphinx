@@ -82,12 +82,8 @@ public class MongoControlCenter {
 	 * @param entityId
 	 * @return entity object
 	 */
-	public Object getMilestoneById(String entityId) {
-		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
-
-		DBCursor cursor = milestones.find(entityIdQuery);
-
-		return getSingleResult(cursor);
+	public Milestone getMilestoneById(String entityId) {
+		return Milestone.getFirstWithId(entityId);
 	}
 
 	/**
@@ -146,14 +142,13 @@ public class MongoControlCenter {
 		long threeMonths = 7776000L;
 		Iterator<Event> iEvent = result.iterator();
 
-		/** Code for filtering out non-relevant events. Will uncomment when can test.
-		while (iEvent.hasNext()) {
-			if (iEvent.next().getDateAsLong() <= (unixTime - threeMonths)) {
-				iEvent.remove();
-
-			}
-		}
-		**/
+		/**
+		 * Code for filtering out non-relevant events. Will uncomment when can
+		 * test. while (iEvent.hasNext()) { if (iEvent.next().getDateAsLong() <=
+		 * (unixTime - threeMonths)) { iEvent.remove();
+		 * 
+		 * } }
+		 **/
 
 		Collections.sort(result);
 		return result;
