@@ -82,6 +82,9 @@ public class Event implements Comparable<Event> {
     	List<Event> result = new ArrayList<Event>();
     	
     	User user = User.findByName(username); 
+        if(user == null){
+            return result.iterator();
+        }
     	List<String> initIdList = user.getInitiativeSubscriptions();
     	List<String> mileIdList = user.getMilestoneSubscriptions();
     	List<String> riskIdList = user.getRiskSubscriptions();
