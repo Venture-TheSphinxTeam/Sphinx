@@ -7,11 +7,11 @@
                 <!-- SUBSCRIBE BUTTON -->
                 <button 
                    title="Subscribe/Unsubscribe" 
-                   name='subscribe_b-Initiative.TYPE_STRING-@init.getEntityId'
+                   name='subscribe_b-@init.getEntityType()-@init.getEntityId()'
                    type="button"
                    class="" 
                    data-toggle="button" 
-                   onclick="updateEntitySubscriptionStatus( 'Initiative.TYPE_STRING', '@init.getEntityId', '@username' )">
+                   onclick="updateEntitySubscriptionStatus( '@init.getEntityType()', '@init.getEntityId()', '@username' )">
 
                    <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
 
@@ -40,7 +40,7 @@
                 </button>
 
                 <script>
-                   setStatusOfSubscriptionButtons('Initiative.TYPE_STRING', '@init.getEntityId', '@username' )
+                   setStatusOfSubscriptionButtons('@init.getEntityType()', '@init.getEntityId()', '@username' )
                    //setStatusOfWatchButtons();
                    //setStatusOfVoteButtons();
                 </script>
@@ -54,7 +54,7 @@
                 
                 
                 <h3>
-                Entity Type: Initiative.Type_String
+                Entity Type: @init.getEntityType()
                 <br/>
                 
                 Project Type: @init.getProjectType()
