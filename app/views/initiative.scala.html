@@ -1,126 +1,93 @@
-@(initiative: Initiative)(username: String)
-@main("Sphinx: Connecting Projects to People")("") {
-    <div class="thumbnail">
-        @defining(initiative.asInstanceOf[Initiative]){ init=>
-            <div class="entityStateButtons" align="right">
+@(initiative: Initiative)(username: String) @main("Sphinx: Connecting
+Projects to People")("") {
+<div class="thumbnail">
+	@defining(initiative.asInstanceOf[Initiative]){ init=>
+	<div class="entityStateButtons" align="right">
 
-                <!-- SUBSCRIBE BUTTON -->
-                <button 
-                   title="Subscribe/Unsubscribe" 
-                   name='subscribe_b-@init.getEntityType()-@init.getEntityId()'
-                   type="button"
-                   class="" 
-                   data-toggle="button" 
-                   onclick="updateEntitySubscriptionStatus( '@init.getEntityType()', '@init.getEntityId()', '@username' )">
+		<!-- SUBSCRIBE BUTTON -->
+		<button title="Subscribe/Unsubscribe"
+			name='subscribe_b-@init.getEntityType()-@init.getEntityId()'
+			type="button" class="" data-toggle="button"
+			onclick="updateEntitySubscriptionStatus( '@init.getEntityType()', '@init.getEntityId()', '@username' )">
 
-                   <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
+			<span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
 
-                </button>
+		</button>
 
-                <!-- VOTE BUTTON -->
-                <button 
-                   title="Vote/Unvote"
-                   type="button" 
-                   class="btn btn-primary" 
-                   data-toggle="button">
+		<!-- VOTE BUTTON -->
+		<button title="Vote/Unvote" type="button" class="btn btn-primary"
+			data-toggle="button">
 
-                   <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
 
-                </button>
+		</button>
 
-                <!-- WATCH BUTTON -->
-                <button 
-                   title="Watch/Unwatch"
-                   type="button" 
-                   class="btn btn-primary" 
-                   data-toggle="button">
+		<!-- WATCH BUTTON -->
+		<button title="Watch/Unwatch" type="button" class="btn btn-primary"
+			data-toggle="button">
 
-                   <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+			<span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
 
-                </button>
+		</button>
 
-                <script>
-                   setStatusOfSubscriptionButtons('@init.getEntityType()', '@init.getEntityId()', '@username' )
-                   //setStatusOfWatchButtons();
-                   //setStatusOfVoteButtons();
-                </script>
+		<script>
+			setStatusOfSubscriptionButtons('@init.getEntityType()',
+					'@init.getEntityId()', '@username')
+			//setStatusOfWatchButtons();
+			//setStatusOfVoteButtons();
+		</script>
 
-            </div>
-            <div>
-                <h1>Key: @init.getKey()
-                <br/>
-                Summary: @init.getSummary()</h1>
-                <h2>Description: @init.getDescription()</h2>
-                
-                
-                <h3>
-                Entity Type: @init.getEntityType()
-                <br/>
-                
-                Project Type: @init.getProjectType()
-                
-                <br/>
-               
-                Labels: @init.getLabels()
-                </h3>
-                
-                
-                <h4>
-                Assignee: @init.getAssignee()
-                <br/>
-                Reporter: @init.getReporter()
-                <br/>
-                Watchers: @init.getWatchers()
-                <br/>
-                Provider Groups: @init.getProviderGroups()
-                <br/>
-                </h4>
-                
-                
-                <h4>
-                Business Groups: @init.getBusinessGroups()
-                <br/>
-                Business Owner: @init.getBusinessOwner()
-                <br/>
-                Business Unit: @init.getBusinessUnit()
-                <br/>
-                </h4>
-                
-                
-                <h4>
-                Priority: @init.getPriority()
-                <br/>
-                Status: @init.getStatus()
-                <br/>
-                Complexity: @init.getComplexity()
-                <br/>
-                Health: @init.getHealth()
-                </h4>
-                
-                
-                <h4>
-                Created: @{new Date(init.getCreated())}
-                <br/>
-                Start Date: @{new Date(init.getStartDate())}
-                <br/>
-                Desired Due Date: @{new Date(init.getDesiredDueDate())}
-                <br/>
-                Desired Start Date: @{new Date(init.getDesiredStartDate())}
-                <br/>
-                Due Date: @{new Date(init.getDueDate())}
-                <br/>
-                Updated: @{new Date(init.getUpdated())}
-                </h4>
-                
-                <h4>
-                Business Goals: @init.getBusinessGoals()
-                <br/>
-                Verification Steps: @init.getVerificationSteps()
-                </h4>
-            </div>
-        }
-     </div>
-	
-	
-	
+	</div>
+	<div>
+		<h1>
+			Key: @init.getKey() <br /> Summary: @init.getSummary()
+		</h1>
+		<h2>Description: @init.getDescription()</h2>
+
+
+		<h3>
+			Entity Type: @init.getEntityType() <br /> Project Type:
+			@init.getProjectType() <br /> Labels: @init.getLabels()
+		</h3>
+
+
+		<h4>
+			Assignee: @init.getAssignee() <br /> Reporter: @init.getReporter() <br />
+			Watchers: @init.getWatchers() <br /> Provider Groups:
+			@init.getProviderGroups() <br />
+		</h4>
+
+
+		<h4>
+			Business Groups: @init.getBusinessGroups() <br /> Business Owner:
+			@init.getBusinessOwner() <br /> Business Unit:
+			@init.getBusinessUnit() <br />
+		</h4>
+
+
+		<h4>
+			Priority: @init.getPriority() <br /> Status: @init.getStatus() <br />
+			Complexity: @init.getComplexity() <br /> Health: @init.getHealth()
+		</h4>
+
+
+		<h4>
+			Created: @{new Date(init.getCreated())} <br /> Start Date: @{new
+			Date(init.getStartDate())} <br /> Desired Due Date: @{new
+			Date(init.getDesiredDueDate())} <br /> Desired Start Date: @{new
+			Date(init.getDesiredStartDate())} <br /> Due Date: @{new
+			Date(init.getDueDate())} <br /> Updated: @{new
+			Date(init.getUpdated())}
+		</h4>
+
+		<h4>
+			Business Goals: @init.getBusinessGoals() <br /> Verification Steps:
+			@init.getVerificationSteps()
+		</h4>
+	</div>
+	}
+</div>
+
+
+
 }
