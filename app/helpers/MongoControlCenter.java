@@ -92,11 +92,9 @@ public class MongoControlCenter {
 	 * @param entityId
 	 * @return an entity object
 	 */
-	public Object getRiskById(String entityId) {
-		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
+	public Risk getRiskById(String entityId) {
 
-		DBCursor cursor = risks.find(entityIdQuery);
-		return getSingleResult(cursor);
+		return Risk.getFirstWithId(entityId);
 	}
 
 	public ArrayList<Event> getSingleEventsForUser(String user) {
@@ -438,19 +436,6 @@ public class MongoControlCenter {
 			resultsCursor.close();
 		}
 
-		return temp;
-	}
-
-	private DBObject getSingleResult(DBCursor resultCursor) {
-		DBObject temp = new BasicDBObject();
-
-		try {
-			while (resultCursor.hasNext()) {
-				temp = resultCursor.next();
-			}
-		} finally {
-			resultCursor.close();
-		}
 		return temp;
 	}
 }

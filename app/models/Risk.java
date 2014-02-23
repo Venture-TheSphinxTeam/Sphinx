@@ -44,6 +44,10 @@ public class Risk extends Entity{
     public static Risk getFirstWithKey(String key){
         return risks().findOne("{key:#}",key).as(Risk.class);
     }
+    
+    public static Risk getFirstWithId(String id){
+        return risks().findOne("{entityId:#}",id).as(Risk.class);
+    }
 
     public Risk(){}
 

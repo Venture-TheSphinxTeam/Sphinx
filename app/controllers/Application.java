@@ -11,6 +11,7 @@ import java.util.List;
 import models.Event;
 import models.Initiative;
 import models.Milestone;
+import models.Risk;
 import akka.actor.FSM.Timer;
 
 import com.mongodb.BasicDBObject;
@@ -149,13 +150,10 @@ public class Application extends Controller {
 		}
 
 		else {
-			BasicDBObject entity_Risk = (BasicDBObject) control
-					.getRiskById(arg);
-
-			if (((com.mongodb.BasicDBList) (entity_Risk
-					.get("allowedAccessUsers"))).contains("jay-z")
-					|| ((com.mongodb.BasicDBList) (entity_Risk
-							.get("allowedAccessUsers"))).isEmpty()) {
+			Risk entity_Risk = control.getRiskById(arg);
+	
+			if (((entity_Risk.getAllowedAccessUsers()).contains("jay-z") || ((entity_Risk
+					.getAllowedAccessUsers())).isEmpty())) {
 
 				return ok(risk.render(entity_Risk, USERNAME));
 			}

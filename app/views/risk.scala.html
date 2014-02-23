@@ -1,17 +1,17 @@
-@(risk: Object)(username: String)
+@(risk: Risk)(username: String)
 @main("Sphinx: Connecting Projects to People")("") {
     <div class="thumbnail">
-        @defining(risk.asInstanceOf[com.mongodb.BasicDBObject]){ ri=>
+        @defining(risk.asInstanceOf[Risk]){ ri=>
             <div class="entityStateButtons" align="right">
 
                 <!-- SUBSCRIBE BUTTON -->
                 <button 
                    title="Subscribe/Unsubscribe" 
-                   name='subscribe_b-@ri.get("entityType")-@ri.get("entityId")'
+                   name='subscribe_b-@ri.getEntityType()-@ri.getEntityId()'
                    type="button"
                    class="" 
                    data-toggle="button" 
-                   onclick="updateEntitySubscriptionStatus( '@ri.get("entityType")', '@ri.get("entityId")', '@username' )">
+                   onclick="updateEntitySubscriptionStatus( '@ri.getEntityType()', '@ri.getEntityId()', '@username' )">
 
                    <span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
 
@@ -40,54 +40,58 @@
                 </button>
 
                 <script>
-                   setStatusOfSubscriptionButtons('@ri.get("entityType")', '@ri.get("entityId")', '@username' )
+                   setStatusOfSubscriptionButtons('@ri.getEntityType()', '@ri.getEntityId()', '@username' )
                    //setStatusOfWatchButtons();
                    //setStatusOfVoteButtons();
                 </script>
 
             </div>
             <div>
-                <h1> Key: @ri.get("key")</h1>
+                <h1> Key: @ri.getKey()</h1>
 
                 <h2>
-                Entity Type: @ri.get("entityType")
+                Entity Type: @ri.getEntityType()
                 <br/>
-                Labels: @ri.get("labels")
+                Labels: @ri.getLabels()
                 
                 </h2>
                 
-                <h4>  Assignee: @ri.get("assignee")
+                <h4>  Assignee: @ri.getAssignee()
                 <br/>
-                Reporter: @ri.get("reporter")
+                Reporter: @ri.getReporter()
                 <br/>
-                Watchers: @ri.get("watchers")
+                Watchers: @ri.getWatchers()
                 </h4>
                 
                 <h4>
-                Risk Impact: @ri.get("riskImpact")
+                Risk Impact: @ri.getRiskImpact()
                 <br/>
-                Risk Likelihood: @ri.get("riskLikelihood")
+                Risk Likelihood: @ri.getRiskLikelihood()
                 <br/>
-                Risk Types: @ri.get("riskTypes")
+                Risk Response Plan: @ri.getRiskResponsePlan()
+                <br/>
+                Risk Response Strategy: @ri.getRiskResponseStrategy()
+                <br/>
+                Risk Types: @ri.getRiskTypes()
                 </h4>
                 
                 <h4>
-                Priority: @ri.get("priority")
+                Priority: @ri.getPriority()
                 <br/>
-                Status: @ri.get("status")
+                Status: @ri.getStatus()
                 </h4>
                 
                 <h4>
-                Created: @{new Date(ri.getLong("created"))}
+                Created: @{new Date(ri.getCreated())}
                 <br/>
-                Due Date: @{new Date(ri.getLong("dueDate"))}
+                Due Date: @{new Date(ri.getDueDate())}
                 <br/>
-                Updated: @{new Date(ri.getLong("updated"))}
+                Updated: @{new Date(ri.getUpdated())}
                 </h4>
                
                 <h4>
-                @defining(ri.get("workBreakdownParent").asInstanceOf[com.mongodb.BasicDBObject]){ WBP=>
-                <a href="./entity?arg=@WBP.get("entityId")&entityType=@WBP.get("entityType")">Work Breakdown Parent</a>
+                @defining(ri.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=>
+                <a href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work Breakdown Parent</a>
                 
                 }
                 </h4>
