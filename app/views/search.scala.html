@@ -1,5 +1,26 @@
- @main("Sphinx: Connecting Projects to People")("") {
+@(userEntities: List[Entity]) 
+@main("Sphinx: Connecting Projects to People")("") {
 
-<div class="container">This is the search page</div>
+<div id="page_container" class="pcontainer">
+	This is the search page
+	<div class="page_navigation"></div>
+	<br />
+	<div class="info_text"></div>
+	<ul class="content">
+		@for(entity <- userEntities){
+
+		<li>@entity.getSummary</li> }
+	</ul>
+
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#page_container').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
+	});
+</script>
 }
-

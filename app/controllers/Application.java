@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import models.Entity;
 import models.Event;
 import models.Initiative;
 import models.Milestone;
@@ -100,7 +101,31 @@ public class Application extends Controller {
 	}
 
 	public static Result search() {
-		return ok(search.render());
+		ArrayList<Entity> defaultResult = new ArrayList<Entity>();
+
+		Iterator<? extends Entity> initIter = Initiative.findBy(
+				"$or:[{allowedAccessUsers:\"" + USERNAME
+						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
+		while (initIter.hasNext()) {
+			defaultResult.add(initIter.next());
+		}
+
+		Iterator<? extends Entity> mileIter = Milestone.findBy(
+				"$or:[{allowedAccessUsers:\"" + USERNAME
+						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
+		while (mileIter.hasNext()) {
+			defaultResult.add(mileIter.next());
+		}
+
+		Iterator<? extends Entity> riskIter = Risk.findBy(
+				"$or:[{allowedAccessUsers:\"" + USERNAME
+						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
+
+		while (riskIter.hasNext()) {
+			defaultResult.add(riskIter.next());
+		}
+
+		return ok(search.render(defaultResult));
 	}
 
 	public static Result subscriptions() {
@@ -151,7 +176,7 @@ public class Application extends Controller {
 
 		else {
 			Risk entity_Risk = control.getRiskById(arg);
-	
+
 			if (((entity_Risk.getAllowedAccessUsers()).contains("jay-z") || ((entity_Risk
 					.getAllowedAccessUsers())).isEmpty())) {
 
