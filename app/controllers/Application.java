@@ -152,7 +152,7 @@ public class Application extends Controller {
 
 			if (((entity_Initiative.getAllowedAccessUsers().contains("jay-z") || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
-				System.out.println(entity_Initiative + USERNAME);
+				
 				return ok(initiative.render(entity_Initiative, USERNAME));
 			} else {
 				return ok(accessError.render());
