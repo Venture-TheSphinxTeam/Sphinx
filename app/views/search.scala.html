@@ -2,14 +2,15 @@
 @main("Sphinx: Connecting Projects to People")("") {
 
 <div id="page_container" class="pcontainer">
-	This is the search page
 	<div class="page_navigation"></div>
 	<br />
 	<div class="info_text"></div>
 	<ul class="content">
 		@for(entity <- userEntities){
 
-		<li>@entity.getSummary</li> }
+		<li><a
+			href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">@entity.getKey()
+		</a></li> }
 	</ul>
 
 </div>
