@@ -5,17 +5,25 @@
 	<div class="entityStateButtons" align="right">
 
 		<!-- SUBSCRIBE BUTTON -->
-		<button title="Subscribe/Unsubscribe"
-			name='subscribe_b-@mile.getEntityType()-@mile.getEntityId()'
-			type="button" class="" data-toggle="button"
-			onclick="updateEntitySubscriptionStatus( '@mile.getEntityType()', '@mile.getEntityId()', '@username' )">
+		<button 
+			title="Subscribe/Unsubscribe"
+			name='subscription_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="" 
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@mile.getEntityType()', '@mile.getEntityId()', '@username', 'subscription' )">
 
-			<span class="glyphicon glyphicon-heart" title="Subscribe/Unsubscribe"></span>
+			<span class="glyphicon glyphicon-heart"
+				title="Subscribe/Unsubscribe"></span>
 
 		</button>
 
 		<!-- VOTE BUTTON -->
-		<button title="Vote/Unvote" type="button" class="btn btn-primary"
+		<button 
+			title="Vote/Unvote"
+			name='vote_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
 			data-toggle="button">
 
 			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
@@ -23,18 +31,23 @@
 		</button>
 
 		<!-- WATCH BUTTON -->
-		<button title="Watch/Unwatch" type="button" class="btn btn-primary"
+		<button 
+			title="Watch/Unwatch"
+			name='watch_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
 			data-toggle="button">
 
-			<span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+			<span class="glyphicon glyphicon-eye-open"
+				title="Watch/Unwatch"></span>
 
 		</button>
 
 		<script>
-			setStatusOfSubscriptionButtons('@mile.getEntityType()',
-					'@mile.getEntityId()', '@username')
-			//setStatusOfWatchButtons();
-			//setStatusOfVoteButtons();
+			setStatusOfAllButtons(
+					'@mile.getEntityType()',
+					'@mile.getEntityId()',
+					'@username')
 		</script>
 
 	</div>
