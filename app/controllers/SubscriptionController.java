@@ -32,11 +32,11 @@ public class SubscriptionController extends Controller{
 		// swap subscription status
 		if( User.doesUserSubscribeToEntity(user, entityId, entityType )){
 			User.setUserEntitySubscriptionStatus(false, user, entityId, entityType);
-			result.put("newState",false);
+			result.put("status",false);
 		}
 		else{
 			User.setUserEntitySubscriptionStatus(true, user, entityId, entityType);
-			result.put("newState",true);
+			result.put("status",true);
 		}
 		
 		return ok(result);
