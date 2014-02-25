@@ -6,10 +6,12 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
-				 'username':   username };
+				 'username':   username,
+				 'buttonType': buttonType };
 
+	var url = "/updateButtonStatus";
 	// set url to post data to ie. to subscribe, vote or watch
-	var url;
+	/**var url;
 	if( buttonType.toLowerCase() == 'subscription'){
 		url = "/updateSubscription";
 	}
@@ -18,7 +20,7 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 	}
 	else{	// vote
 		//url = "/updateVote"
-	}
+	}*/
 
 	$.ajax({
 		type: "POST",
@@ -51,11 +53,13 @@ function setStatusOfAllButtons(entityType,entityId,username){
 function setStatusOfButtons(entityType,entityId,username,buttonType){
 
 	var json = { 'entityType': entityType, 
-			 	 'entityId': 	 entityId,
-			 	 'username':   username };
+				 'entityId': 	 entityId,
+				 'username':   username,
+				 'buttonType': buttonType };
 
+	var url = '/getButtonStatus';
 	// set url to post data to ie. to subscribe, vote or watch
-	var url;
+	/*var url;
 	if( buttonType.toLowerCase() == 'subscription'){
 		url = "/getSubscriptionStatus";
 	}
@@ -64,7 +68,7 @@ function setStatusOfButtons(entityType,entityId,username,buttonType){
 	}
 	else{	// vote
 		//url = "/getVoteStatus"
-	}
+	}*/
 
 	//Need to get a hole of the button element itself.//
 	$.ajax({
