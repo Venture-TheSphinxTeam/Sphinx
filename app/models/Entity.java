@@ -16,7 +16,9 @@ import uk.co.panaxiom.playjongo.PlayJongo;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Entity {
 
-    public Entity(){}
+    public Entity(){
+    	this.allowedAccessUsers = new ArrayList<String>();
+    }
 
     protected String entityId;
     protected String entityType;//TODO: Change from String to Enum
@@ -170,7 +172,12 @@ public class Entity {
     }
 
     public void setAllowedAccessUsers(List<String> allowedAccessUsers) {
-        this.allowedAccessUsers = allowedAccessUsers;
+    	if(allowedAccessUsers == null){
+    		this.allowedAccessUsers = new ArrayList<String>();
+    	}
+    	else{
+    		this.allowedAccessUsers = allowedAccessUsers;
+    	}
     }
     
 }
