@@ -1,9 +1,13 @@
 package models;
 
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.*;
+
 import org.jongo.MongoCollection;
+
 import uk.co.panaxiom.playjongo.PlayJongo;
+
 import org.bson.types.ObjectId;
 
 /**
@@ -13,6 +17,11 @@ public class Risk extends Entity{
 
     private static MongoCollection risks(){
         return PlayJongo.getCollection("risks");
+    }
+    
+    public static Iterable<Risk> findBy(String query){
+    	return risks().find("{entityType: \""+Risk.TYPE_STRING+ 
+				"\","+query+"}").as(Risk.class);
     }
 
     public void remove(){
@@ -35,6 +44,10 @@ public class Risk extends Entity{
     public static Risk getFirstWithKey(String key){
         return risks().findOne("{key:#}",key).as(Risk.class);
     }
+    
+    public static Risk getFirstWithId(String id){
+        return risks().findOne("{entityId:#}",id).as(Risk.class);
+    }
 
     public Risk(){}
 
@@ -45,6 +58,8 @@ public class Risk extends Entity{
     private String riskLikelihood;
     private String riskResponseStrategy;
     private String riskResponsePlan;
+    
+    public static final String TYPE_STRING = "RISK";
 
     public List<String> getRiskTypes() {
         return riskTypes;

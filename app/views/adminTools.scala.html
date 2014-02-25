@@ -1,17 +1,15 @@
-@(messageBox: String)(dateForm: Form[GetEntitiesForm])
-@main("Sphinx: Connecting Projects to People")("Username") {
+@(messageBox: String)(dateForm: Form[GetEntitiesForm]) 
+@main("Sphinx:Connecting Projects to People")("Username") {
 
 <div class="container">
-<h1>This is the admin page</h1>
+	<h1>This is the admin page</h1>
 
-<h2>@messageBox</h2>
+	<h2>@messageBox</h2>
 
-<h1>Get Entities</h1>
-@helper.form(controllers.routes.AdminController.forceGetEntities()){
-	@helper.inputDate(dateForm("date"))
-
-	<input type="submit" value="Grab"></input>
-}
+	<h1>Get Entities</h1>
+	@helper.form(controllers.routes.AdminController.forceGetEntities()){
+	@helper.inputDate(dateForm("date")) <input type="submit" value="Grab"></input>
+	}
 
 
 

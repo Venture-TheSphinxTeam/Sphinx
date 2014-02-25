@@ -21,6 +21,11 @@ public class Initiative extends Entity{
 		return PlayJongo.getCollection("initiatives");
 	}
 	
+	public static Iterable<? extends Entity> findBy(String query){
+		return initiatives().find("{ entityType: \""+Initiative.TYPE_STRING + 
+				"\","+query+"}").as(Initiative.class);
+	}
+	
 	public void remove(){
 		initiatives().remove(this.id);
 	}
@@ -55,6 +60,10 @@ public class Initiative extends Entity{
 	
 	public static Initiative getFirstInitiativeByKey(String key){
 		return initiatives().findOne("{key:#}",key).as(Initiative.class);
+	}
+	
+	public static Initiative getFirstInitiativeById(String id){
+		return initiatives().findOne("{entityId:#}",id).as(Initiative.class);
 	}
 
     public Initiative(){}

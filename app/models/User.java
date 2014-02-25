@@ -48,8 +48,8 @@ public class User {
     private String emailAddress;
     private String pictureURL;
     private List<String> groups;
-    private List<Entity> watches;
-    private List<Entity> votes;
+    private List<String> watches;
+    private List<String> votes;
     private String password;
     private boolean admin;
     private List<String> querySubscriptions;
@@ -58,9 +58,9 @@ public class User {
     private List<String> riskSubscriptions;
     private int updateFrequency;
 
-    /**
-     * Returns whether the user is already subscribed to the entity or not.
-     */
+
+    //----------------------------SUBSCRIPTIONS/WATCHES/VOTES---------------------------------//
+
     public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){
     	boolean retVal = false;
 
@@ -75,9 +75,17 @@ public class User {
     	return retVal;
     }
     
+    public static boolean doesUserVoteForEntity(User user, String entityId, String entityType){
+        return user.votes.contains(entityId) ;
+    }
+
+
+    public static boolean doesUserWatchEntity(User user, String entityId, String entityType){
+        return user.watches.contains(entityId) ;
+    }
+
     /**
      * Subscribe to or unsubscribe from an entity. 
-     *
      * @return				the new status of the subscription
      */
     public static void setUserEntitySubscriptionStatus(boolean status, User user, String entityId, String entityType){
@@ -104,7 +112,39 @@ public class User {
 		}
 
         users().save(user);
+    }
 
+
+    /**
+     * Watch to unwatch an initiative. 
+     * @return              the new status of the watch
+     */
+    public static void setUserEntityWatchStatus(boolean status, User user, String entityId, String entityType){
+
+        if( status == true ){
+            user.watches.add(entityId);
+        }
+        else {
+            user.watches.remove(entityId);
+        }
+
+        users().save(user);
+    }
+
+    /**
+     * Vote or unvote for an initiative. 
+     * @return              the new status of the vote
+     */
+    public static void setUserEntityVoteStatus(boolean status, User user, String entityId, String entityType){
+
+        if( status == true ){
+            user.votes.add(entityId);
+        }
+        else {
+            user.votes.remove(entityId);
+        }
+
+        users().save(user);
     }
 
     public String getUsername() {
@@ -139,19 +179,19 @@ public class User {
         this.groups = groups;
     }
 
-    public List<Entity> getWatches() {
+    public List<String> getWatches() {
         return watches;
     }
 
-    public void setWatches(List<Entity> watches) {
+    public void setWatches(List<String> watches) {
         this.watches = watches;
     }
 
-    public List<Entity> getVotes() {
+    public List<String> getVotes() {
         return votes;
     }
 
-    public void setVotes(List<Entity> votes) {
+    public void setVotes(List<String> votes) {
         this.votes = votes;
     }
 

@@ -8,14 +8,14 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-public class SubscriptionController extends Controller{
+public class ButtonStateController extends Controller{
 	
 	/**
 	 * If the user is subscribed to an entity, unsubscribe or vice versa.
 	 *
 	 * @return	New state of button
 	 */
-	public static Result UpdateSubscriptionStatus(){
+	public static Result UpdateButtonStatus(){
 		
 		// Get json information sent in
 		JsonNode json = request().body().asJson();
@@ -23,22 +23,15 @@ public class SubscriptionController extends Controller{
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
 		String username = json.get("username").asText();
+		String buttonType = json.get("buttonType").asText();
 		
 		User user = User.findByName(username);
 
 		// create return object
 		ObjectNode result = Json.newObject();
 
-		// swap subscription status
-		if( User.doesUserSubscribeToEntity(user, entityId, entityType )){
-			System.out.println("User already subscribes to entity, unsubscribe!");
-			User.setUserEntitySubscriptionStatus(false, user, entityId, entityType);
-			result.put("newState",false);
-		}
-		else{
-			System.out.println("User does not already subscribe, SUBSCRIBE AWAY!!!");
-			User.setUserEntitySubscriptionStatus(true, user, entityId, entityType);
-			result.put("newState",true);
+		if( buttonType == "subscription"){
+			result.put("status",UpdateSubscriptionStatus(user,entityId,entityType));
 		}
 		
 		return ok(result);
@@ -48,13 +41,14 @@ public class SubscriptionController extends Controller{
 	 *   Returns current status of if entityType-entityName is already subscribed 
 	 * to by inputted user.
 	 */
-	public static Result GetSubscriptionStatus(){
+	public static Result GetButtonStatus(){
 
 		JsonNode json = request().body().asJson();
 		
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
 		String username = json.get("username").asText();
+		String buttonType = json.get("buttonType").asText();
 		
 		User user = User.findByName(username);
 
@@ -64,5 +58,23 @@ public class SubscriptionController extends Controller{
 		result.put("status", User.doesUserSubscribeToEntity(user, entityId, entityType ) );
 
 		return ok(result);
+	}
+
+	//------------------------SUBFUNCTIONS---------------------//
+
+	private static boolean UpdateSubscriptionStatus(User user, String entityId, String entityType){
+		boolean retVal;
+
+		// swap subscription status
+		if( User.doesUserSubscribeToEntity(user, entityId, entityType )){
+			User.setUserEntitySubscriptionStatus(false, user, entityId, entityType);
+			retVal = false;
+		}
+		else{
+			User.setUserEntitySubscriptionStatus(true, user, entityId, entityType);
+			retVal = true;
+		}
+
+		return retVal;
 	}
 }

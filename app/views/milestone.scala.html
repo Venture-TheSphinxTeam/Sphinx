@@ -1,97 +1,102 @@
-@(milestone: Object)(username: String)
+@(milestone: Milestone)(username: String) 
 @main("Sphinx: Connecting Projects to People")("") {
-    <div class="thumbnail">
-        @defining(milestone.asInstanceOf[com.mongodb.BasicDBObject]){ mile=>
-            <div class="entityStateButtons" align="right">
-                <button 
-                   title="Subscribe/Unsubscribe"    
-                   id="subscribe"                    
-                   type="button" 
-                   class="btn btn-primary" 
-                   data-toggle="button" 
-                   onclick="updateEntitySubscriptionStatus( '@mile.get("entityType")', '@mile.get("entityId")', '@username' )">
+<div class="thumbnail">
+	@defining(milestone.asInstanceOf[Milestone]){ mile=>
+	<div class="entityStateButtons" align="right">
 
-                   <span class="glyphicon glyphicon-bookmark" title="Subscribe/Unsubscribe"></span>
+		<!-- SUBSCRIBE BUTTON -->
+		<button 
+			title="Subscribe/Unsubscribe"
+			name='subscription_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="" 
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@mile.getEntityType()', '@mile.getEntityId()', '@username', 'subscription' )">
 
-                </button>
+			<span class="glyphicon glyphicon-heart"
+				title="Subscribe/Unsubscribe"></span>
 
-                <!-- VOTE BUTTON -->
-                <button 
-                   title="Vote/Unvote"
-                   id="vote" 
-                   type="button" 
-                   class="btn btn-primary" 
-                   data-toggle="button">
+		</button>
 
-                   <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span> 
+		<!-- VOTE BUTTON -->
+		<button 
+			title="Vote/Unvote"
+			name='vote_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
+			data-toggle="button">
 
-                </button>
+			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
 
-                <!-- WATCH BUTTON -->
-                <button 
-                   title="Watch/Unwatch"
-                   id="watch" 
-                   type="button" 
-                   class="btn btn-primary" 
-                   data-toggle="button">
+		</button>
 
-                   <span class="glyphicon glyphicon-eye-open" title="Watch/Unwatch"></span>
+		<!-- WATCH BUTTON -->
+		<button 
+			title="Watch/Unwatch"
+			name='watch_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
+			data-toggle="button">
 
-                </button>
-            </div>
-            <div>
-                <h1>Key: @mile.get("key") - Summary: @mile.get("summary")</h1>
-                <h2>Description: @mile.get("description")</h2>
-                
-                <h3>Entity ID: @mile.get("entityId")
-                <br/>
-                Entity Type: @mile.get("entityType")
-                </h3>
-                <br/>
-                
-                <h4>
-                Assignee: @mile.get("assignee")
-                <br/>
-                Reporter: @mile.get("reporter")
-                <br/>
-                Watchers: @mile.get("watchers")   
-                </h4>
-                
-                
-                <h4>
-                Priority: @mile.get("priority")
-                <br/>
-                Status: @mile.get("status")
-                <br/>
-                Health: @mile.get("health")
-                </h4>
-                
-                
-                <h4>
-                Created: @{new Date(mile.getLong("created"))}
-                <br/>
-                Start Date: @{new Date(mile.getLong("startDate"))}
-                <br/>
-                Desired Due Date: @{new Date(mile.getLong("desiredDueDate"))}
-                <br/>
-                Desired Start Date: @{new Date(mile.getLong("desiredStartDate"))}
-                <br/>
-                Due Date: @{new Date(mile.getLong("dueDate"))}
-                <br/>
-                Updated: @{new Date(mile.getLong("updated"))}
-                </h4>
-                
-                <h4>
-                Labels: @mile.get("labels")
-                <br/>
-                Verification Steps: @mile.get("verificationSteps")
-                <br/>
-                Work Breakdown Parent: @mile.get("workBreakdownParent")
-                </h4>
-            </div>
-        }
-     </div>
-    	
-	
-	
+			<span class="glyphicon glyphicon-eye-open"
+				title="Watch/Unwatch"></span>
+
+		</button>
+
+		<script>
+			setStatusOfAllButtons(
+					'@mile.getEntityType()',
+					'@mile.getEntityId()',
+					'@username')
+		</script>
+
+	</div>
+	<div>
+		<h1>
+			Key: @mile.getKey() <br /> Summary: @mile.getSummary()
+		</h1>
+
+		<h2>Description: @mile.getDescription()</h2>
+
+		<h3>
+			Entity Type: @mile.getEntityType() <br> Labels:
+			@mile.getLabels() <br />
+		</h3>
+		<br />
+
+		<h4>
+			Assignee: @mile.getAssignee() <br /> Reporter: @mile.getReporter() <br />
+			Watchers: @mile.getWatchers()
+		</h4>
+
+
+		<h4>
+			Priority: @mile.getPriority() <br /> Status: @mile.getStatus() <br />
+			Health: @mile.getHealth()
+		</h4>
+
+
+		<h4>
+			Created: @{new Date(mile.getCreated())} <br /> Start Date: @{new
+			Date(mile.getStartDate())} <br /> Desired Due Date: @{new
+			Date(mile.getDesiredDueDate())} <br /> Desired Start Date: @{new
+			Date(mile.getDesiredStartDate())} <br /> Due Date: @{new
+			Date(mile.getDueDate())} <br /> Updated: @{new
+			Date(mile.getUpdated())}
+		</h4>
+
+		<h4>Verification Steps: @mile.getVerificationSteps()</h4>
+
+		<h4>
+			@defining(mile.getWorkBreakdownParent().asInstanceOf[Entity]){ WBP=>
+			<a
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
+				Breakdown Parent</a> }
+		</h4>
+	</div>
+	}
+</div>
+
+
+
 }
