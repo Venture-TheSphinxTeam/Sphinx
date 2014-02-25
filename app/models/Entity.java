@@ -17,7 +17,7 @@ import uk.co.panaxiom.playjongo.PlayJongo;
 public class Entity {
 
     public Entity(){
-        allowedAccessUsers = new ArrayList<String>();
+    	this.allowedAccessUsers = new ArrayList<String>();
     }
 
     protected String entityId;
@@ -172,7 +172,12 @@ public class Entity {
     }
 
     public void setAllowedAccessUsers(List<String> allowedAccessUsers) {
-        this.allowedAccessUsers = allowedAccessUsers;
+    	if(allowedAccessUsers == null){
+    		this.allowedAccessUsers = new ArrayList<String>();
+    	}
+    	else{
+    		this.allowedAccessUsers = allowedAccessUsers;
+    	}
     }
     
 }
