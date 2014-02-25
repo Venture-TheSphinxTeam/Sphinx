@@ -15,7 +15,7 @@ import uk.co.panaxiom.playjongo.PlayJongo;
 /**
  * Created by Stephen Yingling on 2/4/14.
  */
-public class Event {
+public class Event implements Comparable<Event> {
 
     public Event(){}
 
@@ -82,6 +82,9 @@ public class Event {
     	List<Event> result = new ArrayList<Event>();
     	
     	User user = User.findByName(username); 
+        if(user == null){
+            return result.iterator();
+        }
     	List<String> initIdList = user.getInitiativeSubscriptions();
     	List<String> mileIdList = user.getMilestoneSubscriptions();
     	List<String> riskIdList = user.getRiskSubscriptions();
@@ -196,5 +199,11 @@ public class Event {
 		else{
 			return entity.getUpdated();
 		}
+	}
+
+	@Override
+	public int compareTo(Event e) {
+		
+		return this.getDate().compareTo(e.getDate()); 
 	}
 }

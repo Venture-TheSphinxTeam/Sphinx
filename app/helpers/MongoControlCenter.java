@@ -2,8 +2,11 @@ package helpers;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import views.html.initiative;
 
 import models.Entity;
 import models.Event;
@@ -68,24 +71,9 @@ public class MongoControlCenter {
 		mongoClient.close();
 	}
 
-	public Object getInitiativeById(String entityId) {
+	public Initiative getInitiativeById(String entityId) {
 
-		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
-
-		DBCursor cursor = initiatives.find(entityIdQuery);
-
-		DBObject temp = new BasicDBObject();
-
-		try {
-			while (cursor.hasNext()) {
-				temp = cursor.next();
-			}
-		} finally {
-			cursor.close();
-		}
-
-		return temp;
-
+		return Initiative.getFirstInitiativeById(entityId);
 	}
 
 	/**
@@ -94,22 +82,8 @@ public class MongoControlCenter {
 	 * @param entityId
 	 * @return entity object
 	 */
-	public Object getMilestoneById(String entityId) {
-		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
-
-		DBCursor cursor = milestones.find(entityIdQuery);
-
-		DBObject temp = new BasicDBObject();
-
-		try {
-			while (cursor.hasNext()) {
-				temp = cursor.next();
-			}
-		} finally {
-			cursor.close();
-		}
-
-		return temp;
+	public Milestone getMilestoneById(String entityId) {
+		return Milestone.getFirstWithId(entityId);
 	}
 
 	/**
@@ -118,98 +92,99 @@ public class MongoControlCenter {
 	 * @param entityId
 	 * @return an entity object
 	 */
-	public Object getRiskById(String entityId) {
-		BasicDBObject entityIdQuery = new BasicDBObject("entityId", entityId);
+	public Risk getRiskById(String entityId) {
 
-		DBCursor cursor = risks.find(entityIdQuery);
-
-		DBObject temp = new BasicDBObject();
-
-		try {
-			while (cursor.hasNext()) {
-				temp = cursor.next();
-			}
-		} finally {
-			cursor.close();
-		}
-
-		return temp;
+		return Risk.getFirstWithId(entityId);
 	}
-	
-	
-	public ArrayList<Event> getSingleEventsForUser(String user){
+
+	public ArrayList<Event> getSingleEventsForUser(String user) {
 		ArrayList<Event> result;
-		
-		String userQuery = "$or: [{assignee: \"" + user +
-				"\"}, {watchers: \"" + user + "\"},{reporter: \"" + user 
-				+ "\"},{ businessOwner: \"" + user +"\"}]";
-		
+
+		String userQuery = "$or: [{assignee: \"" + user + "\"}, {watchers: \""
+				+ user + "\"},{reporter: \"" + user + "\"},{ businessOwner: \""
+				+ user + "\"}]";
+
 		result = getEventsForQueriedEntities(userQuery);
-		
-		
+
 		return result;
 	}
-	
-	public ArrayList<Event> getOrganizationEventsForUser(String username){
+
+	public ArrayList<Event> getOrganizationEventsForUser(String username) {
 		ArrayList<Event> result;
-		
-		String query = "$or:[{allowedAccessUsers:\""+username+"\"},{allowedAccessUsers:{$size: 0}}]";
+
+		String query = "$or:[{allowedAccessUsers:\"" + username
+				+ "\"},{allowedAccessUsers:{$size: 0}}]";
 		result = getEventsForQueriedEntities(query);
-		
+
 		return result;
 	}
-	
-	public ArrayList<Event> getEventsForQueriedEntities(String query){
+
+	public ArrayList<Event> getEventsForQueriedEntities(String query) {
 		ArrayList<Event> result = new ArrayList<Event>();
-		
+
 		Iterator<? extends Entity> entit = Initiative.findBy(query).iterator();
 		ArrayList<String> ids = entityIteratorToIdList(entit);
-		result.addAll( Event.findByIDListAndEntityType(ids, Initiative.TYPE_STRING));
-		
+		result.addAll(Event.findByIDListAndEntityType(ids,
+				Initiative.TYPE_STRING));
+
 		entit = Milestone.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids, Milestone.TYPE_STRING));
-		
+		result.addAll(Event.findByIDListAndEntityType(ids,
+				Milestone.TYPE_STRING));
+
 		entit = Risk.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
 		result.addAll(Event.findByIDListAndEntityType(ids, Risk.TYPE_STRING));
-		
+
+		long unixTime = System.currentTimeMillis() / 1000L;
+		long threeMonths = 7776000L;
+		Iterator<Event> iEvent = result.iterator();
+
+		/**
+		 * Code for filtering out non-relevant events. Will uncomment when can
+		 * test. while (iEvent.hasNext()) { if (iEvent.next().getDateAsLong() <=
+		 * (unixTime - threeMonths)) { iEvent.remove();
+		 * 
+		 * } }
+		 **/
+
+		Collections.sort(result);
 		return result;
 	}
-	
-	private ArrayList<String> entityIteratorToIdList(Iterator<? extends Entity> it){
+
+	private ArrayList<String> entityIteratorToIdList(
+			Iterator<? extends Entity> it) {
 		ArrayList<String> result = new ArrayList<String>();
-		
-		while(it.hasNext()){
+
+		while (it.hasNext()) {
 			result.add(it.next().getEntityId());
 		}
-		
+
 		return result;
 	}
-	
-	
-	public ArrayList<Event> getTeamEventsForUser(String username){
+
+	public ArrayList<Event> getTeamEventsForUser(String username) {
 		ArrayList<Event> result;
-		
+
 		User user = User.findByName(username);
-		
-		if(user == null){
+
+		if (user == null) {
 			return new ArrayList<Event>();
 		}
-		
+
 		List<String> groupList = user.getGroups();
-		if(groupList == null){
+		if (groupList == null) {
 			return new ArrayList<Event>();
 		}
 		String groups = Event.listToMongoString(groupList);
-		
-		String query = "$or: [{businessGroups: {$in: " + groups +
-			"}}, {providerGroups: {$in: " + groups + "}}]";
-		
+
+		String query = "$or: [{businessGroups: {$in: " + groups
+				+ "}}, {providerGroups: {$in: " + groups + "}}]";
+
 		result = getEventsForQueriedEntities(query);
-		
+
 		return result;
-		
+
 	}
 
 	/**
@@ -229,11 +204,6 @@ public class MongoControlCenter {
 				// does this work because watchers is a list?
 				.or(new BasicDBObject("reporter", user))
 				.or(new BasicDBObject("businessOwner", user)).get();
-		
-		
-		
-		
-				
 
 		/* ------------- Get Results --------------- */
 
@@ -359,7 +329,8 @@ public class MongoControlCenter {
 
 		DBObject baseQuery = new QueryBuilder()
 				.or(new BasicDBObject("allowedAccessUsers", user))
-				.or(new BasicDBObject("allowedAccessUsers", new BasicDBObject("$size", 0))).get();
+				.or(new BasicDBObject("allowedAccessUsers", new BasicDBObject(
+						"$size", 0))).get();
 
 		/* ------------- Get Results --------------- */
 
@@ -381,7 +352,7 @@ public class MongoControlCenter {
 
 		queryCursor = risks.find(baseQuery);
 		setIdsFromQueryResults(queryCursor);
-		
+
 		eventQuery = new BasicDBObject("entity.entityId", new BasicDBObject(
 				"$in", ids));
 
@@ -406,8 +377,6 @@ public class MongoControlCenter {
 		return results.toArray();
 	}
 
-	
-
 	@SuppressWarnings("unchecked")
 	public Integer getUserRefreshRate(String user) {
 
@@ -415,22 +384,23 @@ public class MongoControlCenter {
 		DBCursor cursor = users.find(refreshRateQuery);
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
-		
+
 		try {
 			while (cursor.hasNext()) {
 				temp.add((Integer) cursor.next().get("updateFrequency"));
-				
+
 			}
 		} finally {
 			cursor.close();
 		}
-		
-		if(temp.size() != 1){
+
+		if (temp.size() != 1) {
 			temp.add(0, null);
 		}
 		return temp.get(0);
 
 	}
+
 	/*
 	 * -----------Helper Functions--------------
 	 */

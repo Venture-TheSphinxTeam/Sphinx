@@ -45,6 +45,10 @@ public class Milestone extends Entity{
     public Milestone getFirstWithKey(String key){
         return milestones().findOne("{key: #",key).as(Milestone.class);
     }
+    
+    public static Milestone getFirstWithId(String id){
+        return milestones().findOne("{entityId: #}",id).as(Milestone.class);
+    }
 
 
     public Milestone() {}

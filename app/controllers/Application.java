@@ -8,7 +8,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import models.Entity;
 import models.Event;
+import models.Initiative;
+import models.Milestone;
+import models.Risk;
 import akka.actor.FSM.Timer;
 
 import com.mongodb.BasicDBObject;
@@ -81,21 +85,47 @@ public class Application extends Controller {
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
 		// user name
 
-		//Object[] userEntities = control.getEventsForUser("jay-z");
-		ArrayList<Event> userEvents= control.getSingleEventsForUser("jay-z");
+		// Object[] userEntities = control.getEventsForUser("jay-z");
+		ArrayList<Event> userEvents = control.getSingleEventsForUser("jay-z");
 		ArrayList<Event> teamEntities = control.getTeamEventsForUser("jay-z");
-		ArrayList<Event> orgEntities = control.getOrganizationEventsForUser("jay-z");
-		Iterator<? extends models.Event> subscribedEvents = models.Event.getSubscribedEventsForUser("jay-z");
+		ArrayList<Event> orgEntities = control
+				.getOrganizationEventsForUser("jay-z");
+		Iterator<? extends models.Event> subscribedEvents = models.Event
+				.getSubscribedEventsForUser("jay-z");
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();
 
-		return ok(index.render(userEvents, teamEntities, orgEntities,
-				USERNAME, subscribedEvents));
+		return ok(index.render(userEvents, teamEntities, orgEntities, USERNAME,
+				subscribedEvents));
 	}
 
 	public static Result search() {
-		return ok(search.render());
+		ArrayList<Entity> defaultResult = new ArrayList<Entity>();
+
+		Iterator<? extends Entity> initIter = Initiative.findBy(
+				"$or:[{allowedAccessUsers:\"" + USERNAME
+						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
+		while (initIter.hasNext()) {
+			defaultResult.add(initIter.next());
+		}
+
+		Iterator<? extends Entity> mileIter = Milestone.findBy(
+				"$or:[{allowedAccessUsers:\"" + USERNAME
+						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
+		while (mileIter.hasNext()) {
+			defaultResult.add(mileIter.next());
+		}
+
+		Iterator<? extends Entity> riskIter = Risk.findBy(
+				"$or:[{allowedAccessUsers:\"" + USERNAME
+						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
+
+		while (riskIter.hasNext()) {
+			defaultResult.add(riskIter.next());
+		}
+
+		return ok(search.render(defaultResult));
 	}
 
 	public static Result subscriptions() {
@@ -118,14 +148,11 @@ public class Application extends Controller {
 		control.setDatabase("dev");
 
 		if (type.equals("INITIATIVE")) {
-			BasicDBObject entity_Initiative = (BasicDBObject) control
-					.getInitiativeById(arg);
+			Initiative entity_Initiative = control.getInitiativeById(arg);
 
-			if (((com.mongodb.BasicDBList) (entity_Initiative
-					.get("allowedAccessUsers"))).contains("jay-z")
-					|| ((com.mongodb.BasicDBList) (entity_Initiative
-							.get("allowedAccessUsers"))).isEmpty()) {
-
+			if (((entity_Initiative.getAllowedAccessUsers().contains("jay-z") || ((entity_Initiative
+					.getAllowedAccessUsers().isEmpty()))))) {
+				
 				return ok(initiative.render(entity_Initiative, USERNAME));
 			} else {
 				return ok(accessError.render());
@@ -134,13 +161,10 @@ public class Application extends Controller {
 		}
 
 		else if (type.equals("MILESTONE")) {
-			BasicDBObject entity_Milestone = (BasicDBObject) control
-					.getMilestoneById(arg);
+			Milestone entity_Milestone = control.getMilestoneById(arg);
 
-			if (((com.mongodb.BasicDBList) (entity_Milestone
-					.get("allowedAccessUsers"))).contains("jay-z")
-					|| ((com.mongodb.BasicDBList) (entity_Milestone
-							.get("allowedAccessUsers"))).isEmpty()) {
+			if (((entity_Milestone.getAllowedAccessUsers()).contains("jay-z") || ((entity_Milestone
+					.getAllowedAccessUsers().isEmpty())))) {
 
 				return ok(milestone.render(entity_Milestone, USERNAME));
 			}
@@ -151,13 +175,10 @@ public class Application extends Controller {
 		}
 
 		else {
-			BasicDBObject entity_Risk = (BasicDBObject) control
-					.getRiskById(arg);
+			Risk entity_Risk = control.getRiskById(arg);
 
-			if (((com.mongodb.BasicDBList) (entity_Risk
-					.get("allowedAccessUsers"))).contains("jay-z")
-					|| ((com.mongodb.BasicDBList) (entity_Risk
-							.get("allowedAccessUsers"))).isEmpty()) {
+			if (((entity_Risk.getAllowedAccessUsers()).contains("jay-z") || ((entity_Risk
+					.getAllowedAccessUsers())).isEmpty())) {
 
 				return ok(risk.render(entity_Risk, USERNAME));
 			}
