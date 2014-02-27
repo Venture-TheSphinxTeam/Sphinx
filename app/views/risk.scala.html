@@ -1,0 +1,94 @@
+@(risk: Risk)(username: String) 
+@main("Sphinx: Connecting Projects to People")("") {
+<div class="thumbnail">
+	@defining(risk.asInstanceOf[Risk]){ ri=>
+	<div class="entityStateButtons" align="right">
+
+		<!-- SUBSCRIBE BUTTON -->
+		<button 
+			title="Subscribe/Unsubscribe"
+			name='subscription_b-@ri.getEntityType()-@ri.getEntityId()'
+			type="button" 
+			class="" 
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@ri.getEntityType()', '@ri.getEntityId()', '@username', 'subscription' )">
+
+			<span class="glyphicon glyphicon-heart"
+				title="Subscribe/Unsubscribe"></span>
+
+		</button>
+
+		<!-- VOTE BUTTON -->
+		<button 
+			title="Vote/Unvote"
+			name='vote_b-@ri.getEntityType()-@ri.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
+			data-toggle="button">
+
+			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+
+		</button>
+
+		<!-- WATCH BUTTON -->
+		<button 
+			title="Watch/Unwatch"
+			name='watch_b-@ri.getEntityType()-@ri.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
+			data-toggle="button">
+
+			<span class="glyphicon glyphicon-eye-open"
+				title="Watch/Unwatch"></span>
+
+		</button>
+
+		<script>
+			setStatusOfAllButtons(
+					'@ri.getEntityType()',
+					'@ri.getEntityId()',
+					'@username')
+		</script>
+
+	</div>
+	<div>
+		<h1>Key: @ri.getKey()</h1>
+
+		<h2>
+			Entity Type: @ri.getEntityType() <br /> Labels: @ri.getLabels()
+
+		</h2>
+
+		<h4>
+			Assignee: @ri.getAssignee() <br /> Reporter: @ri.getReporter() <br />
+			Watchers: @ri.getWatchers()
+		</h4>
+
+		<h4>
+			Risk Impact: @ri.getRiskImpact() <br /> Risk Likelihood:
+			@ri.getRiskLikelihood() <br /> Risk Response Plan:
+			@ri.getRiskResponsePlan() <br /> Risk Response Strategy:
+			@ri.getRiskResponseStrategy() <br /> Risk Types: @ri.getRiskTypes()
+		</h4>
+
+		<h4>
+			Priority: @ri.getPriority() <br /> Status: @ri.getStatus()
+		</h4>
+
+		<h4>
+			Created: @{new Date(ri.getCreated())} <br /> Due Date: @{new
+			Date(ri.getDueDate())} <br /> Updated: @{new Date(ri.getUpdated())}
+		</h4>
+
+		<h4>
+			@defining(ri.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
+				Breakdown Parent</a> }
+		</h4>
+	</div>
+	}
+</div>
+
+
+
+}

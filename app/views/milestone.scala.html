@@ -1,0 +1,102 @@
+@(milestone: Milestone)(username: String) 
+@main("Sphinx: Connecting Projects to People")("") {
+<div class="thumbnail">
+	@defining(milestone.asInstanceOf[Milestone]){ mile=>
+	<div class="entityStateButtons" align="right">
+
+		<!-- SUBSCRIBE BUTTON -->
+		<button 
+			title="Subscribe/Unsubscribe"
+			name='subscription_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="" 
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@mile.getEntityType()', '@mile.getEntityId()', '@username', 'subscription' )">
+
+			<span class="glyphicon glyphicon-heart"
+				title="Subscribe/Unsubscribe"></span>
+
+		</button>
+
+		<!-- VOTE BUTTON -->
+		<button 
+			title="Vote/Unvote"
+			name='vote_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
+			data-toggle="button">
+
+			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+
+		</button>
+
+		<!-- WATCH BUTTON -->
+		<button 
+			title="Watch/Unwatch"
+			name='watch_b-@mile.getEntityType()-@mile.getEntityId()'
+			type="button" 
+			class="btn btn-primary" 
+			data-toggle="button">
+
+			<span class="glyphicon glyphicon-eye-open"
+				title="Watch/Unwatch"></span>
+
+		</button>
+
+		<script>
+			setStatusOfAllButtons(
+					'@mile.getEntityType()',
+					'@mile.getEntityId()',
+					'@username')
+		</script>
+
+	</div>
+	<div>
+		<h1>
+			Key: @mile.getKey() <br /> Summary: @mile.getSummary()
+		</h1>
+
+		<h2>Description: @mile.getDescription()</h2>
+
+		<h3>
+			Entity Type: @mile.getEntityType() <br> Labels:
+			@mile.getLabels() <br />
+		</h3>
+		<br />
+
+		<h4>
+			Assignee: @mile.getAssignee() <br /> Reporter: @mile.getReporter() <br />
+			Watchers: @mile.getWatchers()
+		</h4>
+
+
+		<h4>
+			Priority: @mile.getPriority() <br /> Status: @mile.getStatus() <br />
+			Health: @mile.getHealth()
+		</h4>
+
+
+		<h4>
+			Created: @{new Date(mile.getCreated())} <br /> Start Date: @{new
+			Date(mile.getStartDate())} <br /> Desired Due Date: @{new
+			Date(mile.getDesiredDueDate())} <br /> Desired Start Date: @{new
+			Date(mile.getDesiredStartDate())} <br /> Due Date: @{new
+			Date(mile.getDueDate())} <br /> Updated: @{new
+			Date(mile.getUpdated())}
+		</h4>
+
+		<h4>Verification Steps: @mile.getVerificationSteps()</h4>
+
+		<h4>
+			@defining(mile.getWorkBreakdownParent().asInstanceOf[Entity]){ WBP=>
+			<a
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
+				Breakdown Parent</a> }
+		</h4>
+	</div>
+	}
+</div>
+
+
+
+}

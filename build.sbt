@@ -2,6 +2,8 @@ name := "sphinx"
 
 version := "1.0-SNAPSHOT"
 
+dependencyOverrides += "org.glassfish.hk2" % "hk2-utils" % "2.2.0-b21"
+
 libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,
@@ -13,10 +15,8 @@ libraryDependencies ++= Seq(
   "org.mongodb" % "mongo-java-driver" % "2.11.3",
   "org.jongo" % "jongo" % "0.4",
   "uk.co.panaxiom" %% "play-jongo" % "0.6.0-jongo0.4",
-  "org.glassfish.jersey.core" % "jersey-client" % "2.4",
-  "org.glassfish.jersey.core" % "jersey-common" % "2.4",
-  "org.glassfish.jersey.core" % "jersey-server" % "2.4",
-  "org.glassfish.jersey.containers" % "jersey-container-jdk-http" % "2.4"
+  "javax.ws.rs" % "javax.ws.rs-api" % "2.0"
 )     
+
 
 play.Project.playJavaSettings
