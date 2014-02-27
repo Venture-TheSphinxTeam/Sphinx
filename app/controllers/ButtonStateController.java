@@ -32,6 +32,11 @@ public class ButtonStateController extends Controller{
 
 		if( buttonType == "subscription"){
 			result.put("status",UpdateSubscriptionStatus(user,entityId,entityType));
+		}  // TODO: Test else if and else
+		else if( buttonType == "watch" ){
+			result.put("status",UpdateWatchStatus(user,entityId,entityType));
+		}else{
+			result.put("status",UpdateVoteStatus(user,entityId,entityType));
 		}
 		
 		return ok(result);
@@ -55,7 +60,14 @@ public class ButtonStateController extends Controller{
 		// create return object
 		ObjectNode result = Json.newObject();
 
-		result.put("status", User.doesUserSubscribeToEntity(user, entityId, entityType ) );
+		if( buttonType == "subscription"){
+			result.put("status",User.doesUserSubscribeToEntity(user, entityId, entityType ));
+		}  // TODO: Test else if and else
+		else if( buttonType == "watch" ){
+			result.put("status",User.doesUserWatchEntity(user, entityId, entityType ));
+		}else{
+			result.put("status",User.doesUserVoteForEntity(user, entityId, entityType ));
+		}
 
 		return ok(result);
 	}
@@ -72,6 +84,38 @@ public class ButtonStateController extends Controller{
 		}
 		else{
 			User.setUserEntitySubscriptionStatus(true, user, entityId, entityType);
+			retVal = true;
+		}
+
+		return retVal;
+	}
+
+	private static boolean UpdateVoteStatus(User user, String entityId, String entityType){
+		boolean retVal;
+
+		// swap vote status
+		if( User.doesUserVoteForEntity(user, entityId, entityType )){
+			User.setUserEntityVoteStatus(false, user, entityId, entityType);
+			retVal = false;
+		}
+		else{
+			User.setUserEntityVoteStatus(true, user, entityId, entityType);
+			retVal = true;
+		}
+
+		return retVal;
+	}
+
+	private static boolean UpdateWatchStatus(User user, String entityId, String entityType){
+		boolean retVal;
+
+		// swap watch status
+		if( User.doesUserWatchEntity(user, entityId, entityType )){
+			User.setUserEntityWatchStatus(false, user, entityId, entityType);
+			retVal = false;
+		}
+		else{
+			User.setUserEntityWatchStatus(true, user, entityId, entityType);
 			retVal = true;
 		}
 
