@@ -1,14 +1,22 @@
 package controllers;
 
+import java.net.ConnectException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import helpers.JSONParser;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+
+import models.EventCollection;
+import play.Play;
+import models.EntityCollection;
 
 public class Ingester {
         protected Client client;
@@ -55,8 +63,6 @@ public class Ingester {
 	  return null;
 	}
 
-
-
         public String getMessageFromTarget(String target){
           WebTarget t = client.target(target);
 
@@ -66,6 +72,42 @@ public class Ingester {
 
 	  return r.readEntity(String.class);
 	}
+        
+    public EntityCollection getEntitiesSince(Date date) throws ProcessingException{
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	WebTarget target = client.target(Play.application().configuration().getString("external.json.source")+
+    			"/entity/"+format.format(date));
+    	Invocation.Builder ib = target.request();
+    	Response r  = null;
+    	try{
+    	r = ib.get();
+    	}catch(ProcessingException e){
+    		//TODO: Logging
+    		throw e;
+    	}
+    	
+    	JSONParser j = new JSONParser();
+    	
+    	return j.extractEntities(r.readEntity(String.class));
+    }
+
+    public EventCollection getEventsSince(Date date) throws ProcessingException{
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        WebTarget target = client.target(Play.application().configuration().getString("external.json.source") +
+                "/event/"+ format.format(date));
+        Invocation.Builder ib = target.request();
+        Response r = null;
+        try{
+        r = ib.get();
+        }catch (ProcessingException e){
+        	//TODO: Logging
+        	throw e;
+        }
+
+        JSONParser j = new JSONParser();
+
+        return j.extractEvents(r.readEntity(String.class));
+    }
 
 
 	public void getStuff(){
@@ -79,9 +121,9 @@ public class Ingester {
 		//System.out.println(r.readEntity(String.class));
 		
 		JSONParser j = new JSONParser();
-		ArrayList<String> k = j.extractEntities(r.readEntity(String.class));
+		EntityCollection entities= j.extractEntities(r.readEntity(String.class));
 		
-		System.out.println(k.get(0));
+		
 		
 	}
 }

@@ -7,6 +7,19 @@ GET     /                           controllers.Application.index()
 GET     /search						controllers.Application.search()
 GET		/subscriptions				controllers.Application.subscriptions()
 GET		/admin-tools				controllers.Application.adminTools()
+GET		/user-settings				controllers.Application.userSettings()
+GET		/entity					    controllers.Application.entityView(arg: String ?= "", entityType: String ?= "")
+GET     /webbysockets               controllers.Application.webbysockets()
+
+#Admin Tools
+POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
+
+#Logic in progress TODO
+POST		/updateButtonStatus			controllers.ButtonStateController.UpdateButtonStatus()
+POST		/getButtonStatus			controllers.ButtonStateController.GetButtonStatus()
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+
