@@ -23,8 +23,9 @@
 			title="Vote/Unvote"
 			name='vote_b-@mile.getEntityType()-@mile.getEntityId()'
 			type="button" 
-			class="btn btn-primary" 
-			data-toggle="button">
+			class="" 
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@mile.getEntityType()', '@mile.getEntityId()', '@username', 'vote' )">
 
 			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
 

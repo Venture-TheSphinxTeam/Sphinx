@@ -18,10 +18,7 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-			
-			// update all buttons of buttenType on the page
 			updateButtonsOnPage(entityType,entityId,data['status'], buttonType);
-
 		}
 	})
 
@@ -32,7 +29,7 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
  */
 function setStatusOfAllButtons(entityType,entityId,username){
 	setStatusOfButtons(entityType,entityId,username,"subscription");
-	//setStatusOfButtons(entityType,entityId,username,buttonType);
+	setStatusOfButtons(entityType,entityId,username,"vote");
 	//setStatusOfButtons(entityType,entityId,username,buttonType);
 }
 
@@ -56,18 +53,12 @@ function setStatusOfButtons(entityType,entityId,username,buttonType){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-			// update all buttons of buttenType on the page
 			updateButtonsOnPage(entityType,entityId,data['status'], buttonType);
 		}
 	})
 }
 
 //-------------------SUBFUNCTIONS-----------------------//
-
-/**
- *
- */
-
 
 /**
  *  Update all buttons of buttonType related to that entityType-entityid
