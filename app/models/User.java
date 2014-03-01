@@ -248,7 +248,8 @@ public class User {
     }
 
     public void setUpdateFrequency(int updateFrequency) {
-        this.updateFrequency = updateFrequency;
+    	this.updateFrequency = updateFrequency;
+        users().save(this);
     }
 }
 

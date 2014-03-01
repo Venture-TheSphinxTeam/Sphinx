@@ -6,19 +6,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])
 
 
 <script type="text/javascript">
-	var socket = new WebSocket("ws://" + location.host + "/webbysockets");
-	var refesh_rate = 0;
 
-	socket.onopen = function() {
-		socket.send("username");
-	}
-
-	socket.onmessage = function(message) {
-		refresh_rate = message.data;
-		setTimeout(function() {
-			window.location.reload()
-		}, refresh_rate);
-	}
 </script>
 
 
@@ -389,25 +377,55 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])
    </script>
    -->
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('#page_container').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
+   var socket = new WebSocket("ws://" + location.host + "/webbysockets");
+   var refesh_rate;
 
-	$(document).ready(function() {
-		$('#page_container2').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
+   socket.onopen = function(){  
+     socket.send("username");
+   } 
 
-	$(document).ready(function() {
-		$('#page_container3').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
+   socket.onmessage = function(message){
+    refresh_rate = message.data;
+    setTimeout(function() {
+       		$("#refresh_id").load("/ #areaTabs", function(){
+       			page_tabs();
+       		});
+       		
+       		
+    }, refresh_rate);
+   }
+   
+   function page_tabs(){
+   $('#page_container').pajinate({
+         items_per_page : 3,
+         abort_on_small_lists: true
+      });
+      
+      $('#page_container2').pajinate({
+         items_per_page : 3,
+         abort_on_small_lists: true
+      });
+      
+      $('#page_container3').pajinate({
+         items_per_page : 3,
+         abort_on_small_lists: true
+      });
+	
+	$('#page_container4').pajinate({
+         items_per_page : 3,
+         abort_on_small_lists: true
+      });
+
+
+	}   
+	
+   $(document).ready(function(){
+      page_tabs();
+   });
+   
+   
+
+  
+   
 </script>
 }

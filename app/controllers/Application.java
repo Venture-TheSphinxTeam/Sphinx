@@ -137,7 +137,7 @@ public class Application extends Controller {
 	}
 
 	public static Result userSettings() {
-		return ok(settings.render());
+		return ok(settings.render("", UserSettingsController.intervalForm));
 	}
 
 	public static Result entityView(String arg, String type)
