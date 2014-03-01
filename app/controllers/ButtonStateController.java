@@ -32,11 +32,15 @@ public class ButtonStateController extends Controller{
 
 		if( buttonType.equals("subscription") ) {
 			result.put("status",UpdateSubscriptionStatus(user,entityId,entityType));
-		}  // TODO: Test else if and else
+		}  
 		else if( buttonType.equals("watch") ){
 			result.put("status",UpdateWatchStatus(user,entityId,entityType));
-		}else{
+		}
+		else if( buttonType.equals("vote") ){
 			result.put("status",UpdateVoteStatus(user,entityId,entityType));
+		}
+		else{
+			result.put("status","");
 		}
 		
 		return ok(result);
@@ -57,18 +61,19 @@ public class ButtonStateController extends Controller{
 		
 		User user = User.findByName(username);
 
-		// create return object
 		ObjectNode result = Json.newObject();
-
-		System.out.println("This is the buttonType I got: " + buttonType);
 
 		if( buttonType.equals("subscription") ){
 			result.put("status",User.doesUserSubscribeToEntity(user, entityId, entityType ));
-		}  // TODO: Test else if and else
+		}  
 		else if( buttonType.equals("watch") ){
 			result.put("status",User.doesUserWatchEntity(user, entityId, entityType ));
-		}else{
+		}
+		else if( buttonType.equals("vote") ){
 			result.put("status",User.doesUserVoteForEntity(user, entityId, entityType ));
+		}
+		else{
+			result.put("status","");
 		}
 
 		return ok(result);
