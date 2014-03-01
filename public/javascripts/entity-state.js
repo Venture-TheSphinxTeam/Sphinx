@@ -10,17 +10,6 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 				 'buttonType': buttonType };
 
 	var url = "/updateButtonStatus";
-	// set url to post data to ie. to subscribe, vote or watch
-	/**var url;
-	if( buttonType.toLowerCase() == 'subscription'){
-		url = "/updateSubscription";
-	}
-	else if(  buttonType.toLowerCase() == 'watch'){
-		//url = "/updateWatch"
-	}
-	else{	// vote
-		//url = "/updateVote"
-	}*/
 
 	$.ajax({
 		type: "POST",
@@ -58,8 +47,6 @@ function setStatusOfButtons(entityType,entityId,username,buttonType){
 				 'buttonType': buttonType };
 
 	var url = '/getButtonStatus';
-
-	alert(buttonType);
 
 	//Need to get a hole of the button element itself.//
 	$.ajax({
