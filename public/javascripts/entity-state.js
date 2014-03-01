@@ -30,7 +30,7 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 function setStatusOfAllButtons(entityType,entityId,username){
 	setStatusOfButtons(entityType,entityId,username,"subscription");
 	setStatusOfButtons(entityType,entityId,username,"vote");
-	//setStatusOfButtons(entityType,entityId,username,buttonType);
+	setStatusOfButtons(entityType,entityId,username,"watch");
 }
 
 /**

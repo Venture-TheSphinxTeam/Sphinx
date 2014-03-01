@@ -36,8 +36,9 @@
 			title="Watch/Unwatch"
 			name='watch_b-@mile.getEntityType()-@mile.getEntityId()'
 			type="button" 
-			class="btn btn-primary" 
-			data-toggle="button">
+			class="" 
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@mile.getEntityType()', '@mile.getEntityId()', '@username', 'watch' )">
 
 			<span class="glyphicon glyphicon-eye-open"
 				title="Watch/Unwatch"></span>
