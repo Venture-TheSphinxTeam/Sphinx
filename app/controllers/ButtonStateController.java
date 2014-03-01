@@ -30,10 +30,10 @@ public class ButtonStateController extends Controller{
 		// create return object
 		ObjectNode result = Json.newObject();
 
-		if( buttonType == "subscription"){
+		if( buttonType.equals("subscription") ) {
 			result.put("status",UpdateSubscriptionStatus(user,entityId,entityType));
 		}  // TODO: Test else if and else
-		else if( buttonType == "watch" ){
+		else if( buttonType.equals("watch") ){
 			result.put("status",UpdateWatchStatus(user,entityId,entityType));
 		}else{
 			result.put("status",UpdateVoteStatus(user,entityId,entityType));
@@ -60,10 +60,12 @@ public class ButtonStateController extends Controller{
 		// create return object
 		ObjectNode result = Json.newObject();
 
-		if( buttonType == "subscription"){
+		System.out.println("This is the buttonType I got: " + buttonType);
+
+		if( buttonType.equals("subscription") ){
 			result.put("status",User.doesUserSubscribeToEntity(user, entityId, entityType ));
 		}  // TODO: Test else if and else
-		else if( buttonType == "watch" ){
+		else if( buttonType.equals("watch") ){
 			result.put("status",User.doesUserWatchEntity(user, entityId, entityType ));
 		}else{
 			result.put("status",User.doesUserVoteForEntity(user, entityId, entityType ));

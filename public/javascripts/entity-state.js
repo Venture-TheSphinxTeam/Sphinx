@@ -10,17 +10,6 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 				 'buttonType': buttonType };
 
 	var url = "/updateButtonStatus";
-	// set url to post data to ie. to subscribe, vote or watch
-	/**var url;
-	if( buttonType.toLowerCase() == 'subscription'){
-		url = "/updateSubscription";
-	}
-	else if(  buttonType.toLowerCase() == 'watch'){
-		//url = "/updateWatch"
-	}
-	else{	// vote
-		//url = "/updateVote"
-	}*/
 
 	$.ajax({
 		type: "POST",
@@ -42,7 +31,7 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
  * Gets and updates status of all buttons of entityType-entityId on the page
  */
 function setStatusOfAllButtons(entityType,entityId,username){
-	setStatusOfButtons(entityType,entityId,username,'subscription');
+	setStatusOfButtons(entityType,entityId,username,"subscription");
 	//setStatusOfButtons(entityType,entityId,username,buttonType);
 	//setStatusOfButtons(entityType,entityId,username,buttonType);
 }
@@ -58,17 +47,6 @@ function setStatusOfButtons(entityType,entityId,username,buttonType){
 				 'buttonType': buttonType };
 
 	var url = '/getButtonStatus';
-	// set url to post data to ie. to subscribe, vote or watch
-	/*var url;
-	if( buttonType.toLowerCase() == 'subscription'){
-		url = "/getSubscriptionStatus";
-	}
-	else if(  buttonType.toLowerCase() == 'watch'){
-		//url = "/getWatchStatus"
-	}
-	else{	// vote
-		//url = "/getVoteStatus"
-	}*/
 
 	//Need to get a hole of the button element itself.//
 	$.ajax({
@@ -79,9 +57,7 @@ function setStatusOfButtons(entityType,entityId,username,buttonType){
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
 			// update all buttons of buttenType on the page
-			updateButtonsOnPage(entityType,entityId,data['status'], "subscription");
-			//updateButtonsOnPage(entityType,entityId,data['status'], "vote");
-			//updateButtonsOnPage(entityType,entityId,data['status'], "watch");
+			updateButtonsOnPage(entityType,entityId,data['status'], buttonType);
 		}
 	})
 }

@@ -24,7 +24,7 @@ import views.html.*;
 import views.html.defaultpages.error;
 
 public class Application extends Controller {
-	public static final String USERNAME = "RickyWinterborn";
+	public static final String USERNAME = "jay-z";
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {
@@ -47,7 +47,7 @@ public class Application extends Controller {
 
 						// find current user
 						userRate = control
-								.getUserRefreshRate("RickyWinterborn");
+								.getUserRefreshRate(USERNAME);
 
 						control.closeConnection();
 
