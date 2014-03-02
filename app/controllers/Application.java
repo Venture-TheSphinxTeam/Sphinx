@@ -112,9 +112,8 @@ public class Application extends Controller {
 		}
 
 		else {
-			result = control.getEntitiesByQuery("summary:" + "{\"" + "$regex\""
-					+ ":" + "\"" + regex + "\"" + "," + "\"" + "$options\""
-					+ ":" + "\"" + "i" + "\"" + "}");
+			result = control.getEntitiesByQuery(control.createRegexQuery(
+					"summary", regex));
 		}
 
 		return ok(search.render(result));
@@ -183,4 +182,5 @@ public class Application extends Controller {
 		}
 
 	}
+
 }

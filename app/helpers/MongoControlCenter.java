@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import views.html.initiative;
-
 import models.Entity;
 import models.Event;
 import models.Initiative;
@@ -462,6 +461,11 @@ public class MongoControlCenter {
 
 		return result;
 
+	}
+	
+	public String createRegexQuery(String field, String regex) {
+		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
+				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}";
 	}
 
 }
