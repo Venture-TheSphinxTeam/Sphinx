@@ -1,4 +1,5 @@
 package models;
+import helpers.OutgoingJSON;
 import play.Play;
 
 import javax.ws.rs.client.Client;
@@ -29,35 +30,23 @@ public class Vote {
     
     public Vote(){}
 
-    public boolean sendVote(){
-        String baseUrl = Play.application().configuration().getString("sphinx.external_post_url");
-        baseUrl += "/entity/" + entityType +"/" + entityId +"/vote/" + userName;
+    public Response sendVote(){
+        String voteStrTemp = Play.application().configuration().getString("vote.post_target");
+        voteStrTemp = voteStrTemp.replace(":entityType", entityType);
+        voteStrTemp = voteStrTemp.replace(":entityId", Long.toString(entityId));
+        voteStrTemp = voteStrTemp.replace(":userName", userName);
+        
 
-        return sendVote(baseUrl);
+        return sendVote(voteStrTemp);
     }
 
 
-    public boolean sendVote(String url){
-        boolean sent = false;
-        //String baseUrl = Play.application().configuration().getString("sphinx.external_post_url");
-       // baseUrl += "/entity/" + entityType +"/" + entityId +"/vote/" + userName;
-
-        Client c = ClientBuilder.newClient();
-        WebTarget wt = c.target(url);
-
-        Form voteForm = new Form();
-        voteForm.param("entityType",this.entityType);
-        voteForm.param("Id", Long.toString(this.entityId));
-        voteForm.param("username",this.userName);
+    public Response sendVote(String url){
         
+        OutgoingJSON out = new OutgoingJSON(url, this.JSONRep());
+        Response response = out.sendJson();
         
-
-        Response response = wt.request().post(Entity.json(this.JSONRep()));
-        if(response.getStatus() == 200){
-            sent = true;
-        }
-
-        return sent;
+        return response;
     }
 
     public String getEntityType() {
