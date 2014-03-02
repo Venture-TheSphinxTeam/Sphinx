@@ -1,5 +1,4 @@
-@(userEntities: List[Entity]) 
-@main("Sphinx: Connecting Projects to People")("") {
+@(userEntities: List[Entity]) @main("Sphinx: Connecting Projects to People")("") {
 <div id="page_container" class="pcontainer">
 	<div class="page_navigation"></div>
 	<br />
@@ -7,9 +6,23 @@
 	<ul class="content">
 		@for(entity <- userEntities){
 
-		<li><a
-			href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">@entity.getKey()
-		</a></li> }
+		<li>
+			<div class="thumbnail">
+
+
+				<div>
+					<h3>@entity.getKey()</h3>
+					<h3>@entity.getSummary()</h3>
+					<h4>@entity.getDescription()</h4>
+
+
+					<a class="btn btn-primary btn-sm"
+													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													more &raquo;</a> <br />
+				</div>
+
+			</div>
+		</li> }
 	</ul>
 
 </div>
