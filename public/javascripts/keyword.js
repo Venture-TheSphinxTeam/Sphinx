@@ -4,5 +4,5 @@
 
 function keywordSearch(){
 var patt = document.getElementById("entitySearch").value;
-alert(patt);
+window.location.href = "./search?arg=" + patt;
 }

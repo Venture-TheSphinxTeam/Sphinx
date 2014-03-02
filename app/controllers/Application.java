@@ -46,8 +46,7 @@ public class Application extends Controller {
 						control.setDatabase("dev");
 
 						// find current user
-						userRate = control
-								.getUserRefreshRate(USERNAME);
+						userRate = control.getUserRefreshRate(USERNAME);
 
 						control.closeConnection();
 
@@ -100,32 +99,26 @@ public class Application extends Controller {
 				subscribedEvents));
 	}
 
-	public static Result search() {
-		ArrayList<Entity> defaultResult = new ArrayList<Entity>();
+	public static Result search(String regex) throws UnknownHostException {
+		MongoControlCenter control = new MongoControlCenter(
+				"venture.se.rit.edu", 27017);
+		control.setDatabase("dev");
 
-		Iterator<? extends Entity> initIter = Initiative.findBy(
-				"$or:[{allowedAccessUsers:\"" + USERNAME
-						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
-		while (initIter.hasNext()) {
-			defaultResult.add(initIter.next());
+		ArrayList<Entity> result = new ArrayList<Entity>();
+
+		if (regex == "") {
+			result = control.getEntitiesByQuery("$or:[{allowedAccessUsers:\""
+					+ USERNAME + "\"},{allowedAccessUsers:{$size: 0}}]");
 		}
 
-		Iterator<? extends Entity> mileIter = Milestone.findBy(
-				"$or:[{allowedAccessUsers:\"" + USERNAME
-						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
-		while (mileIter.hasNext()) {
-			defaultResult.add(mileIter.next());
+		else {
+			result = control.getEntitiesByQuery("summary:" + "{\"" + "$regex\""
+					+ ":" + "\"" + regex + "\"" + "," + "\"" + "$options\""
+					+ ":" + "\"" + "i" + "\"" + "}");
 		}
 
-		Iterator<? extends Entity> riskIter = Risk.findBy(
-				"$or:[{allowedAccessUsers:\"" + USERNAME
-						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
+		return ok(search.render(result));
 
-		while (riskIter.hasNext()) {
-			defaultResult.add(riskIter.next());
-		}
-
-		return ok(search.render(defaultResult));
 	}
 
 	public static Result subscriptions() {
@@ -152,7 +145,7 @@ public class Application extends Controller {
 
 			if (((entity_Initiative.getAllowedAccessUsers().contains("jay-z") || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
-				
+
 				return ok(initiative.render(entity_Initiative, USERNAME));
 			} else {
 				return ok(accessError.render());
