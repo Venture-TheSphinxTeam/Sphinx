@@ -9,6 +9,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * Created by Stephen Yingling on 2/27/14.
  */
@@ -23,6 +26,8 @@ public class Vote {
         this.entityType = entityType;
         this.userName = userName;
     }
+    
+    public Vote(){}
 
     public boolean sendVote(){
         String baseUrl = Play.application().configuration().getString("sphinx.external_post_url");
@@ -44,9 +49,10 @@ public class Vote {
         voteForm.param("entityType",this.entityType);
         voteForm.param("Id", Long.toString(this.entityId));
         voteForm.param("username",this.userName);
+        
+        
 
-
-        Response response = wt.request().post(Entity.entity(this, MediaType.APPLICATION_JSON_TYPE));
+        Response response = wt.request().post(Entity.json(this.JSONRep()));
         if(response.getStatus() == 200){
             sent = true;
         }
@@ -78,7 +84,18 @@ public class Vote {
         this.userName = userName;
     }
 
-    public String getJSONRep(){
-        return "{entityType: " + entityType + ", entityId: " + entityId + ", user: " + userName +"}";
+    public String JSONRep(){
+    	
+    	ObjectMapper om = new ObjectMapper();
+    	String result = "";
+    	
+    	try {
+			result = om.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+        return result;
     }
 }
