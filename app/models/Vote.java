@@ -1,5 +1,4 @@
 package models;
-
 import play.Play;
 
 import javax.ws.rs.client.Client;
