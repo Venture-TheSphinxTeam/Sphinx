@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.User;
+import models.Vote;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -71,6 +72,12 @@ public class ButtonStateController extends Controller{
 		}
 		else if( buttonType.equals("vote") ){
 			result.put("status",User.doesUserVoteForEntity(user, entityId, entityType ));
+			
+			Vote v = new Vote();
+			v.setEntityId(Long.parseLong(entityId));
+			v.setEntityType(entityType);
+			v.setUserName(username);
+			v.sendVote();
 		}
 		else{
 			result.put("status","");
@@ -104,6 +111,7 @@ public class ButtonStateController extends Controller{
 		if( User.doesUserVoteForEntity(user, entityId, entityType )){
 			User.setUserEntityVoteStatus(false, user, entityId, entityType);
 			retVal = false;
+			
 		}
 		else{
 			User.setUserEntityVoteStatus(true, user, entityId, entityType);
