@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import views.html.initiative;
-
 import models.Entity;
 import models.Event;
 import models.Initiative;
@@ -438,4 +437,35 @@ public class MongoControlCenter {
 
 		return temp;
 	}
+
+	public ArrayList<Entity> getEntitiesByQuery(String query) {
+		ArrayList<Entity> result = new ArrayList<Entity>();
+
+		Iterator<? extends Entity> initIter = Initiative.findBy(query)
+				.iterator();
+		while (initIter.hasNext()) {
+			result.add(initIter.next());
+		}
+
+		Iterator<? extends Entity> mileIter = Milestone.findBy(query)
+				.iterator();
+		while (mileIter.hasNext()) {
+			result.add(mileIter.next());
+		}
+
+		Iterator<? extends Entity> riskIter = Risk.findBy(query).iterator();
+
+		while (riskIter.hasNext()) {
+			result.add(riskIter.next());
+		}
+
+		return result;
+
+	}
+	
+	public String createRegexQuery(String field, String regex) {
+		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
+				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}";
+	}
+
 }
