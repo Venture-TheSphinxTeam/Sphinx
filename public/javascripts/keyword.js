@@ -4,5 +4,9 @@
 
 function keywordSearch(){
 var patt = document.getElementById("entitySearch").value;
-window.location.href = "./search?arg=" + patt;
+var radio_field = $("input:radio[name='keyword']:checked").val();
+window.location.href = "./search?arg=" + patt + "&field=" + radio_field;
 }
+
+
+$('.btn').button();
