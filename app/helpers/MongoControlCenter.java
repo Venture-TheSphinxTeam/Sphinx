@@ -462,10 +462,15 @@ public class MongoControlCenter {
 		return result;
 
 	}
-	
+
 	public String createRegexQuery(String field, String regex) {
 		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
 				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}";
+	}
+
+	public String createAllowedAccessUsersQuery(String username) {
+		return "$or:[{allowedAccessUsers:\"" + username
+				+ "\"},{allowedAccessUsers:{$size: 0}}]";
 	}
 
 }
