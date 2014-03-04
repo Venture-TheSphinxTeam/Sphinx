@@ -23,8 +23,9 @@
 			title="Vote/Unvote"
 			name='vote_b-@init.getEntityType()-@init.getEntityId()'
 			type="button" 
-			class="btn btn-primary" 
-			data-toggle="button">
+			class="" 
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'vote' )">
 
 			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
 
@@ -36,7 +37,8 @@
 			name='watch_b-@init.getEntityType()-@init.getEntityId()'
 			type="button" 
 			class="btn btn-primary" 
-			data-toggle="button">
+			data-toggle="button"
+			onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'watch' )">
 
 			<span class="glyphicon glyphicon-eye-open"
 				title="Watch/Unwatch"></span>
