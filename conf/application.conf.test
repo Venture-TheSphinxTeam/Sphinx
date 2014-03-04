@@ -76,4 +76,4 @@ playjongo.gridfs.enabled=false
 # Sphinx
 # ~~~~~~
 external.json.source="http://callao.student.rit.edu:9998"
-sphinx.external_post_url:"http://callao.student.rit.edu"9998"
+vote.post_target:"http://localhost:9997/test/vote"
