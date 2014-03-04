@@ -35,6 +35,7 @@ public class Vote {
         voteStrTemp = voteStrTemp.replace(":entityType", entityType);
         voteStrTemp = voteStrTemp.replace(":entityId", Long.toString(entityId));
         voteStrTemp = voteStrTemp.replace(":userName", userName);
+        voteStrTemp = voteStrTemp.replace(":voteStatus","vote");
         
 
         return sendVote(voteStrTemp);
@@ -46,6 +47,23 @@ public class Vote {
         OutgoingJSON out = new OutgoingJSON(url, this.JSONRep());
         Response response = out.sendJson();
         
+        return response;
+    }
+
+    public Response sendUnVote(){
+        String voteStrTemp = Play.application().configuration().getString("vote.post_target");
+        voteStrTemp = voteStrTemp.replace(":entityType", entityType);
+        voteStrTemp = voteStrTemp.replace(":entityId", Long.toString(entityId));
+        voteStrTemp = voteStrTemp.replace(":userName", userName);
+        voteStrTemp = voteStrTemp.replace(":voteStatus","unvote");
+
+        return sendUnVote(voteStrTemp);
+    }
+
+    public Response sendUnVote(String url){
+        OutgoingJSON out = new OutgoingJSON(url, this.JSONRep());
+        Response response = out.sendJson();
+
         return response;
     }
 

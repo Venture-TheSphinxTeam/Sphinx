@@ -72,12 +72,7 @@ public class ButtonStateController extends Controller{
 		}
 		else if( buttonType.equals("vote") ){
 			result.put("status",User.doesUserVoteForEntity(user, entityId, entityType ));
-			
-			Vote v = new Vote();
-			v.setEntityId(Long.parseLong(entityId));
-			v.setEntityType(entityType);
-			v.setUserName(username);
-			v.sendVote();
+
 		}
 		else{
 			result.put("status","");
@@ -107,15 +102,24 @@ public class ButtonStateController extends Controller{
 	private static boolean UpdateVoteStatus(User user, String entityId, String entityType){
 		boolean retVal;
 
+        Vote v = new Vote();
+        v.setEntityId(Long.parseLong(entityId));
+        v.setEntityType(entityType);
+        v.setUserName(user.getUsername());
+
 		// swap vote status
 		if( User.doesUserVoteForEntity(user, entityId, entityType )){
 			User.setUserEntityVoteStatus(false, user, entityId, entityType);
 			retVal = false;
+
+            v.sendUnVote();
 			
 		}
 		else{
 			User.setUserEntityVoteStatus(true, user, entityId, entityType);
 			retVal = true;
+
+            v.sendVote();
 		}
 
 		return retVal;
@@ -125,7 +129,7 @@ public class ButtonStateController extends Controller{
 		boolean retVal;
 
 		// swap watch status
-		if( User.doesUserWatchEntity(user, entityId, entityType )){
+		if( User.doesUserWatchEntity(user, entityId, entityType)){
 			User.setUserEntityWatchStatus(false, user, entityId, entityType);
 			retVal = false;
 		}
