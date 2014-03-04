@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.User;
 import models.Vote;
+import models.Watch;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -128,14 +129,21 @@ public class ButtonStateController extends Controller{
 	private static boolean UpdateWatchStatus(User user, String entityId, String entityType){
 		boolean retVal;
 
+        Watch w = new Watch();
+        w.setEntityId(Long.parseLong(entityId));
+        w.setEntityType(entityType);
+        w.setUserName(user.getUsername());
+
 		// swap watch status
 		if( User.doesUserWatchEntity(user, entityId, entityType)){
 			User.setUserEntityWatchStatus(false, user, entityId, entityType);
 			retVal = false;
+            w.sendUnWatch();
 		}
 		else{
 			User.setUserEntityWatchStatus(true, user, entityId, entityType);
 			retVal = true;
+            w.sendWatch();
 		}
 
 		return retVal;
