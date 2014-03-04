@@ -99,23 +99,20 @@ public class Application extends Controller {
 				subscribedEvents));
 	}
 
-	public static Result search(String regex) throws UnknownHostException {
+	public static Result search(String keyword, String field ) throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
-
 		ArrayList<Entity> result = new ArrayList<Entity>();
-
-		if (regex == "") {
+		if (keyword.equals("")) {
 			result = control.getEntitiesByQuery("$or:[{allowedAccessUsers:\""
 					+ USERNAME + "\"},{allowedAccessUsers:{$size: 0}}]");
 		}
 
 		else {
 			result = control.getEntitiesByQuery(control.createRegexQuery(
-					"summary", regex));
+					field, keyword));
 		}
-
 		return ok(search.render(result));
 
 	}
