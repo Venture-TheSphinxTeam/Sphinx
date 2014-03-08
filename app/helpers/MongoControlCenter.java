@@ -21,6 +21,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.QueryBuilder;
 import com.mongodb.BasicDBList;
+import com.sun.xml.internal.rngom.digested.DContainerPattern;
 
 public class MongoControlCenter {
 
@@ -32,6 +33,7 @@ public class MongoControlCenter {
 	private DBCollection milestones;
 	private DBCollection events;
 	private DBCollection users;
+	private DBCollection fieldIncices;
 
 	private BasicDBList ids;
 
@@ -58,6 +60,7 @@ public class MongoControlCenter {
 		milestones = db.getCollection("milestones");
 		events = db.getCollection("events");
 		users = db.getCollection("users");
+		fieldIncices = db.getCollection("fieldIncices");
 
 		ids = new BasicDBList();
 	}
@@ -470,6 +473,26 @@ public class MongoControlCenter {
 	public String createAllowedAccessUsersQuery(String username) {
 		return "$or:[{allowedAccessUsers:\"" + username
 				+ "\"},{allowedAccessUsers:{$size: 0}}]";
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getIndexedValues(String field) {
+
+		BasicDBObject indexQuery = new BasicDBObject("fieldName", field);
+		DBCursor cursor = fieldIncices.find(indexQuery);
+
+		ArrayList<String> temp = new ArrayList<String>();
+
+		try {
+			while (cursor.hasNext()) {
+				temp = (ArrayList<String>) cursor.next().get("fieldValues");
+
+			}
+		} finally {
+			cursor.close();
+		}
+		return temp;
+
 	}
 
 }
