@@ -147,24 +147,32 @@ public class Application extends Controller {
 
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
-		ArrayList<String> initSubs = control.getUserSubscriptionIds(USERNAME,"initiativeSubscriptions");
-		ArrayList<String> mileSubs = control.getUserSubscriptionIds(USERNAME,"milestoneSubscriptions");
-		ArrayList<String> riskSubs = control.getUserSubscriptionIds(USERNAME,"riskSubscriptions");
+		ArrayList<String> initSubIds = control.getUserSubscriptionIds(USERNAME,"initiativeSubscriptions");
+		ArrayList<String> mileSubIds = control.getUserSubscriptionIds(USERNAME,"milestoneSubscriptions");
+		ArrayList<String> riskSubIds = control.getUserSubscriptionIds(USERNAME,"riskSubscriptions");
 
-		//for( int i=0; i<userInitEntityIds.size(); i++){
-		//	System.out.println(id);
-		//}
+		// Collect initiative objects 
+		ArrayList<Initiative> initSubs = new ArrayList<Initiative>();
+		for( String id : initSubIds ){
+			initSubs.add( control.getInitiativeById(id) );
+		}
 
-		//result.add(userEntities);
+		// Collect milestone objects 
+		ArrayList<Milestone> mileSubs = new ArrayList<Milestone>();
+		for( String id : mileSubIds ){
+			mileSubs.add( control.getMilestoneById(id) );
+		}
 
-		// get all subscriptions
-
-		// for id in subscriptions
-			// get object and return
+		// Collect risk objects 
+		ArrayList<Risk> riskSubs = new ArrayList<Risk>();
+		for( String id : riskSubIds ){
+			riskSubs.add( control.getRiskById(id) );
+		}
 
 		control.closeConnection();
 
-		return ok(subscriptions.render( initSubs, mileSubs, riskSubs));
+		//return ok(subscriptions.render(initSubs, mileSubs,riskSubs));
+		return ok(subscriptions.render());
 	}
 
 	public static Result adminTools() {

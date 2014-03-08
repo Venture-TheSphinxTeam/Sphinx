@@ -410,11 +410,11 @@ public class MongoControlCenter {
 		BasicDBObject userSearchQuery = new BasicDBObject("username", user);
 		DBCursor cursor = users.find(userSearchQuery);
 
-		ArrayList<String> userSubscriptions = new ArrayList();
+		ArrayList<String> userSubscriptions = null;
 
 		try {
 			while (cursor.hasNext()) {
-				System.out.println( cursor.next().get( subscriptionType ).getClass().getName() );
+				userSubscriptions = ( (ArrayList<String>) cursor.next().get(subscriptionType) );
 			}
 		} finally {
 			cursor.close();
