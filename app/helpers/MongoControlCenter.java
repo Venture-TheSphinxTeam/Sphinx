@@ -139,13 +139,12 @@ public class MongoControlCenter {
 		long threeMonths = 7776000L;
 		Iterator<Event> iEvent = result.iterator();
 
-		/**
-		 * Code for filtering out non-relevant events. Will uncomment when can
-		 * test. while (iEvent.hasNext()) { if (iEvent.next().getDateAsLong() <=
-		 * (unixTime - threeMonths)) { iEvent.remove();
-		 * 
-		 * } }
-		 **/
+		while (iEvent.hasNext()) {
+			if (iEvent.next().getDateAsLong() <= (unixTime - threeMonths)) {
+				iEvent.remove();
+
+			}
+		}
 
 		Collections.sort(result);
 		return result;
@@ -440,6 +439,7 @@ public class MongoControlCenter {
 
 	public ArrayList<Entity> getEntitiesByQuery(String query) {
 		ArrayList<Entity> result = new ArrayList<Entity>();
+		System.out.println(query);
 
 		Iterator<? extends Entity> initIter = Initiative.findBy(query)
 				.iterator();
@@ -464,13 +464,14 @@ public class MongoControlCenter {
 	}
 
 	public String createRegexQuery(String field, String regex) {
-		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
-				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}";
+		return "{" + field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
+				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}}";
 	}
 
 	public String createAllowedAccessUsersQuery(String username) {
-		return "$or:[{allowedAccessUsers:\"" + username
-				+ "\"},{allowedAccessUsers:{$size: 0}}]";
+		return "{$or:[{allowedAccessUsers:\"" + username
+				+ "\"},{allowedAccessUsers:{$size: 0}}]}";
 	}
+	
 
 }

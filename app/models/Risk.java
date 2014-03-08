@@ -20,8 +20,8 @@ public class Risk extends Entity{
     }
     
     public static Iterable<Risk> findBy(String query){
-    	return risks().find("{entityType: \""+Risk.TYPE_STRING+ 
-				"\","+query+"}").as(Risk.class);
+    	return risks().find("{$and: [{entityType: \""+Risk.TYPE_STRING+ 
+				"\"},"+query+"]}").as(Risk.class);
     }
 
     public void remove(){

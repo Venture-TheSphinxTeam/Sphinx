@@ -21,8 +21,8 @@ public class Milestone extends Entity{
     }
     
     public static Iterable<Milestone> findBy(String query){
-    	return milestones().find("{entityType: \""+Milestone.TYPE_STRING+ 
-				"\","+query+"}").as(Milestone.class);
+    	return milestones().find("{ $and: [{entityType: \""+Milestone.TYPE_STRING+ 
+				"\"},"+query+"]}").as(Milestone.class);
     }
 
     public void remove(){
