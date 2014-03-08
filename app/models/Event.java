@@ -23,7 +23,6 @@ public class Event implements Comparable<Event> {
     protected ObjectId id;
     protected String eventType;
     protected Entity entity;
-    protected long com_date;
     
 
     
@@ -129,7 +128,6 @@ public class Event implements Comparable<Event> {
     	return result;
     }
     
-    
     public Date getDate(){
     	long date=0;
     
@@ -195,17 +193,17 @@ public class Event implements Comparable<Event> {
 
 	public long getDateAsLong() {
 		
-		return com_date;
+		if(entity == null){
+			return 0;
+		}
+		else{
+			return entity.getUpdated();
+		}
 	}
 
 	@Override
 	public int compareTo(Event e) {
 		
-		 if(this.getDateAsLong() < e.getDateAsLong()){
-			 return -1;
-		 }
-		 else{
-			 return 1;
-		 }
+		return this.getDate().compareTo(e.getDate()); 
 	}
 }

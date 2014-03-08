@@ -22,8 +22,8 @@ public class Initiative extends Entity{
 	}
 	
 	public static Iterable<? extends Entity> findBy(String query){
-		return initiatives().find("{ $and: [{entityType: \""+Initiative.TYPE_STRING + 
-				"\"},"+query+"]}").as(Initiative.class);
+		return initiatives().find("{ entityType: \""+Initiative.TYPE_STRING + 
+				"\","+query+"}").as(Initiative.class);
 	}
 	
 	public void remove(){

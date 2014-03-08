@@ -108,11 +108,6 @@ public class Application extends Controller {
 		if (keyword.equals("")) {
 			result = control.getEntitiesByQuery(control
 					.createAllowedAccessUsersQuery(USERNAME));
-		} else if (field.equals("undefined")) {
-			result = control.getEntitiesByQuery("{$or:["
-					+ control.createRegexQuery("summary", keyword) + ","
-					+ control.createRegexQuery("description", keyword) + "],"
-					+ control.createAllowedAccessUsersQuery(USERNAME));
 		}
 
 		else {
