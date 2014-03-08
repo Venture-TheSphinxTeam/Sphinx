@@ -69,6 +69,8 @@ public class MongoControlCenter {
 		mongoClient.close();
 	}
 
+	//------------------ GET ENTITIES BY ID ----------------//
+
 	public Initiative getInitiativeById(String entityId) {
 
 		return Initiative.getFirstInitiativeById(entityId);
@@ -94,6 +96,8 @@ public class MongoControlCenter {
 
 		return Risk.getFirstWithId(entityId);
 	}
+
+	// ------------------ GET EVENTS ---------------------//
 
 	public ArrayList<Event> getSingleEventsForUser(String user) {
 		ArrayList<Event> result;
@@ -375,6 +379,8 @@ public class MongoControlCenter {
 		return results.toArray();
 	}
 
+	//----------------- USER SETTINGS -------------------//
+
 	@SuppressWarnings("unchecked")
 	public Integer getUserRefreshRate(String user) {
 
@@ -397,6 +403,24 @@ public class MongoControlCenter {
 		}
 		return temp.get(0);
 
+	}
+
+	public ArrayList<String> getUserSubscriptionIds(String user, String subscriptionType){
+
+		BasicDBObject userSearchQuery = new BasicDBObject("username", user);
+		DBCursor cursor = users.find(userSearchQuery);
+
+		ArrayList<String> userSubscriptions = new ArrayList();
+
+		try {
+			while (cursor.hasNext()) {
+				System.out.println( cursor.next().get( subscriptionType ).getClass().getName() );
+			}
+		} finally {
+			cursor.close();
+		}
+
+		return userSubscriptions;
 	}
 
 	/*
@@ -461,6 +485,8 @@ public class MongoControlCenter {
 		return result;
 
 	}
+
+	//--------------------  CREATE QUERIES ----------------------//
 
 	public String createRegexQuery(String field, String regex) {
 		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""

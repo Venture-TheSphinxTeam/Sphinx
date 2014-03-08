@@ -25,6 +25,7 @@ import views.html.defaultpages.error;
 
 public class Application extends Controller {
 	public static final String USERNAME = "jay-z";
+	public static final String DATABASE = "dev";
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {
@@ -79,7 +80,7 @@ public class Application extends Controller {
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
-		control.setDatabase("dev");
+		control.setDatabase(DATABASE);
 
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
 		// user name
@@ -137,8 +138,33 @@ public class Application extends Controller {
 
 	}
 
-	public static Result subscriptions() {
-		return ok(subscriptions.render());
+	public static Result subscriptions() throws UnknownHostException {
+
+		// Open connection to database
+		MongoControlCenter control = new MongoControlCenter(
+				"venture.se.rit.edu", 27017);
+		control.setDatabase(DATABASE);
+
+		ArrayList<Entity> result = new ArrayList<Entity>();
+
+		ArrayList<String> initSubs = control.getUserSubscriptionIds(USERNAME,"initiativeSubscriptions");
+		ArrayList<String> mileSubs = control.getUserSubscriptionIds(USERNAME,"milestoneSubscriptions");
+		ArrayList<String> riskSubs = control.getUserSubscriptionIds(USERNAME,"riskSubscriptions");
+
+		//for( int i=0; i<userInitEntityIds.size(); i++){
+		//	System.out.println(id);
+		//}
+
+		//result.add(userEntities);
+
+		// get all subscriptions
+
+		// for id in subscriptions
+			// get object and return
+
+		control.closeConnection();
+
+		return ok(subscriptions.render( initSubs, mileSubs, riskSubs));
 	}
 
 	public static Result adminTools() {
@@ -149,12 +175,11 @@ public class Application extends Controller {
 		return ok(settings.render());
 	}
 
-	public static Result entityView(String arg, String type)
-			throws UnknownHostException {
+	public static Result entityView(String arg, String type) throws UnknownHostException {
 
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
-		control.setDatabase("dev");
+		control.setDatabase(DATABASE);
 
 		if (type.equals("INITIATIVE")) {
 			Initiative entity_Initiative = control.getInitiativeById(arg);
