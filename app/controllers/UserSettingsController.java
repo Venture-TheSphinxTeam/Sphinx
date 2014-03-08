@@ -24,10 +24,11 @@ public class UserSettingsController extends Controller{
 		Integer newRate = 0;
 		
 		try {
+			//@TODO: sanitize and round
 			user.setUpdateFrequency(newRate = ff.get().interval);
-			message = "Update interval set to " + newRate;
-		} catch (ProcessingException e) {
-			message += "\n"+e.getMessage();
+			message = "Update interval set to " + newRate + " minutes.";
+		} catch (Exception e) {
+			message += "\n"+"Invalid input. Please submit an integer value.";
 		}
 		 
 		
