@@ -114,6 +114,17 @@ public class Application extends Controller {
 			result = control.getEntitiesByQuery("$or:[{"
 					+ control.createRegexQuery("summary", keyword) + "},{"
 					+ control.createRegexQuery("description", keyword) + "}]");
+
+			Iterator<Entity> enIter = result.iterator();
+
+			while (enIter.hasNext()) {
+				Entity e = enIter.next();
+				if (!e.getAllowedAccessUsers().contains(USERNAME)
+						&& e.getAllowedAccessUsers().size() != 0) {
+					enIter.remove();
+				}
+			}
+
 		}
 
 		else {
