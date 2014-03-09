@@ -13,6 +13,7 @@ import models.Event;
 import models.Initiative;
 import models.Milestone;
 import models.Risk;
+import models.Comment;
 import akka.actor.FSM.Timer;
 
 import com.mongodb.BasicDBObject;
@@ -138,11 +139,12 @@ public class Application extends Controller {
 
 		if (type.equals("INITIATIVE")) {
 			Initiative entity_Initiative = control.getInitiativeById(arg);
+			ArrayList<Comment> entityComments = control.getComments(entity_Initiative.getEntityId());
 
 			if (((entity_Initiative.getAllowedAccessUsers().contains("jay-z") || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
-
-				return ok(initiative.render(entity_Initiative, USERNAME));
+				
+				return ok(initiative.render(entity_Initiative, USERNAME, entityComments));
 			} else {
 				return ok(accessError.render());
 			}

@@ -1,4 +1,4 @@
-@(initiative: Initiative)(username: String) 
+@(initiative: Initiative)(username: String)(entityComments: List[Comment]) 
 @main("Sphinx: Connecting Projects to People")("") {
 <div class="thumbnail">
 	@defining(initiative.asInstanceOf[Initiative]){ init=>
@@ -107,6 +107,23 @@
 				Breakdown Parent</a> }
 				}
 		</h4>
+
+
+ 		<!--Entity Comments-->
+		<h1>
+		Entity Comments:<br></h1>
+		@for(comment <- entityComments){
+			<div>
+				<div>
+				<h4>@comment.getCommentHeader()</h4>
+				<!--add Edit button based on username = getCreatedBy()-->
+				<p>posted by @comment.getCreatedBy()</p>
+				<p>@comment.getCommentBody()</p>
+			</div>
+			</div>
+		}
+		
+		
 	</div>
 	}
 </div>
