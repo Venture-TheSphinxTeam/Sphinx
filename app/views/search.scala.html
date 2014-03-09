@@ -3,7 +3,7 @@
 <div class="panel panel-default">
    <div class="panel-body">
       @for(index <- facets){
-      <select class="selectpicker" data-width="150px">
+      <select class="selectpicker" data-width="135px">
       @defining(index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldName")) { field =>
       <option selected="selected">@field.asInstanceOf[String].capitalize: All</option>
       }
@@ -17,6 +17,9 @@
       
       </select>
       }
+      <button class="btn btn-default" type="button" style="position: fixed; top: 87px; right: 250px">
+                        <span class="glyphicon glyphicon-search"></span>
+                        </button>
    </div>
 </div>
 
