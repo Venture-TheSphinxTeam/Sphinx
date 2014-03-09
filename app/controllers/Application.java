@@ -134,7 +134,10 @@ public class Application extends Controller {
 					+ ","
 					+ control.createAllowedAccessUsersQuery(USERNAME));
 		}
-		return ok(search.render(result));
+
+		ArrayList<Object> facets = control.getIndexedValues();
+
+		return ok(search.render(result, facets));
 
 	}
 
@@ -147,31 +150,34 @@ public class Application extends Controller {
 
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
-		ArrayList<String> initSubIds = control.getUserSubscriptionIds(USERNAME,"initiativeSubscriptions");
-		ArrayList<String> mileSubIds = control.getUserSubscriptionIds(USERNAME,"milestoneSubscriptions");
-		ArrayList<String> riskSubIds = control.getUserSubscriptionIds(USERNAME,"riskSubscriptions");
+		ArrayList<String> initSubIds = control.getUserSubscriptionIds(USERNAME,
+				"initiativeSubscriptions");
+		ArrayList<String> mileSubIds = control.getUserSubscriptionIds(USERNAME,
+				"milestoneSubscriptions");
+		ArrayList<String> riskSubIds = control.getUserSubscriptionIds(USERNAME,
+				"riskSubscriptions");
 
-		// Collect initiative objects 
+		// Collect initiative objects
 		ArrayList<Initiative> initSubs = new ArrayList<Initiative>();
-		for( String id : initSubIds ){
-			initSubs.add( control.getInitiativeById(id) );
+		for (String id : initSubIds) {
+			initSubs.add(control.getInitiativeById(id));
 		}
 
-		// Collect milestone objects 
+		// Collect milestone objects
 		ArrayList<Milestone> mileSubs = new ArrayList<Milestone>();
-		for( String id : mileSubIds ){
-			mileSubs.add( control.getMilestoneById(id) );
+		for (String id : mileSubIds) {
+			mileSubs.add(control.getMilestoneById(id));
 		}
 
-		// Collect risk objects 
+		// Collect risk objects
 		ArrayList<Risk> riskSubs = new ArrayList<Risk>();
-		for( String id : riskSubIds ){
-			riskSubs.add( control.getRiskById(id) );
+		for (String id : riskSubIds) {
+			riskSubs.add(control.getRiskById(id));
 		}
 
 		control.closeConnection();
 
-		return ok(subscriptions.render(initSubs, mileSubs,riskSubs));
+		return ok(subscriptions.render(initSubs, mileSubs, riskSubs));
 	}
 
 	public static Result adminTools() {
@@ -182,7 +188,8 @@ public class Application extends Controller {
 		return ok(settings.render());
 	}
 
-	public static Result entityView(String arg, String type) throws UnknownHostException {
+	public static Result entityView(String arg, String type)
+			throws UnknownHostException {
 
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);

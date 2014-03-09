@@ -1,31 +1,12 @@
-@(userEntities: List[Entity]) @main("Sphinx: Connecting Projects to People")("") {
+@(userEntities: List[Entity])(facets: java.util.ArrayList[Object]) 
+@main("Sphinx: Connecting Projects to People")("") {
 <div class="panel panel-default">
    <div class="panel-body">
-      
+      @for(index <- facets){
       <select class="selectpicker" data-width="150px">
-      <option>Priority: All</option>
+      <option selected="selected">@index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldName"): All</option>
       </select>
-      
-      
-      <select class="selectpicker" data-width="150px">
-      <option>Status: All</option>
-      </select>
-      
-     
-      <select class="selectpicker" data-width="150px">
-      <option>Reporter: All</option>
-      </select>
-      
-      
-      <select class="selectpicker" data-width="150px">
-      <option>Assignee: All</option>
-      </select>
-     
-      
-      <select class="selectpicker" data-width="150px">
-      <option>Labels: All</option>
-      </select>
-      
+      }
    </div>
 </div>
 
@@ -43,6 +24,7 @@
 
 
 				<div>
+				
 					<h3>@entity.getKey()</h3>
 					<h3>@entity.getSummary()</h3>
 					<h4>@entity.getDescription()</h4>

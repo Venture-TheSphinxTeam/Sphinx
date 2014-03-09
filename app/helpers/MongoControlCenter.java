@@ -21,6 +21,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.QueryBuilder;
 import com.mongodb.BasicDBList;
+
 //import com.sun.xml.internal.rngom.digested.DContainerPattern;   TODO
 
 public class MongoControlCenter {
@@ -72,7 +73,7 @@ public class MongoControlCenter {
 		mongoClient.close();
 	}
 
-	//------------------ GET ENTITIES BY ID ----------------//
+	// ------------------ GET ENTITIES BY ID ----------------//
 
 	public Initiative getInitiativeById(String entityId) {
 
@@ -382,7 +383,7 @@ public class MongoControlCenter {
 		return results.toArray();
 	}
 
-	//----------------- USER SETTINGS -------------------//
+	// ----------------- USER SETTINGS -------------------//
 
 	@SuppressWarnings("unchecked")
 	public Integer getUserRefreshRate(String user) {
@@ -408,7 +409,8 @@ public class MongoControlCenter {
 
 	}
 
-	public ArrayList<String> getUserSubscriptionIds(String user, String subscriptionType){
+	public ArrayList<String> getUserSubscriptionIds(String user,
+			String subscriptionType) {
 
 		BasicDBObject userSearchQuery = new BasicDBObject("username", user);
 		DBCursor cursor = users.find(userSearchQuery);
@@ -417,7 +419,8 @@ public class MongoControlCenter {
 
 		try {
 			while (cursor.hasNext()) {
-				userSubscriptions = ( (ArrayList<String>) cursor.next().get(subscriptionType) );
+				userSubscriptions = ((ArrayList<String>) cursor.next().get(
+						subscriptionType));
 			}
 		} finally {
 			cursor.close();
@@ -489,7 +492,7 @@ public class MongoControlCenter {
 
 	}
 
-	//--------------------  CREATE QUERIES ----------------------//
+	// -------------------- CREATE QUERIES ----------------------//
 
 	public String createRegexQuery(String field, String regex) {
 		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
@@ -501,17 +504,15 @@ public class MongoControlCenter {
 				+ "\"},{allowedAccessUsers:{$size: 0}}]";
 	}
 
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> getIndexedValues(String field) {
+	public ArrayList<Object> getIndexedValues() {
 
-		BasicDBObject indexQuery = new BasicDBObject("fieldName", field);
-		DBCursor cursor = fieldIncices.find(indexQuery);
+		DBCursor cursor = fieldIncices.find();
 
-		ArrayList<String> temp = new ArrayList<String>();
+		ArrayList<Object> temp = new ArrayList<Object>();
 
 		try {
 			while (cursor.hasNext()) {
-				temp = (ArrayList<String>) cursor.next().get("fieldValues");
+				temp.add(cursor.next());
 
 			}
 		} finally {
