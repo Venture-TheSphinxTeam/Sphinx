@@ -4,24 +4,19 @@ import helpers.MongoControlCenter;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import models.Entity;
 import models.Event;
 import models.Initiative;
 import models.Milestone;
 import models.Risk;
-import akka.actor.FSM.Timer;
-
-import com.mongodb.BasicDBObject;
-
 import play.libs.F.Callback;
 import play.libs.F.Callback0;
 import play.mvc.*;
 import views.html.*;
-import views.html.defaultpages.error;
 
 public class Application extends Controller {
 	public static final String USERNAME = "jay-z";
@@ -224,7 +219,6 @@ public class Application extends Controller {
 
 		else {
 			Risk entity_Risk = control.getRiskById(arg);
-
 			if (((entity_Risk.getAllowedAccessUsers()).contains("jay-z") || ((entity_Risk
 					.getAllowedAccessUsers())).isEmpty())) {
 

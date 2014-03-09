@@ -4,7 +4,17 @@
    <div class="panel-body">
       @for(index <- facets){
       <select class="selectpicker" data-width="150px">
-      <option selected="selected">@index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldName"): All</option>
+      @defining(index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldName")) { field =>
+      <option selected="selected">@field.asInstanceOf[String].capitalize: All</option>
+      }
+      
+      @defining(index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldValues")){ list =>
+      	@for(value <- list.asInstanceOf[List[String]]){
+      		<option>@value</option>
+      	}
+      	
+      }
+      
       </select>
       }
    </div>
