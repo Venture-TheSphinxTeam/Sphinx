@@ -171,8 +171,7 @@ public class Application extends Controller {
 
 		control.closeConnection();
 
-		//return ok(subscriptions.render(initSubs, mileSubs,riskSubs));
-		return ok(subscriptions.render());
+		return ok(subscriptions.render(initSubs, mileSubs,riskSubs));
 	}
 
 	public static Result adminTools() {
