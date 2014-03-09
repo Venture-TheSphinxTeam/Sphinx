@@ -30,20 +30,23 @@
 							<div class="info_text"></div>
 							<ul class="thumbnails">
 								<ul class="content">
-									@for(init <- userInitEntities){
+									@for(entity <- userInitEntities){
 									<li>
 										<div class="thumbnail">
-											@defining(init){ init=>
+											@defining(entity){ entity=>
 											<div class="optionButtons" align = "right">
 												<button 
 													class="btn btn-primary btn-sm"
 													data-toggle="modal"
-													data-target="#editInitModal">edit</button>
+													data-target="#editEntityModal">edit</button>
 												<button class="btn btn-primary btn-sm">delete</button>
 											</div>
 											<div>
-												<h3>Initiative ID</h3>
-												<h3>Initiative Summary</h3>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>@entity.getSummary()</h3>
+												<a class="btn btn-primary btn-sm"
+													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													more &raquo;</a> <br />
 											</div>
 											}
 										</div>
@@ -67,20 +70,23 @@
 							<div class="info_text"></div>
 							<ul class="thumbnails">
 								<ul class="content">
-									@for(mile <- userMileEntities){
+									@for(entity <- userMileEntities){
 									<li>
 										<div class="thumbnail">
-											@defining(mile){ mile=>
+											@defining(entity){ entity=>
 											<div class="optionButtons" align = "right">
 												<button 
 													class="btn btn-primary btn-sm"
 													data-toggle="modal"
-													data-target="#editInitModal">edit</button>
+													data-target="#editEntityModal">edit</button>
 												<button class="btn btn-primary btn-sm">delete</button>
 											</div>
 											<div>
-												<h3>Milestone ID</h3>
-												<h3>Milestone Summary</h3>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>@entity.getSummary()</h3>
+												<a class="btn btn-primary btn-sm"
+													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													more &raquo;</a> <br />
 											</div>
 											}
 										</div>
@@ -101,29 +107,32 @@
 							<div class="page_navigation"></div>
 							<br />
 							<div class="info_text"></div>
-								<ul class="thumbnails">
-									<ul class="content">
-										@for(risk <- userRiskEntities){
-										<li>
-											<div class="thumbnail">
-												@defining(risk){ risk=>
-												<div class="optionButtons" align = "right">
-													<button 
-														class="btn btn-primary btn-sm"
-														data-toggle="modal"
-														data-target="#editInitModal">edit</button>
-													<button class="btn btn-primary btn-sm">delete</button>
-												</div>
-												<div>
-													<h3>Risk ID</h3>
-													<h3>Risk Summary</h3>
-												</div>
-												}
+							<ul class="thumbnails">
+								<ul class="content">
+									@for(entity <- userRiskEntities){
+									<li>
+										<div class="thumbnail">
+											@defining(entity){ entity=>
+											<div class="optionButtons" align = "right">
+												<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#editEntityModal">edit</button>
+												<button class="btn btn-primary btn-sm">delete</button>
 											</div>
-										</li>
-										}
-									</ul>
+											<div>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>@entity.getSummary()</h3>
+												<a class="btn btn-primary btn-sm"
+													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													more &raquo;</a> <br />
+											</div>
+											}
+										</div>
+									</li>
+									}
 								</ul>
+							</ul>
 							<br />
 						</div>
 					</div>
@@ -142,19 +151,17 @@
 									<ul class="content">
 										<li>
 											<div class="thumbnail">
-												@defining(risk){ risk=>
 												<div class="optionButtons" align = "right">
 													<button 
 														class="btn btn-primary btn-sm"
 														data-toggle="modal"
-														data-target="#editInitModal">edit</button>
+														data-target="#editEntityModal">edit</button>
 													<button class="btn btn-primary btn-sm">delete</button>
 												</div>
 												<div>
 													<h3>Query ID</h3>
 													<h3>Query Summary</h3>
 												</div>
-												}
 											</div>
 										</li>
 									</ul>
@@ -169,7 +176,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="editInitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editEntityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -177,9 +184,7 @@
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-      	<h2>ID: JIRA-XXX</h2>
-      	<h2>Title: The best of tasks</h2>
-      	<p></br>subscription options:</p>
+
 		<form action="">
 			<input type="checkbox" name="Test1" value="test1"> I am a test<br>
 			<input type="checkbox" name="Test2" value="test2"> I am a test 2<br>
