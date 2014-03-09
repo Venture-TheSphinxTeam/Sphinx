@@ -1,4 +1,36 @@
 @(userEntities: List[Entity]) @main("Sphinx: Connecting Projects to People")("") {
+<div class="panel panel-default">
+   <div class="panel-body">
+      
+      <select class="selectpicker" data-width="150px">
+      <option>Priority: All</option>
+      </select>
+      
+      
+      <select class="selectpicker" data-width="150px">
+      <option>Status: All</option>
+      </select>
+      
+     
+      <select class="selectpicker" data-width="150px">
+      <option>Reporter: All</option>
+      </select>
+      
+      
+      <select class="selectpicker" data-width="150px">
+      <option>Assignee: All</option>
+      </select>
+     
+      
+      <select class="selectpicker" data-width="150px">
+      <option>Labels: All</option>
+      </select>
+      
+   </div>
+</div>
+
+
+
 <div id="page_container" class="pcontainer">
 	<div class="page_navigation"></div>
 	<br />
@@ -35,5 +67,7 @@
 			abort_on_small_lists : true
 		});
 	});
+
+	$('.selectpicker').selectpicker();
 </script>
 }
