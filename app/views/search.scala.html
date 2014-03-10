@@ -1,5 +1,6 @@
 @(userEntities: List[Entity])(facets: java.util.ArrayList[Object]) 
 @main("Sphinx: Connecting Projects to People")("") {
+	
 <div class="panel panel-default">
    <div class="panel-body">
       @for(index <- facets){
@@ -20,6 +21,8 @@
       <button class="btn btn-default" type="button"">
                         <span class="glyphicon glyphicon-search"></span>
                         </button>
+                        <hr/>
+                        <button class="btn btn-default" type="button" id="sort_alpha">Sort Alphabetically</button>
    </div>
 </div>
 
@@ -29,7 +32,7 @@
 	<div class="page_navigation"></div>
 	<br />
 	<div class="info_text"></div>
-	<ul class="content">
+	<ul class="content" id="entities">
 		@for(entity <- userEntities){
 
 		<li>
@@ -65,4 +68,5 @@
 
 	$('.selectpicker').selectpicker();
 </script>
+<script src="@routes.Assets.at("javascripts/sort.js")" type="text/javascript"></script>
 }
