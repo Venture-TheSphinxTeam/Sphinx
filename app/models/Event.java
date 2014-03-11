@@ -80,10 +80,10 @@ public class Event implements Comparable<Event> {
     	Entity id = entity;
     	
     	if(id != null){
-    		if(id.getEntityType() == Initiative.TYPE_STRING){
+    		if(id.getEntityType().equals(Initiative.TYPE_STRING)){
     			this.entity = Initiative.getFirstInitiativeById(id.getEntityId());
     		}
-    		else if(id.getEntityType() == Milestone.TYPE_STRING){
+    		else if(id.getEntityType().equals( Milestone.TYPE_STRING)){
     			this.entity = Milestone.getFirstWithId(id.getEntityId());
     		}
     		else{

@@ -63,7 +63,7 @@ public class Initiative extends Entity{
 	}
 	
 	public static Initiative getFirstInitiativeById(String id){
-		return initiatives().findOne("{entityId:#}",id).as(Initiative.class);
+		return initiatives().findOne("{entityId: #}",id).as(Initiative.class);
 	}
 
     public Initiative(){}
