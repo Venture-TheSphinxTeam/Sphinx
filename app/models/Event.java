@@ -77,7 +77,21 @@ public class Event implements Comparable<Event> {
     }
 
     public void setEntity(Entity entity) {
-        this.entity = entity;
+    	Entity id = entity;
+    	
+    	if(id != null){
+    		if(id.getEntityType() == Initiative.TYPE_STRING){
+    			this.entity = Initiative.getFirstInitiativeById(id.getEntityId());
+    		}
+    		else if(id.getEntityType() == Milestone.TYPE_STRING){
+    			this.entity = Milestone.getFirstWithId(id.getEntityId());
+    		}
+    		else{
+    			this.entity = Risk.getFirstWithId(id.getEntityId());
+    		}
+    	}else{
+    		this.entity = entity;
+    	}
     }
     
     public long getComDate(){
