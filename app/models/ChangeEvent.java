@@ -57,6 +57,7 @@ public class ChangeEvent extends Event{
 
     public void setEventDate(long eventDate) {
         this.eventDate = eventDate;
+        this.com_date = eventDate;
     }
 
     public String getChangedBy() {

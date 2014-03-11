@@ -51,6 +51,7 @@ public class ReportEvent extends Event  {
 
     public void setReportDate(long reportDate) {
         this.reportDate = reportDate;
+        this.com_date = reportDate;
     }
 
     public String getReportedBy() {
