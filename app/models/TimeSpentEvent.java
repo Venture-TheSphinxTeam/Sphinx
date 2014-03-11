@@ -55,6 +55,7 @@ public class TimeSpentEvent extends Event{
     }
 
     public void setPeriodEndDate(long periodEndDate) {
+    	this.com_date = periodEndDate;
         this.periodEndDate = periodEndDate;
     }
     

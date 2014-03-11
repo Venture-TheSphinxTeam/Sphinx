@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.User;
+import models.Vote;
+import models.Watch;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -71,6 +73,7 @@ public class ButtonStateController extends Controller{
 		}
 		else if( buttonType.equals("vote") ){
 			result.put("status",User.doesUserVoteForEntity(user, entityId, entityType ));
+
 		}
 		else{
 			result.put("status","");
@@ -100,14 +103,24 @@ public class ButtonStateController extends Controller{
 	private static boolean UpdateVoteStatus(User user, String entityId, String entityType){
 		boolean retVal;
 
+        Vote v = new Vote();
+        v.setEntityId(Long.parseLong(entityId));
+        v.setEntityType(entityType);
+        v.setUserName(user.getUsername());
+
 		// swap vote status
 		if( User.doesUserVoteForEntity(user, entityId, entityType )){
 			User.setUserEntityVoteStatus(false, user, entityId, entityType);
 			retVal = false;
+
+            v.sendUnVote();
+			
 		}
 		else{
 			User.setUserEntityVoteStatus(true, user, entityId, entityType);
 			retVal = true;
+
+            v.sendVote();
 		}
 
 		return retVal;
@@ -116,14 +129,21 @@ public class ButtonStateController extends Controller{
 	private static boolean UpdateWatchStatus(User user, String entityId, String entityType){
 		boolean retVal;
 
+        Watch w = new Watch();
+        w.setEntityId(Long.parseLong(entityId));
+        w.setEntityType(entityType);
+        w.setUserName(user.getUsername());
+
 		// swap watch status
-		if( User.doesUserWatchEntity(user, entityId, entityType )){
+		if( User.doesUserWatchEntity(user, entityId, entityType)){
 			User.setUserEntityWatchStatus(false, user, entityId, entityType);
 			retVal = false;
+            w.sendUnWatch();
 		}
 		else{
 			User.setUserEntityWatchStatus(true, user, entityId, entityType);
 			retVal = true;
+            w.sendWatch();
 		}
 
 		return retVal;

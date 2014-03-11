@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class EntityCollection {
@@ -38,6 +40,79 @@ public List<Risk> getRisks() {
 public void setRisks(List<Risk> risks) {
 	this.risks = risks;
 }
+
+public void createIndices(){
+	HashSet<String> priorities = new HashSet<String>(),
+			        status = new HashSet<String>(),
+			        reporter = new HashSet<String>(),
+			        assignee = new HashSet<String>(),
+			        labels = new HashSet<String>();
+	
+	
+	for(Initiative i : initiatives){
+		if(i.getPriority() !=null){
+			priorities.add(i.getPriority());
+		}
+		if(i.getStatus() != null){
+			status.add(i.getStatus());
+		}
+		reporter.add(i.getReporter());
+		assignee.add(i.getAssignee());
+		if(i.getLabels() != null){
+			labels.addAll(i.getLabels());
+		}
+		
+	}
+	
+	for(Milestone m : milestones){
+		priorities.add(m.getPriority());
+		status.add(m.getStatus());
+		reporter.add(m.getReporter());
+		assignee.add(m.getAssignee());
+		if(m.getLabels() != null){
+			labels.addAll(m.getLabels());
+		}
+	}
+	
+	for(Risk r : risks){
+		priorities.add(r.getPriority());
+		status.add(r.getStatus());
+		reporter.add(r.getReporter());
+		assignee.add(r.getAssignee());
+		if(r.getLabels() != null){
+			labels.addAll(r.getLabels());
+		}
+	}
+	
+	FieldIndex f = new FieldIndex();
+	f.setFieldName("priority");
+	f.setFieldValues(new ArrayList<String>(priorities));
+    f.upsert();
+    
+    f = new FieldIndex();
+    f.setFieldName("status");
+    f.setFieldValues(new ArrayList<String>(status));
+    f.upsert();
+    
+    f = new FieldIndex();
+    f.setFieldName("reporter");
+    f.setFieldValues(new ArrayList<String>(reporter));
+    f.upsert();
+    
+    f = new FieldIndex();
+    f.setFieldName("assignee");
+    f.setFieldValues(new ArrayList<String>(assignee));
+    f.upsert();
+    
+    f=new FieldIndex();
+    f.setFieldName("labels");
+    f.setFieldValues(new ArrayList<String>(status));
+    f.upsert();
+    
+	
+}
+	
+	
   
   
 }

@@ -41,6 +41,7 @@ public class AdminController extends Controller{
 			for(Risk r : lr){
 				r.upsert();
 			}
+			ec.createIndices();
 			message += "\nEntities pulled";
 		}
         EventCollection events =null;
