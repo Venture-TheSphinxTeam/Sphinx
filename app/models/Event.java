@@ -17,200 +17,199 @@ import uk.co.panaxiom.playjongo.PlayJongo;
  */
 public class Event implements Comparable<Event> {
 
-    public Event(){}
+	public Event() {
+	}
 
-    @JsonProperty("_id")
-    protected ObjectId id;
-    protected String eventType;
-    protected Entity entity;
-    protected long com_date;
-    
+	@JsonProperty("_id")
+	protected ObjectId id;
+	protected String eventType;
+	protected Entity entity;
+	protected long com_date;
 
-    
-    protected static MongoCollection _events(){
+	protected static MongoCollection _events() {
 		return PlayJongo.getCollection("events");
 	}
-    
-    
-    public static Iterable<Event> findBy(String query){
-    	return _events().find("{" + query+"}").as(Event.class);
-    }
-    
-    public static List< ? extends Event> findByIDListAndEntityType(List<String> ids, String type){
-    	String idString = listToMongoString(ids);
-    	
-    	String s = "\"entity.entityId\": {$in:"+idString+"},"
-    			+ "\"entity.entityType\": \""+type+"\"";
-    	
-    	ArrayList<Event> result;
-    	Iterable<? extends Event> events = ReportEvent.findREBy(s);
-    	result = Event.eventIterToList(events.iterator());
-    	
-    	events = ChangeEvent.findCEby(s);
-    	result.addAll(eventIterToList(events.iterator()));
-    	
-    	events = TimeSpentEvent.findTSEBy(s);
-    	result.addAll(eventIterToList(events.iterator()));
-    	
-    	
-    	return result;
-    }
 
-    public ObjectId getId() {
-        return id;
-    }
+	public static Iterable<Event> findBy(String query) {
+		return _events().find("{" + query + "}").as(Event.class);
+	}
 
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
+	public static List<? extends Event> findByIDListAndEntityType(
+			List<String> ids, String type) {
+		String idString = listToMongoString(ids);
 
-    public String getEventType() {
-        return eventType;
-    }
+		String s = "\"entity.entityId\": {$in:" + idString + "},"
+				+ "\"entity.entityType\": \"" + type + "\"";
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
+		ArrayList<Event> result;
+		Iterable<? extends Event> events = ReportEvent.findREBy(s);
+		result = Event.eventIterToList(events.iterator());
 
-    public Entity getEntity() {
-        return entity;
-    }
+		events = ChangeEvent.findCEby(s);
+		result.addAll(eventIterToList(events.iterator()));
 
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
-    
-    public long getComDate(){
-    	return com_date;
-    }
-    
-    
-    public static Iterator<? extends Event> getSubscribedEventsForUser(String username){
-    	List<Event> result = new ArrayList<Event>();
-    	
-    	User user = User.findByName(username); 
-        if(user == null){
-            return result.iterator();
-        }
-    	List<String> initIdList = user.getInitiativeSubscriptions();
-    	List<String> mileIdList = user.getMilestoneSubscriptions();
-    	List<String> riskIdList = user.getRiskSubscriptions();
-    	
-    	Iterator<? extends Event> initIter,mileIter,riskIter,resultIter;
-    	List<? extends Event> i,m,r;
-    	
-    	i = Event.findByIDListAndEntityType(initIdList, Initiative.TYPE_STRING);
+		events = TimeSpentEvent.findTSEBy(s);
+		result.addAll(eventIterToList(events.iterator()));
 
-    	m = Event.findByIDListAndEntityType(mileIdList, "MILESTONE");
-    	
+		return result;
+	}
 
-    	r = Event.findByIDListAndEntityType(riskIdList, "RISK");
+	public ObjectId getId() {
+		return id;
+	}
 
-    	result.addAll(i);
-    	result.addAll(m);
-    	result.addAll(r);
-    	
-    	return result.iterator();
-    }
-    
-    public static String listToMongoString(List<String> list){
-    	String result="[";
-    	if(list == null || list.size() == 0){
-    		return result +"]";
-    	}
-    	
-    	for(String s : list){
-    		result += "\""+s+"\"" + ",";
-    	}
-    	result = result.substring(0, result.lastIndexOf(','))+ "]";
-    	
-    	return result;
-    }
-    
-    public String getEventDetails(){
-    	String result ="";
-    	
-    	result ="An event of type " +eventType + "has been performed on" + entity.getSummary();
-    	
-    	return result;
-    }
-    
-    public Date getDate(){
-    	long date=0;
-    
-    	if(entity.getUpdated() > 0){
-    		date = entity.getUpdated();
-    	}
-    	else{
-    		date = entity.getCreated();
-    	}
-    	
-    	return new Date(date);
-    }
-    
-    public static ArrayList<Event> eventIterToList(Iterator<? extends Event> iter){
-    	ArrayList<Event> result = new ArrayList<Event>();
-    	
-    	while(iter.hasNext()){
-    		result.add(iter.next());
-    	}
-    	
-    	return result;
-    }
-    
-    public static Iterator<? extends Event> mergeIterators(Iterator<? extends Event> i1, Iterator<? extends Event>i2){
-		
-    	ArrayList<Event> result = new ArrayList<Event>();
-    	
-    	Event e1 = null;
-    	Event e2 =null;
-    	while(i1.hasNext() || i2.hasNext()){
-    		if(i1.hasNext() && e1 == null){
-    			e1 = i1.next();
-    		}
-    		if(i2.hasNext() && e2 == null){
-    			e2 = i2.next();
-    		}
-    		if(e1 != null && e2 != null){
-    			if(e1.getDateAsLong() > e2.getDateAsLong() ){
-    				result.add(e1);
-    				e1 =null;
-    			}
-    			else{
-    				result.add(e2);
-    				e2 =null;
-    			}
-    		}
-    		else if(e1 != null){
-    			result.add(e1);
-    			e1 = null;
-    		}
-    		else{
-    			result.add(e2);
-    			e2 = null;
-    		}
-    		
-    		
-    	}
-    	
-    	
-    	return result.iterator();
-    	
-    }
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
+
+	public Entity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(Entity entity) {
+		this.entity = entity;
+	}
+
+	public long getComDate() {
+		return com_date;
+	}
+
+	public static Iterator<? extends Event> getSubscribedEventsForUser(
+			String username) {
+		List<Event> result = new ArrayList<Event>();
+
+		User user = User.findByName(username);
+		if (user == null) {
+			return result.iterator();
+		}
+		List<String> initIdList = user.getInitiativeSubscriptions();
+		List<String> mileIdList = user.getMilestoneSubscriptions();
+		List<String> riskIdList = user.getRiskSubscriptions();
+
+		Iterator<? extends Event> initIter, mileIter, riskIter, resultIter;
+		List<? extends Event> i, m, r;
+
+		i = Event.findByIDListAndEntityType(initIdList, Initiative.TYPE_STRING);
+
+		m = Event.findByIDListAndEntityType(mileIdList, "MILESTONE");
+
+		r = Event.findByIDListAndEntityType(riskIdList, "RISK");
+
+		result.addAll(i);
+		result.addAll(m);
+		result.addAll(r);
+
+		return result.iterator();
+	}
+
+	public static String listToMongoString(List<String> list) {
+		String result = "[";
+		if (list == null || list.size() == 0) {
+			return result + "]";
+		}
+
+		for (String s : list) {
+			result += "\"" + s + "\"" + ",";
+		}
+		result = result.substring(0, result.lastIndexOf(',')) + "]";
+
+		return result;
+	}
+
+	public String getEventDetails() {
+		String result = "";
+
+		result = "An event of type " + eventType + "has been performed on"
+				+ entity.getSummary();
+
+		return result;
+	}
+
+	public Date getDate() {
+		long date = 0;
+
+		if (entity.getUpdated() > 0) {
+			date = entity.getUpdated();
+		} else {
+			date = entity.getCreated();
+		}
+
+		return new Date(date);
+	}
+
+	public static ArrayList<Event> eventIterToList(
+			Iterator<? extends Event> iter) {
+		ArrayList<Event> result = new ArrayList<Event>();
+
+		while (iter.hasNext()) {
+			result.add(iter.next());
+		}
+
+		return result;
+	}
+
+	public static Iterator<? extends Event> mergeIterators(
+			Iterator<? extends Event> i1, Iterator<? extends Event> i2) {
+
+		ArrayList<Event> result = new ArrayList<Event>();
+
+		Event e1 = null;
+		Event e2 = null;
+		while (i1.hasNext() || i2.hasNext()) {
+			if (i1.hasNext() && e1 == null) {
+				e1 = i1.next();
+			}
+			if (i2.hasNext() && e2 == null) {
+				e2 = i2.next();
+			}
+			if (e1 != null && e2 != null) {
+				if (e1.getDateAsLong() > e2.getDateAsLong()) {
+					result.add(e1);
+					e1 = null;
+				} else {
+					result.add(e2);
+					e2 = null;
+				}
+			} else if (e1 != null) {
+				result.add(e1);
+				e1 = null;
+			} else {
+				result.add(e2);
+				e2 = null;
+			}
+
+		}
+
+		return result.iterator();
+
+	}
 
 	public long getDateAsLong() {
-		
-		if(entity == null){
+
+		if (entity == null) {
 			return 0;
-		}
-		else{
+		} else {
 			return entity.getUpdated();
 		}
 	}
 
 	@Override
 	public int compareTo(Event e) {
-		
-		return this.getDate().compareTo(e.getDate()); 
+
+		if (this.getComDate() > e.getComDate()) {
+			return 1;
+		} else if (this.getComDate() == e.getComDate()) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 }
