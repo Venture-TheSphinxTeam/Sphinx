@@ -23,12 +23,14 @@ public class Event implements Comparable<Event> {
     protected ObjectId id;
     protected String eventType;
     protected Entity entity;
+    protected long com_date;
     
 
     
     protected static MongoCollection _events(){
 		return PlayJongo.getCollection("events");
 	}
+    
     
     public static Iterable<Event> findBy(String query){
     	return _events().find("{" + query+"}").as(Event.class);
@@ -77,6 +79,11 @@ public class Event implements Comparable<Event> {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
+    
+    public long getComDate(){
+    	return com_date;
+    }
+    
     
     public static Iterator<? extends Event> getSubscribedEventsForUser(String username){
     	List<Event> result = new ArrayList<Event>();

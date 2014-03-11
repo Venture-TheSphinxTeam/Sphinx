@@ -4,27 +4,23 @@ import helpers.MongoControlCenter;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import models.Entity;
 import models.Event;
 import models.Initiative;
 import models.Milestone;
 import models.Risk;
-import akka.actor.FSM.Timer;
-
-import com.mongodb.BasicDBObject;
-
 import play.libs.F.Callback;
 import play.libs.F.Callback0;
 import play.mvc.*;
 import views.html.*;
-import views.html.defaultpages.error;
 
 public class Application extends Controller {
 	public static final String USERNAME = "jay-z";
+	public static final String DATABASE = "dev";
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {
@@ -46,8 +42,7 @@ public class Application extends Controller {
 						control.setDatabase("dev");
 
 						// find current user
-						userRate = control
-								.getUserRefreshRate(USERNAME);
+						userRate = control.getUserRefreshRate(USERNAME);
 
 						control.closeConnection();
 
@@ -80,7 +75,7 @@ public class Application extends Controller {
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
-		control.setDatabase("dev");
+		control.setDatabase(DATABASE);
 
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
 		// user name
@@ -100,36 +95,84 @@ public class Application extends Controller {
 				subscribedEvents));
 	}
 
-	public static Result search() {
-		ArrayList<Entity> defaultResult = new ArrayList<Entity>();
-
-		Iterator<? extends Entity> initIter = Initiative.findBy(
-				"$or:[{allowedAccessUsers:\"" + USERNAME
-						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
-		while (initIter.hasNext()) {
-			defaultResult.add(initIter.next());
+	public static Result search(String keyword, String field)
+			throws UnknownHostException {
+		MongoControlCenter control = new MongoControlCenter(
+				"venture.se.rit.edu", 27017);
+		control.setDatabase("dev");
+		ArrayList<Entity> result = new ArrayList<Entity>();
+		if (keyword.equals("")) {
+			result = control.getEntitiesByQuery(control
+					.createAllowedAccessUsersQuery(USERNAME));
 		}
 
-		Iterator<? extends Entity> mileIter = Milestone.findBy(
-				"$or:[{allowedAccessUsers:\"" + USERNAME
-						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
-		while (mileIter.hasNext()) {
-			defaultResult.add(mileIter.next());
+		else if (field.equals("undefined")) {
+			result = control.getEntitiesByQuery("$or:[{"
+					+ control.createRegexQuery("summary", keyword) + "},{"
+					+ control.createRegexQuery("description", keyword) + "}]");
+
+			Iterator<Entity> enIter = result.iterator();
+
+			while (enIter.hasNext()) {
+				Entity e = enIter.next();
+				if (!e.getAllowedAccessUsers().contains(USERNAME)
+						&& e.getAllowedAccessUsers().size() != 0) {
+					enIter.remove();
+				}
+			}
+
 		}
 
-		Iterator<? extends Entity> riskIter = Risk.findBy(
-				"$or:[{allowedAccessUsers:\"" + USERNAME
-						+ "\"},{allowedAccessUsers:{$size: 0}}]").iterator();
-
-		while (riskIter.hasNext()) {
-			defaultResult.add(riskIter.next());
+		else {
+			result = control.getEntitiesByQuery(control.createRegexQuery(field,
+					keyword)
+					+ ","
+					+ control.createAllowedAccessUsersQuery(USERNAME));
 		}
 
-		return ok(search.render(defaultResult));
+		ArrayList<Object> facets = control.getIndexedValues();
+
+		return ok(search.render(result, facets));
+
 	}
 
-	public static Result subscriptions() {
-		return ok(subscriptions.render());
+	public static Result subscriptions() throws UnknownHostException {
+
+		// Open connection to database
+		MongoControlCenter control = new MongoControlCenter(
+				"venture.se.rit.edu", 27017);
+		control.setDatabase(DATABASE);
+
+		ArrayList<Entity> result = new ArrayList<Entity>();
+
+		ArrayList<String> initSubIds = control.getUserSubscriptionIds(USERNAME,
+				"initiativeSubscriptions");
+		ArrayList<String> mileSubIds = control.getUserSubscriptionIds(USERNAME,
+				"milestoneSubscriptions");
+		ArrayList<String> riskSubIds = control.getUserSubscriptionIds(USERNAME,
+				"riskSubscriptions");
+
+		// Collect initiative objects
+		ArrayList<Initiative> initSubs = new ArrayList<Initiative>();
+		for (String id : initSubIds) {
+			initSubs.add(control.getInitiativeById(id));
+		}
+
+		// Collect milestone objects
+		ArrayList<Milestone> mileSubs = new ArrayList<Milestone>();
+		for (String id : mileSubIds) {
+			mileSubs.add(control.getMilestoneById(id));
+		}
+
+		// Collect risk objects
+		ArrayList<Risk> riskSubs = new ArrayList<Risk>();
+		for (String id : riskSubIds) {
+			riskSubs.add(control.getRiskById(id));
+		}
+
+		control.closeConnection();
+
+		return ok(subscriptions.render(initSubs, mileSubs, riskSubs));
 	}
 
 	public static Result adminTools() {
@@ -145,14 +188,14 @@ public class Application extends Controller {
 
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
-		control.setDatabase("dev");
+		control.setDatabase(DATABASE);
 
 		if (type.equals("INITIATIVE")) {
 			Initiative entity_Initiative = control.getInitiativeById(arg);
 
 			if (((entity_Initiative.getAllowedAccessUsers().contains("jay-z") || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
-				
+
 				return ok(initiative.render(entity_Initiative, USERNAME));
 			} else {
 				return ok(accessError.render());
@@ -176,7 +219,6 @@ public class Application extends Controller {
 
 		else {
 			Risk entity_Risk = control.getRiskById(arg);
-
 			if (((entity_Risk.getAllowedAccessUsers()).contains("jay-z") || ((entity_Risk
 					.getAllowedAccessUsers())).isEmpty())) {
 
@@ -190,4 +232,5 @@ public class Application extends Controller {
 		}
 
 	}
+
 }

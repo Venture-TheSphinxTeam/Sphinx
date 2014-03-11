@@ -1,4 +1,231 @@
+@(userInitEntities: List[Initiative])(userMileEntities: List[Milestone])(userRiskEntities: List[Risk])
 @main("Sphinx: Connecting Projects to People")("") {
 
-<div class="container">This is the subscriptions page</div>
+<div class="container">
+	<div class="row">
+		<div class="span4">
+			<div class="tabbable">
+				<ul class="nav nav-tabs" id="dashTab">
+					<li class="active">
+						<a href="#1" data-toggle="tab">Initative Subscriptions</a>
+					</li>
+					<li class="">
+						<a href="#2" data-toggle="tab">Milestone Subscriptions</a>
+					</li>
+					<li class="">
+						<a href="#3" data-toggle="tab">Risk Subscriptions</a>
+					</li>
+					<li class="">
+						<a href="#4" data-toggle="tab">Query Subscriptions</a>
+					</li>
+				</ul>
+				<!--      Initiative Subscriptions       -->
+				<div class="tab-content">
+
+					<div class="tab-pane active" id="1">
+						<br />
+						<div id="page_container" class="pcontainer">
+							<div class="page_navigation"></div>
+							<br />
+							<div class="info_text"></div>
+							<ul class="thumbnails">
+								<ul class="content">
+									@for(entity <- userInitEntities){
+									<li>
+										<div class="thumbnail">
+											@defining(entity){ entity=>
+											<div class="optionButtons" align = "right">
+												<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#editEntityModal">edit</button>
+												<button class="btn btn-primary btn-sm">delete</button>
+											</div>
+											<div>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>@entity.getSummary()</h3>
+												<a class="btn btn-primary btn-sm"
+													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													more &raquo;</a> <br />
+											</div>
+											}
+										</div>
+									</li>
+									}
+								</ul>
+							</ul>
+							<br />
+						</div>
+					</div>
+
+				</div>
+				<!--      Milestone Subscriptions       -->
+				<div class="tab-content">
+
+					<div class="tab-pane" id="2">
+						<br />
+						<div id="page_container2" class="pcontainer">
+							<div class="page_navigation"></div>
+							<br />
+							<div class="info_text"></div>
+							<ul class="thumbnails">
+								<ul class="content">
+									@for(entity <- userMileEntities){
+									<li>
+										<div class="thumbnail">
+											@defining(entity){ entity=>
+											<div class="optionButtons" align = "right">
+												<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#editEntityModal">edit</button>
+												<button class="btn btn-primary btn-sm">delete</button>
+											</div>
+											<div>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>@entity.getSummary()</h3>
+												<a class="btn btn-primary btn-sm"
+													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													more &raquo;</a> <br />
+											</div>
+											}
+										</div>
+									</li>
+									}
+								</ul>
+							</ul>
+							<br />
+						</div>
+					</div>
+				</div>
+				<!--      Risk Subscriptions       -->
+				<div class="tab-content">
+
+					<div class="tab-pane" id="3">
+						<br />
+						<div id="page_container3" class="pcontainer">
+							<div class="page_navigation"></div>
+							<br />
+							<div class="info_text"></div>
+							<ul class="thumbnails">
+								<ul class="content">
+									@for(entity <- userRiskEntities){
+									<li>
+										<div class="thumbnail">
+											@defining(entity){ entity=>
+											<div class="optionButtons" align = "right">
+												<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#editEntityModal">edit</button>
+												<button class="btn btn-primary btn-sm">delete</button>
+											</div>
+											<div>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>@entity.getSummary()</h3>
+												<a class="btn btn-primary btn-sm"
+													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													more &raquo;</a> <br />
+											</div>
+											}
+										</div>
+									</li>
+									}
+								</ul>
+							</ul>
+							<br />
+						</div>
+					</div>
+
+				</div>
+				<!--      Query Subscriptions       -->
+				<div class="tab-content">
+
+					<div class="tab-pane" id="4">
+						<br />
+						<div id="page_container4" class="pcontainer">
+							<div class="page_navigation"></div>
+							<br />
+							<div class="info_text"></div>
+								<ul class="thumbnails">
+									<ul class="content">
+										<li>
+											<div class="thumbnail">
+												<div class="optionButtons" align = "right">
+													<button 
+														class="btn btn-primary btn-sm"
+														data-toggle="modal"
+														data-target="#editEntityModal">edit</button>
+													<button class="btn btn-primary btn-sm">delete</button>
+												</div>
+												<div>
+													<h3>Query ID</h3>
+													<h3>Query Summary</h3>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</ul>
+							<br />
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="editEntityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+
+		<form action="">
+			<input type="checkbox" name="Test1" value="test1"> I am a test<br>
+			<input type="checkbox" name="Test2" value="test2"> I am a test 2<br>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pagination of tabs -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#page_container').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
+	});
+
+	$(document).ready(function() {
+		$('#page_container2').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
+	});
+
+	$(document).ready(function() {
+		$('#page_container3').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
+	});
+
+	$(document).ready(function() {
+		$('#page_container4').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
+	});
+</script>
 }

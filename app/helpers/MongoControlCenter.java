@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import views.html.initiative;
-
 import models.Entity;
 import models.Event;
 import models.Initiative;
@@ -24,6 +22,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.QueryBuilder;
 import com.mongodb.BasicDBList;
 
+//import com.sun.xml.internal.rngom.digested.DContainerPattern;   TODO
+
 public class MongoControlCenter {
 
 	private MongoClient mongoClient;
@@ -34,6 +34,7 @@ public class MongoControlCenter {
 	private DBCollection milestones;
 	private DBCollection events;
 	private DBCollection users;
+	private DBCollection fieldIncices;
 
 	private BasicDBList ids;
 
@@ -60,6 +61,7 @@ public class MongoControlCenter {
 		milestones = db.getCollection("milestones");
 		events = db.getCollection("events");
 		users = db.getCollection("users");
+		fieldIncices = db.getCollection("fieldIncices");
 
 		ids = new BasicDBList();
 	}
@@ -70,6 +72,8 @@ public class MongoControlCenter {
 	public void closeConnection() {
 		mongoClient.close();
 	}
+
+	// ------------------ GET ENTITIES BY ID ----------------//
 
 	public Initiative getInitiativeById(String entityId) {
 
@@ -96,6 +100,8 @@ public class MongoControlCenter {
 
 		return Risk.getFirstWithId(entityId);
 	}
+
+	// ------------------ GET EVENTS ---------------------//
 
 	public ArrayList<Event> getSingleEventsForUser(String user) {
 		ArrayList<Event> result;
@@ -377,6 +383,8 @@ public class MongoControlCenter {
 		return results.toArray();
 	}
 
+	// ----------------- USER SETTINGS -------------------//
+
 	@SuppressWarnings("unchecked")
 	public Integer getUserRefreshRate(String user) {
 
@@ -399,6 +407,26 @@ public class MongoControlCenter {
 		}
 		return temp.get(0);
 
+	}
+
+	public ArrayList<String> getUserSubscriptionIds(String user,
+			String subscriptionType) {
+
+		BasicDBObject userSearchQuery = new BasicDBObject("username", user);
+		DBCursor cursor = users.find(userSearchQuery);
+
+		ArrayList<String> userSubscriptions = null;
+
+		try {
+			while (cursor.hasNext()) {
+				userSubscriptions = ((ArrayList<String>) cursor.next().get(
+						subscriptionType));
+			}
+		} finally {
+			cursor.close();
+		}
+
+		return userSubscriptions;
 	}
 
 	/*
@@ -438,4 +466,60 @@ public class MongoControlCenter {
 
 		return temp;
 	}
+
+	public ArrayList<Entity> getEntitiesByQuery(String query) {
+		ArrayList<Entity> result = new ArrayList<Entity>();
+
+		Iterator<? extends Entity> initIter = Initiative.findBy(query)
+				.iterator();
+		while (initIter.hasNext()) {
+			result.add(initIter.next());
+		}
+
+		Iterator<? extends Entity> mileIter = Milestone.findBy(query)
+				.iterator();
+		while (mileIter.hasNext()) {
+			result.add(mileIter.next());
+		}
+
+		Iterator<? extends Entity> riskIter = Risk.findBy(query).iterator();
+
+		while (riskIter.hasNext()) {
+			result.add(riskIter.next());
+		}
+
+		return result;
+
+	}
+
+	// -------------------- CREATE QUERIES ----------------------//
+
+	public String createRegexQuery(String field, String regex) {
+		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
+				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}";
+	}
+
+	public String createAllowedAccessUsersQuery(String username) {
+		return "$or:[{allowedAccessUsers:\"" + username
+				+ "\"},{allowedAccessUsers:{$size: 0}}]";
+	}
+
+	public ArrayList<Object> getIndexedValues() {
+
+		DBCursor cursor = fieldIncices.find();
+
+		ArrayList<Object> temp = new ArrayList<Object>();
+
+		try {
+			while (cursor.hasNext()) {
+				temp.add(cursor.next());
+
+			}
+		} finally {
+			cursor.close();
+		}
+		return temp;
+
+	}
+
 }

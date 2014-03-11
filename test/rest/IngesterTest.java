@@ -53,11 +53,5 @@ public class IngesterTest{
     Assert.assertEquals(r,TestResource.TEST_JSON);
   }
 
-  //Don't test this pls
-  public void testtesttesttesttest(){
-    Ingester i = new Ingester("http://localhost:9997/entity");
-    i.getStuff();
-  }
-
 
 }
