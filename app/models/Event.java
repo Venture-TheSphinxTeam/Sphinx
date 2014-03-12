@@ -1,15 +1,23 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
+import sun.util.resources.CalendarData;
 import uk.co.panaxiom.playjongo.PlayJongo;
 
 /**
@@ -133,7 +141,7 @@ public class Event implements Comparable<Event> {
 		return result;
 	}
 
-	public Date getDate() {
+	public String getDate() throws ParseException {
 		long date = 0;
 
 		if (entity.getUpdated() > 0) {
@@ -142,7 +150,7 @@ public class Event implements Comparable<Event> {
 			date = entity.getCreated();
 		}
 
-		return new Date(date);
+		return new Date(date).toString();
 	}
 
 	public static ArrayList<Event> eventIterToList(
@@ -211,5 +219,12 @@ public class Event implements Comparable<Event> {
 		} else {
 			return -1;
 		}
+	}
+
+	protected String getFormattedDate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd yyyy"); // the format of your date
+		String formattedDate = sdf.format(date);
+
+		return formattedDate;
 	}
 }
