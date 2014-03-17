@@ -95,7 +95,8 @@ public class Application extends Controller {
 				subscribedEvents));
 	}
 
-	public static Result search(String keyword, String field)
+	public static Result search(String keyword, String field, String priority,
+			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
