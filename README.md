@@ -24,6 +24,14 @@ Opensource software utilized:
   - [Jackson](https://github.com/FasterXML/jackson) (JSON Parser)
   - [Play-Jongo](https://github.com/alexanderjarvis/play-jongo)/[Jongo](http://jongo.org/) (Database Connectors)
 
+
+##Installing and Running:
+1. Install mongodb (http://docs.mongodb.org/manual/installation/)
+2. Download play
+3. Unzip play
+4. Run play.bat or ./play in the directory of this project
+
+
 ##Setting Up Your Environment:
 
 No matter what environment you're running, you'll need to grab the play framework from http://www.playframework.com/
