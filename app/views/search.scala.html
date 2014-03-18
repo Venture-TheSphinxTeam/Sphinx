@@ -23,9 +23,9 @@
                         <span class="glyphicon glyphicon-search"></span>
                         </button>
                         <hr/>
-                        <button class="btn btn-default" type="button" id="sort_alpha" onclick="sortAlpha();">Sort Alphabetically</button>
-                        <button class="btn btn-default" type="button" id="sort_date" onclick="sortProposed();">Sort By Date Proposed</button> 
-   						<button class="btn btn-default" type="button" id="sort_updated" onclick="sortUpdated();">Sort By Most Recent</button> 
+                        <button class="btn btn-default" type="button" id="sort_alpha">Sort Alphabetically</button>
+                        <button class="btn btn-default" type="button" id="sort_date">Sort By Date Proposed</button> 
+   						<button class="btn btn-default" type="button" id="sort_updated">Sort By Most Recent</button> 
    </div>
 </div>
 
@@ -64,6 +64,31 @@
 
 <script src="@routes.Assets.at("javascripts/sort.js")" type="text/javascript"></script>
 <script type="text/javascript">
+	window.onload = function() {
+		var alpha_desc = false;
+		var proposed_desc = false;
+		var recent_desc = false;
+
+		document.getElementById("sort_alpha").onclick = function() {
+			sortAlpha(alpha_desc);
+			alpha_desc = !alpha_desc;
+			return false;
+		}
+
+		document.getElementById("sort_date").onclick = function() {
+			sortProposed(proposed_desc);
+			proposed_desc = !proposed_desc;
+			return false;
+		}
+
+		document.getElementById("sort_updated").onclick = function() {
+			sortUpdated(recent_desc);
+			recent_desc = !recent_desc;
+			return false;
+		}
+
+	}
+
 	$(document).ready(function() {
 		$('#page_container').pajinate({
 			items_per_page : 15,
