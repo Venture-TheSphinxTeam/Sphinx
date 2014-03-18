@@ -102,7 +102,51 @@ public class Application extends Controller {
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 		ArrayList<Entity> result = new ArrayList<Entity>();
-		if (keyword.equals("")) {
+
+		if (keyword.equals("") && field.equals("")) {
+
+			String priorityQuery = control.createSimpleFindQuery("priority",
+					priority);
+			String statusQuery = control
+					.createSimpleFindQuery("status", status);
+			String reporterQuery = control.createSimpleFindQuery("reporter",
+					reporter);
+			String assigneeQuery = control.createSimpleFindQuery("assignee",
+					assignee);
+			String labelQuery = control.createSimpleFindQuery("labels", label);
+			String facetQuery = "";
+
+			if (!priority.equals("")) {
+				facetQuery += priorityQuery + ",";
+			}
+
+			if (!status.equals("")) {
+				facetQuery += statusQuery + ",";
+			}
+
+			if (!reporter.equals("")) {
+				facetQuery += reporterQuery + ",";
+			}
+
+			if (!assignee.equals("")) {
+				facetQuery += assigneeQuery + ",";
+			}
+
+			if (!label.equals("")) {
+				facetQuery += labelQuery;
+			}
+
+			if (!facetQuery.equals("")) {
+				result = control.getEntitiesByQuery(facetQuery
+						+ control.createAllowedAccessUsersQuery(USERNAME));
+			} else {
+				result = control.getEntitiesByQuery(control
+						.createAllowedAccessUsersQuery(USERNAME));
+			}
+
+		}
+
+		else if (keyword.equals("")) {
 			result = control.getEntitiesByQuery(control
 					.createAllowedAccessUsersQuery(USERNAME));
 		}
@@ -164,7 +208,7 @@ public class Application extends Controller {
 		for (String id : mileSubIds) {
 			mileSubs.add(control.getMilestoneById(id));
 		}
-		
+
 		// Collect risk objects
 		ArrayList<Risk> riskSubs = new ArrayList<Risk>();
 		for (String id : riskSubIds) {

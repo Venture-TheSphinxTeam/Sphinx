@@ -502,6 +502,10 @@ public class MongoControlCenter {
 				+ "\"},{allowedAccessUsers:{$size: 0}}]";
 	}
 
+	public String createSimpleFindQuery(String field, String value) {
+		return  field + ":\"" + value + "\"";
+	}
+
 	public ArrayList<Object> getIndexedValues() {
 
 		DBCursor cursor = fieldIncices.find();
