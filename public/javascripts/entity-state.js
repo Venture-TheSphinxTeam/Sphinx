@@ -83,7 +83,7 @@ function updateButtonsOnPage(entityType,entityId,status,buttonType){
  * Subscribe/vote/watch status change toggled from true to false or vice versa
  */
 function removeSubscription(entityType,entityId,username){
-	alert("I made it here somehow");
+
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
 				 'username':   username,
@@ -98,7 +98,7 @@ function removeSubscription(entityType,entityId,username){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-			//$(entityType+"-"+entityId).style("display: none;");
+			location.reload();
 		}
 	})
 
