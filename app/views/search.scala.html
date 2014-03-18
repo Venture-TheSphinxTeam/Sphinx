@@ -24,8 +24,8 @@
                         </button>
                         <hr/>
                         <button class="btn btn-default" type="button" id="sort_alpha" onclick="sortAlpha();">Sort Alphabetically</button>
-                        <button class="btn btn-default" type="button" id="sort_date">Sort By Date Proposed</button> 
-   						<button class="btn btn-default" type="button" id="sort_">Sort By Most Recent</button> 
+                        <button class="btn btn-default" type="button" id="sort_date" onclick="sortProposed();">Sort By Date Proposed</button> 
+   						<button class="btn btn-default" type="button" id="sort_updated" onclick="sortUpdated();">Sort By Most Recent</button> 
    </div>
 </div>
 
@@ -47,6 +47,8 @@
 					<h3>@entity.getKey()</h3>
 					<h3 id="summary">@entity.getSummary()</h3>
 					<h4>@entity.getDescription()</h4>
+					<label hidden="true" id="proposed">@entity.getCreated()</label>
+					<label hidden="true" id="updated">@entity.getUpdated()</label>
 
 
 					<a class="btn btn-primary btn-sm"
@@ -62,12 +64,12 @@
 
 <script src="@routes.Assets.at("javascripts/sort.js")" type="text/javascript"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-	$('#page_container').pajinate({
-		items_per_page : 15,
-		abort_on_small_lists : true
+	$(document).ready(function() {
+		$('#page_container').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
 	});
-});
 
 	$('.selectpicker').selectpicker();
 </script>
