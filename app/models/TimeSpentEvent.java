@@ -1,5 +1,6 @@
 package models;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.jongo.MongoCollection;
@@ -12,69 +13,65 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Created by Stephen Yingling on 2/4/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TimeSpentEvent extends Event{
-	
-	
+public class TimeSpentEvent extends Event {
+
 	private static final String TYPE_SELECTOR = "eventType: \"TIMESPENT\"";
 
-	public static Iterable<TimeSpentEvent> findTSEBy(String query){
-		String q = "{"+TimeSpentEvent.TYPE_SELECTOR+","+query+"}";
+	public static Iterable<TimeSpentEvent> findTSEBy(String query) {
+		String q = "{" + TimeSpentEvent.TYPE_SELECTOR + "," + query + "}";
 		return _events().find(q).as(TimeSpentEvent.class);
-		
+
 	}
-	
-	
-	public void remove(){
-        _events().remove(this.id);
-    }
 
-    public void removeAll(){
-        _events().remove("{"+TYPE_SELECTOR+"}");
-    }
+	public void remove() {
+		_events().remove(this.id);
+	}
 
-    public TimeSpentEvent insert(){
-        _events().save(this);
-        return this;
-    }
+	public void removeAll() {
+		_events().remove("{" + TYPE_SELECTOR + "}");
+	}
 
-    public TimeSpentEvent(){}
+	public TimeSpentEvent insert() {
+		_events().save(this);
+		return this;
+	}
 
-    protected long periodStartDate;
-    protected long periodEndDate;
+	public TimeSpentEvent() {
+	}
 
-    public long getPeriodStartDate() {
-        return periodStartDate;
-    }
+	protected long periodStartDate;
+	protected long periodEndDate;
 
-    public void setPeriodStartDate(long periodStartDate) {
-        this.periodStartDate = periodStartDate;
-    }
+	public long getPeriodStartDate() {
+		return periodStartDate;
+	}
 
-    public long getPeriodEndDate() {
-        return periodEndDate;
-    }
+	public void setPeriodStartDate(long periodStartDate) {
+		this.periodStartDate = periodStartDate;
+	}
 
-    public void setPeriodEndDate(long periodEndDate) {
-    	this.com_date = periodEndDate;
-        this.periodEndDate = periodEndDate;
-    }
-    
-    
-    @Override
-    public String getEventDetails(){
-    	String result ="";
-    	
-    	result += "Work was performed from " + new Date(periodStartDate) +
-    			" to " + new Date(periodEndDate);
-    	
-    	
+	public long getPeriodEndDate() {
+		return periodEndDate;
+	}
+
+	public void setPeriodEndDate(long periodEndDate) {
+		this.com_date = periodEndDate;
+		this.periodEndDate = periodEndDate;
+	}
+
+	@Override
+	public String getEventDetails() {
+		String result = "";
+
+		result += "Work was performed from " + new Date(periodStartDate)
+				+ " to " + new Date(periodEndDate);
+
 		return result;
-    }
-    
-    @Override
-    public Date getDate(){
-    	return new Date(periodEndDate);
-    }
+	}
 
+	@Override
+	public String getDate(){
+		return super.getFormattedDate(new Date(periodEndDate));
+	}
 
 }

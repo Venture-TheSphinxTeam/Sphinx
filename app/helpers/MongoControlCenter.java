@@ -146,13 +146,11 @@ public class MongoControlCenter {
 		long threeMonths = 7776000L;
 		Iterator<Event> iEvent = result.iterator();
 
-		/**
-		 * Code for filtering out non-relevant events. Will uncomment when can
-		 * test. while (iEvent.hasNext()) { if (iEvent.next().getDateAsLong() <=
-		 * (unixTime - threeMonths)) { iEvent.remove();
-		 * 
-		 * } }
-		 **/
+		while (iEvent.hasNext()) {
+			if (iEvent.next().getComDate() <= (unixTime - threeMonths)) {
+				iEvent.remove();
+			}
+		}
 
 		Collections.sort(result);
 		return result;
