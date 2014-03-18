@@ -1,6 +1,7 @@
-@(userInitEntities: List[Initiative])(userMileEntities: List[Milestone])(userRiskEntities: List[Risk])
+@(userInitEntities: List[Initiative])(userMileEntities: List[Milestone])(userRiskEntities: List[Risk])(username: String)
 @main("Sphinx: Connecting Projects to People")("") {
 
+<script src="@routes.Assets.at("javascripts/subscriptions.js")" type="text/javascript"></script>
 <div class="container">
 	<div class="row">
 		<div class="span4">
@@ -32,14 +33,19 @@
 								<ul class="content">
 									@for(entity <- userInitEntities){
 									<li>
-										<div class="thumbnail">
-											@defining(entity){ entity=>
+										@defining(entity){ entity=>
+										<div class="thumbnail" id='initiative-@entity.getEntityId()'>
 											<div class="optionButtons" align = "right">
 												<button 
 													class="btn btn-primary btn-sm"
 													data-toggle="modal"
-													data-target="#editEntityModal">edit</button>
-												<button class="btn btn-primary btn-sm">delete</button>
+													data-target="#modal"
+													onclick="setModalBody_Edit('initiative','@entity.getEntityId()','@username')">edit</button>
+												<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#modal"
+													onclick="setModalBody_Delete('initiative','@entity.getEntityId()','@username')">delete</button>
 											</div>
 											<div>
 												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
@@ -48,8 +54,8 @@
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
 													more &raquo;</a> <br />
 											</div>
-											}
 										</div>
+										}
 									</li>
 									}
 								</ul>
@@ -72,24 +78,29 @@
 								<ul class="content">
 									@for(entity <- userMileEntities){
 									<li>
-										<div class="thumbnail">
-											@defining(entity){ entity=>
+										@defining(entity){ entity=>
+										<div class="thumbnail" id='milestone-@entity.getEntityId()'>
 											<div class="optionButtons" align = "right">
 												<button 
 													class="btn btn-primary btn-sm"
 													data-toggle="modal"
-													data-target="#editEntityModal">edit</button>
-												<button class="btn btn-primary btn-sm">delete</button>
+													data-target="#modal"
+													onclick="setModalBody_Edit('milestone','@entity.getEntityId()','@username')">edit</button>
+												<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#modal"
+													onclick="setModalBody_Delete('milestone','@entity.getEntityId()','@username')">delete</button>
 											</div>
 											<div>
-												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>Milestone-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
 													more &raquo;</a> <br />
 											</div>
-											}
 										</div>
+										}
 									</li>
 									}
 								</ul>
@@ -111,24 +122,30 @@
 								<ul class="content">
 									@for(entity <- userRiskEntities){
 									<li>
-										<div class="thumbnail">
-											@defining(entity){ entity=>
+										@defining(entity){ entity=>
+										<div class="thumbnail" id='risk-@entity.getEntityId()'>
 											<div class="optionButtons" align = "right">
 												<button 
 													class="btn btn-primary btn-sm"
 													data-toggle="modal"
-													data-target="#editEntityModal">edit</button>
-												<button class="btn btn-primary btn-sm">delete</button>
+													data-target="#modal"
+													onclick="setModalBody_Edit('risk','@entity.getEntityId()','@username')">edit</button>
+												<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#modal"
+													onclick="setModalBody_Delete('risk','@entity.getEntityId()','@username')">delete</button>
+											</div>
 											</div>
 											<div>
-												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
+												<h3>Risk-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
 													more &raquo;</a> <br />
 											</div>
-											}
 										</div>
+										}
 									</li>
 									}
 								</ul>
@@ -176,23 +193,19 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="editEntityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="modal-label"></h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modal-body">
 
-		<form action="">
-			<input type="checkbox" name="Test1" value="test1"> I am a test<br>
-			<input type="checkbox" name="Test2" value="test2"> I am a test 2<br>
-		</form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer" id="modal-footer">
+        <button type="button" id="modal-button1" class="" data-dismiss="modal"></button>
+        <button type="button" id="modal-button2" class="" data-dismiss="modal" onclick=""></button>
       </div>
     </div>
   </div>

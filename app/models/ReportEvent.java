@@ -1,5 +1,6 @@
 package models;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +100,7 @@ public class ReportEvent extends Event  {
     }
     
     @Override
-    public Date getDate(){
-    	return new Date(reportDate);
+    public String getDate(){
+    	return super.getFormattedDate(new Date(reportDate));
     }
 }

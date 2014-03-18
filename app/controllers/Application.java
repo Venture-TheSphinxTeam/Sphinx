@@ -95,13 +95,58 @@ public class Application extends Controller {
 				subscribedEvents));
 	}
 
-	public static Result search(String keyword, String field)
+	public static Result search(String keyword, String field, String priority,
+			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
 				"venture.se.rit.edu", 27017);
 		control.setDatabase("dev");
 		ArrayList<Entity> result = new ArrayList<Entity>();
-		if (keyword.equals("")) {
+
+		if (keyword.equals("") && field.equals("")) {
+
+			String priorityQuery = control.createSimpleFindQuery("priority",
+					priority);
+			String statusQuery = control
+					.createSimpleFindQuery("status", status);
+			String reporterQuery = control.createSimpleFindQuery("reporter",
+					reporter);
+			String assigneeQuery = control.createSimpleFindQuery("assignee",
+					assignee);
+			String labelQuery = control.createSimpleFindQuery("labels", label);
+			String facetQuery = "";
+
+			if (!priority.equals("")) {
+				facetQuery += priorityQuery + ",";
+			}
+
+			if (!status.equals("")) {
+				facetQuery += statusQuery + ",";
+			}
+
+			if (!reporter.equals("")) {
+				facetQuery += reporterQuery + ",";
+			}
+
+			if (!assignee.equals("")) {
+				facetQuery += assigneeQuery + ",";
+			}
+
+			if (!label.equals("")) {
+				facetQuery += labelQuery;
+			}
+
+			if (!facetQuery.equals("")) {
+				result = control.getEntitiesByQuery(facetQuery
+						+ control.createAllowedAccessUsersQuery(USERNAME));
+			} else {
+				result = control.getEntitiesByQuery(control
+						.createAllowedAccessUsersQuery(USERNAME));
+			}
+
+		}
+
+		else if (keyword.equals("")) {
 			result = control.getEntitiesByQuery(control
 					.createAllowedAccessUsersQuery(USERNAME));
 		}
@@ -172,7 +217,7 @@ public class Application extends Controller {
 
 		control.closeConnection();
 
-		return ok(subscriptions.render(initSubs, mileSubs, riskSubs));
+		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, USERNAME));
 	}
 
 	public static Result adminTools() {
