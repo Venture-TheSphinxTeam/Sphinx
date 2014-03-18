@@ -77,5 +77,29 @@ function updateButtonsOnPage(entityType,entityId,status,buttonType){
 	} else {
 		alert("Button status was not correctly gathered")
 	}
+}
+
+/** 
+ * Subscribe/vote/watch status change toggled from true to false or vice versa
+ */
+function removeSubscription(entityType,entityId,username){
+	alert("I made it here somehow");
+	var json = { 'entityType': entityType, 
+				 'entityId': 	 entityId,
+				 'username':   username,
+				 'buttonType': 'subscription' };
+
+	var url = "/updateButtonStatus";
+
+	$.ajax({
+		type: "POST",
+		url: url,
+		data: JSON.stringify(json),
+		datatype: "json",
+		contentType: 'application/json; charset=utf-8',
+		success: function (data){
+			//$(entityType+"-"+entityId).style("display: none;");
+		}
+	})
 
 }
