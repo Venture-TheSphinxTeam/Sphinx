@@ -41,4 +41,7 @@ curl -O http://downloads.typesafe.com/play/2.2.2/play-2.2.2.zip
 sudo mkdir -p /opt/play
 sudo unzip play-2.2.2.zip -d /opt/play
 
+$PATH = "$PATH:/opt/play"
+
+sudo echo $PATH > /etc/environment
 
