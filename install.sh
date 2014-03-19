@@ -50,7 +50,7 @@ fi
 echo "Installing play in /opt/play"
 curl -O http://downloads.typesafe.com/play/2.2.2/play-2.2.2.zip
 sudo mkdir -p /opt/play
-sudo unzip play-2.2.2.zip -d /opt/play
+sudo unzip -qq play-2.2.2.zip -d /opt/play
 sudo cp -r /opt/play/play-2.2.2/* /opt/play/
 rm play-2.2.2.zip
 echo "export PATH=$PATH:/opt/play" | sudo tee -a /etc/bash.bashrc
