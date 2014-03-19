@@ -33,13 +33,12 @@ else
 	fi
 	mkdir -p /data/db
 	chown mongodb /data/db
+	sudo service mongodb start
 fi
 
 
-sudo service mongodb start
-
 curl -O http://downloads.typesafe.com/play/2.2.2/play-2.2.2.zip
-mkdir -p /opt/play
-unzip play-2.2.2.zip -d /opt/play
+sudo mkdir -p /opt/play
+sudo unzip play-2.2.2.zip -d /opt/play
 
 
