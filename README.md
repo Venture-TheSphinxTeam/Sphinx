@@ -24,6 +24,9 @@ Opensource software utilized:
   - [Jackson](https://github.com/FasterXML/jackson) (JSON Parser)
   - [Play-Jongo](https://github.com/alexanderjarvis/play-jongo)/[Jongo](http://jongo.org/) (Database Connectors)
 
+##Install
+1. 'bash <(curl https://raw.github.com/Venture-TheSphinxTeam/Sphinx/dev/install.sh -o -)'
+
 ##Setting Up Your Environment:
 
 No matter what environment you're running, you'll need to grab the play framework from http://www.playframework.com/
