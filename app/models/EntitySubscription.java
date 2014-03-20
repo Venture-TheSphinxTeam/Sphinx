@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,18 +8,12 @@ import java.util.List;
  */
 public class EntitySubscription {
 
-    protected String entityType;
     protected String entityId;
     protected List<String> eventTypes;
 
-    public EntitySubscription(){}
-
-    public String getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
+    public EntitySubscription(String entityId, List<String>eventTypes){
+        this.entityId = entityId;
+        this.eventTypes = eventTypes;
     }
 
     public String getEntityId() {
@@ -35,5 +30,17 @@ public class EntitySubscription {
 
     public void setEventTypes(List<String> eventTypes) {
         this.eventTypes = eventTypes;
+    }
+
+    public static ArrayList<String> getIdsForEventType(List<EntitySubscription> subs, String eventType){
+        ArrayList<String> result = new ArrayList<String>();
+
+        for(EntitySubscription es : subs){
+            if(es.getEventTypes().contains(eventType)){
+                result.add(es.getEntityId());
+            }
+        }
+
+        return result;
     }
 }

@@ -53,23 +53,38 @@ public class User {
     private String password;
     private boolean admin;
     private List<String> querySubscriptions;
-    private List<String> initiativeSubscriptions;
-    private List<String> milestoneSubscriptions;
-    private List<String> riskSubscriptions;
+    private List<EntitySubscription> initiativeSubscriptions;
+    private List<EntitySubscription> milestoneSubscriptions;
+    private List<EntitySubscription> riskSubscriptions;
     private int updateFrequency;
 
 
     //----------------------------SUBSCRIPTIONS/WATCHES/VOTES---------------------------------//
 
-    public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){
+    public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){     //TODO: FIX
     	boolean retVal = false;
 
         if( entityType.toLowerCase().equals("initiative") ){
-            retVal = user.initiativeSubscriptions.contains(entityId) ;
+            for(int i=0; i<user.initiativeSubscriptions.size(); i++){
+                if( user.initiativeSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = true;
+                    break;
+                }
+            }
         } else if( entityType.toLowerCase().equals("milestone") ){
-        	retVal = user.milestoneSubscriptions.contains(entityId) ;
+            for(int i=0; i<user.milestoneSubscriptions.size(); i++){
+                if( user.milestoneSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = true;
+                    break;
+                }
+            }
         } else {
-        	retVal = user.riskSubscriptions.contains(entityId) ;
+            for(int i=0; i<user.riskSubscriptions.size(); i++){
+                if( user.riskSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = true;
+                    break;
+                }
+            }
         }
 		
     	return retVal;
@@ -85,30 +100,25 @@ public class User {
     }
 
     /**
-     * Subscribe to or unsubscribe from an entity. 
+     * Subscribe to or unsubscribe from an entity.                      // TO DO : TEST IF NEW CHANGES WORK
      * @return				the new status of the subscription
      */
     public static void setUserEntitySubscriptionStatus(boolean status, User user, String entityId, String entityType){
+        List<String> defaultEventSubscriptions = Arrays.asList("REPORT", "TIMESPENT", "CREATE", "UPDATE", "DELETE");
 
         // Add subscription
 		if( status == true ){
 	        if( entityType.toLowerCase().equals("initiative") ){
-	        	user.initiativeSubscriptions.add(entityId) ;
-	        } else if( entityType.toLowerCase().equals("milestone") ){
-	        	user.milestoneSubscriptions.add(entityId) ;
-	        } else {
-	        	user.riskSubscriptions.add(entityId) ;
+	        	user.initiativeSubscriptions.add(new EntitySubscription(entityId, defaultEventSubscriptions)) ; 
+	        } else if( entityType.toLowerCase().equals("milestone") ){                    
+	        	user.milestoneSubscriptions.add(new EntitySubscription(entityId, defaultEventSubscriptions)) ;     
+ 	        } else {
+	        	user.riskSubscriptions.add(new EntitySubscription(entityId, defaultEventSubscriptions)) ;
 	        }
 		}
         // Remove subscription
 		else {
-	        if( entityType.toLowerCase().equals("initiative") ){
-            	user.initiativeSubscriptions.remove(entityId) ;
-	        } else if( entityType.toLowerCase().equals("milestone") ){
-	        	user.milestoneSubscriptions.remove(entityId) ;
-	        } else {
-	        	user.riskSubscriptions.remove(entityId) ;
-	        }
+	        deleteEntitySubscription(user, entityId, entityType);
 		}
 
         users().save(user);
@@ -219,27 +229,27 @@ public class User {
         this.querySubscriptions = querySubscriptions;
     }
 
-    public List<String> getInitiativeSubscriptions() {
+    public List<EntitySubscription> getInitiativeSubscriptions() {
         return initiativeSubscriptions;
     }
 
-    public void setInitiativeSubscriptions(List<String> initiativeSubscriptions) {
+    public void setInitiativeSubscriptions(List<EntitySubscription> initiativeSubscriptions) {
         this.initiativeSubscriptions = initiativeSubscriptions;
     }
 
-    public List<String> getMilestoneSubscriptions() {
+    public List<EntitySubscription> getMilestoneSubscriptions() {
         return milestoneSubscriptions;
     }
 
-    public void setMilestoneSubscriptions(List<String> milestoneSubscriptions) {
+    public void setMilestoneSubscriptions(List<EntitySubscription> milestoneSubscriptions) {
         this.milestoneSubscriptions = milestoneSubscriptions;
     }
 
-    public List<String> getRiskSubscriptions() {
+    public List<EntitySubscription> getRiskSubscriptions() {
         return riskSubscriptions;
     }
 
-    public void setRiskSubscriptions(List<String> riskSubscriptions) {
+    public void setRiskSubscriptions(List<EntitySubscription> riskSubscriptions) {
         this.riskSubscriptions = riskSubscriptions;
     }
 
@@ -250,5 +260,35 @@ public class User {
     public void setUpdateFrequency(int updateFrequency) {
         this.updateFrequency = updateFrequency;
     }
+
+    //------------PRIVATE FUNCTIONS---------------//
+
+    private static void deleteEntitySubscription(User user, String entityId, String entityType){
+
+        if( entityType.toLowerCase().equals("initiative") ){
+            for(int i=0; i<user.initiativeSubscriptions.size(); i++){
+                if( user.initiativeSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    user.initiativeSubscriptions.remove(i);
+                    break;
+                }
+            }
+        } else if( entityType.toLowerCase().equals("milestone") ){
+            for(int i=0; i<user.milestoneSubscriptions.size(); i++){
+                if( user.milestoneSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    user.milestoneSubscriptions.remove(i);
+                    break;
+                }
+            }
+        } else {
+            for(int i=0; i<user.riskSubscriptions.size(); i++){
+                if( user.riskSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    user.riskSubscriptions.remove(i);
+                    break;
+                }
+            }
+        }
+    }
+
+
 }
 
