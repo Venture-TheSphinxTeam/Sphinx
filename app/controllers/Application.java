@@ -20,7 +20,7 @@ import views.html.*;
 
 public class Application extends Controller {
 	public static final String USERNAME = "jay-z";
-	public static final String DATABASE = "dev";
+	public static final String DATABASE = "sub_change";
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {

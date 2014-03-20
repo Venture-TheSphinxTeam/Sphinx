@@ -7,18 +7,12 @@ import java.util.List;
  */
 public class EntitySubscription {
 
-    protected String entityType;
     protected String entityId;
     protected List<String> eventTypes;
 
-    public EntitySubscription(){}
-
-    public String getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
+    public EntitySubscription(String entityId, List<String>eventTypes){
+        this.entityId = entityId;
+        this.eventTypes = eventTypes;
     }
 
     public String getEntityId() {
