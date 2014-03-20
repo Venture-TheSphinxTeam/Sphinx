@@ -65,11 +65,26 @@ public class User {
     	boolean retVal = false;
 
         if( entityType.toLowerCase().equals("initiative") ){
-            retVal = user.initiativeSubscriptions.contains(entityId) ;
+            for(int i=0; i<user.initiativeSubscriptions.size(); i++){
+                if( user.initiativeSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = true;
+                    break;
+                }
+            }
         } else if( entityType.toLowerCase().equals("milestone") ){
-        	retVal = user.milestoneSubscriptions.contains(entityId) ;
+            for(int i=0; i<user.milestoneSubscriptions.size(); i++){
+                if( user.milestoneSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = true;
+                    break;
+                }
+            }
         } else {
-        	retVal = user.riskSubscriptions.contains(entityId) ;
+            for(int i=0; i<user.riskSubscriptions.size(); i++){
+                if( user.riskSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = true;
+                    break;
+                }
+            }
         }
 		
     	return retVal;
@@ -248,30 +263,32 @@ public class User {
 
     //------------PRIVATE FUNCTIONS---------------//
 
-    private void deleteEntitySubscription(User user, String entityId, String entityType){
+    private static void deleteEntitySubscription(User user, String entityId, String entityType){
 
         if( entityType.toLowerCase().equals("initiative") ){
-            for(int i=0; i<user.initiativeSubscriptions.length(); i++){
-                if( user.initiativeSubscriptions[i].getEntityId().equals( entityId ) ){
+            for(int i=0; i<user.initiativeSubscriptions.size(); i++){
+                if( user.initiativeSubscriptions.get(i).getEntityId().equals( entityId ) ){
                     user.initiativeSubscriptions.remove(i);
                     break;
                 }
             }
         } else if( entityType.toLowerCase().equals("milestone") ){
-            for(int i=0; i<user.milestoneSubscriptions.length(); i++){
-                if( user.milestoneSubscriptions[i].getEntityId().equals( entityId ) ){
+            for(int i=0; i<user.milestoneSubscriptions.size(); i++){
+                if( user.milestoneSubscriptions.get(i).getEntityId().equals( entityId ) ){
                     user.milestoneSubscriptions.remove(i);
                     break;
                 }
             }
         } else {
-            for(int i=0; i<user.riskSubscriptions.length(); i++){
-                if( user.riskSubscriptions[i].getEntityId().equals( entityId ) ){
+            for(int i=0; i<user.riskSubscriptions.size(); i++){
+                if( user.riskSubscriptions.get(i).getEntityId().equals( entityId ) ){
                     user.riskSubscriptions.remove(i);
                     break;
                 }
             }
         }
     }
+
+
 }
 
