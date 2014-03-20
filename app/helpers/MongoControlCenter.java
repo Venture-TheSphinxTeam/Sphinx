@@ -130,17 +130,17 @@ public class MongoControlCenter {
 
 		Iterator<? extends Entity> entit = Initiative.findBy(query).iterator();
 		ArrayList<String> ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids,
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
 				Initiative.TYPE_STRING));
 
 		entit = Milestone.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids,
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
 				Milestone.TYPE_STRING));
 
 		entit = Risk.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids, Risk.TYPE_STRING));
+		result.addAll(Event.findByIDListAndEntityTypeA(ids, Risk.TYPE_STRING));
 
 		long unixTime = System.currentTimeMillis() / 1000L;
 		long threeMonths = 7776000L;

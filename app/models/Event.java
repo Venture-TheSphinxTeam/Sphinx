@@ -42,6 +42,28 @@ public class Event implements Comparable<Event> {
 		return _events().find("{" + query + "}").as(Event.class);
 	}
 
+    public static List<? extends Event> findByIDListAndEntityTypeA(
+            List<String> ids, String type) {
+
+
+        String idString = listToMongoString(ids);
+
+        String s = "\"entity.entityId\": {$in:" + idString + "},"
+                + "\"entity.entityType\": \"" + type + "\"";
+
+        ArrayList<Event> result;
+        Iterable<? extends Event> events = ReportEvent.findREBy(s);
+        result = Event.eventIterToList(events.iterator());
+
+        events = ChangeEvent.findCEby(s);
+        result.addAll(eventIterToList(events.iterator()));
+
+        events = TimeSpentEvent.findTSEBy(s);
+        result.addAll(eventIterToList(events.iterator()));
+
+        return result;
+    }
+
 	public static List<? extends Event> findByIDListAndEntityType(
 			List<EntitySubscription> subs, String type) {
 
