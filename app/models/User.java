@@ -124,6 +124,13 @@ public class User {
         users().save(user);
     }
 
+    /**
+     *   Updates what events the user will see updates on for a specific
+     * entity subscription.
+     */
+    public static void updateEventsTiedToEntitySubscription(List<String> eventSubscriptions, User user, String entityId, String entityType){
+        // TO DO
+    }
 
     /**
      * Watch to unwatch an initiative. 
