@@ -11,6 +11,10 @@ public class EntitySubscription {
     protected String entityId;
     protected List<String> eventTypes;
 
+    public EntitySubscription(){
+        eventTypes = new ArrayList<String>();
+    }
+
     public EntitySubscription(String entityId, List<String>eventTypes){
         this.entityId = entityId;
         this.eventTypes = eventTypes;
@@ -34,7 +38,9 @@ public class EntitySubscription {
 
     public static ArrayList<String> getIdsForEventType(List<EntitySubscription> subs, String eventType){
         ArrayList<String> result = new ArrayList<String>();
-
+        if(subs == null){
+            return result;
+        }
         for(EntitySubscription es : subs){
             if(es.getEventTypes().contains(eventType)){
                 result.add(es.getEntityId());
