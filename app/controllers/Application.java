@@ -21,6 +21,8 @@ import views.html.*;
 public class Application extends Controller {
 	public static final String USERNAME = "jay-z";
 	public static final String DATABASE = "sub_change";
+	public static final String MONGO_URL = "venture.se.rit.edu";
+	public static final int MONGO_PORT = 27017;
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {
@@ -38,7 +40,7 @@ public class Application extends Controller {
 							throws UnknownHostException {
 
 						MongoControlCenter control = new MongoControlCenter(
-								"venture.se.rit.edu", 27017);
+								MONGO_URL, MONGO_PORT);
 						control.setDatabase(DATABASE);
 
 						// find current user
@@ -74,7 +76,7 @@ public class Application extends Controller {
 
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
+				MONGO_URL, MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
@@ -99,7 +101,7 @@ public class Application extends Controller {
 			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
+				MONGO_URL, MONGO_PORT);
 		control.setDatabase(DATABASE);
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
@@ -185,7 +187,7 @@ public class Application extends Controller {
 
 		// Open connection to database
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
+				MONGO_URL, MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		ArrayList<Entity> result = new ArrayList<Entity>();
@@ -232,7 +234,7 @@ public class Application extends Controller {
 			throws UnknownHostException {
 
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
+				MONGO_URL, MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		if (type.equals("INITIATIVE")) {
