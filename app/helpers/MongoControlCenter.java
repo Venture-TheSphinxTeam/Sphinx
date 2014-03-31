@@ -12,6 +12,7 @@ import models.Initiative;
 import models.Milestone;
 import models.Risk;
 import models.User;
+import models.EntitySubscription;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -413,18 +414,23 @@ public class MongoControlCenter {
 		BasicDBObject userSearchQuery = new BasicDBObject("username", user);
 		DBCursor cursor = users.find(userSearchQuery);
 
-		ArrayList<String> userSubscriptions = null;
+		ArrayList<Object> userSubscriptionObjects = null;
 
 		try {
 			while (cursor.hasNext()) {
-				userSubscriptions = ((ArrayList<String>) cursor.next().get(
+				userSubscriptionObjects = ((ArrayList<Object>) cursor.next().get(
 						subscriptionType));
 			}
 		} finally {
 			cursor.close();
 		}
 
-		return userSubscriptions;
+		ArrayList<String> userSubscriptionIds = new ArrayList<String>();
+		for(int i=0; i<userSubscriptionObjects.size(); i++){
+			System.out.println( userSubscriptionObjects.get(i).get("entityId") ); //bah
+		}
+
+		return userSubscriptionIds;
 	}
 
 	/*
