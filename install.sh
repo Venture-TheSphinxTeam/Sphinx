@@ -3,7 +3,7 @@
 
 
 
-MACHINE_TYPE = 'uname -m'
+MACHINE_TYPE='uname -m'
 
 # Install the pre-reqs with a package manager.
 if [[ $* == *--no-prereqs* ]]; then
