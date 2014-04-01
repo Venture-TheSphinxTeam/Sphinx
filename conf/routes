@@ -14,9 +14,10 @@ GET     /webbysockets               controllers.Application.webbysockets()
 #Admin Tools
 POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
 
-#Logic in progress TODO
+#Subscription/Vote/Watch
 POST		/updateButtonStatus			controllers.ButtonStateController.UpdateButtonStatus()
 POST		/getButtonStatus			controllers.ButtonStateController.GetButtonStatus()
+POST		/deleteEntitySubscription	controllers.SubscriptionController.DeleteEntitySubscription()
 
 
 # Map static resources from the /public folder to the /assets URL path
