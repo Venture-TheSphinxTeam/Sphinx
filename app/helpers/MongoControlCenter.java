@@ -408,26 +408,26 @@ public class MongoControlCenter {
 
 	}
 
-	public ArrayList<String> getUserSubscriptionIds(String user,
+	public ArrayList<String> getUserSubscriptionIds(String username,
 			String subscriptionType) {
 
-		BasicDBObject userSearchQuery = new BasicDBObject("username", user);
-		DBCursor cursor = users.find(userSearchQuery);
+		User user = User.findByName(username);
 
-		ArrayList<Object> userSubscriptionObjects = null;
-
-		try {
-			while (cursor.hasNext()) {
-				userSubscriptionObjects = ((ArrayList<Object>) cursor.next().get(
-						subscriptionType));
-			}
-		} finally {
-			cursor.close();
+		List<EntitySubscription> subscriptionObjects = new ArrayList<EntitySubscription>();
+		if( subscriptionType.equals("initiativeSubscriptions") ){
+			subscriptionObjects = user.getInitiativeSubscriptions();
+		}else if( subscriptionType.equals("milestoneSubscriptions") ){
+			subscriptionObjects = user.getMilestoneSubscriptions();
+		}else if( subscriptionType.equals("riskSubscriptions") ){
+			subscriptionObjects = user.getRiskSubscriptions();
+		}else{
+			System.out.println("Someone attempted to get a subscription type that does not exist");
+			System.out.println("'"+subscriptionType+"'");
 		}
 
 		ArrayList<String> userSubscriptionIds = new ArrayList<String>();
-		for(int i=0; i<userSubscriptionObjects.size(); i++){
-			System.out.println( userSubscriptionObjects.get(i).get("entityId") ); //bah
+		for(int i=0; i<subscriptionObjects.size(); i++){
+			userSubscriptionIds.add( subscriptionObjects.get(i).getEntityId() );
 		}
 
 		return userSubscriptionIds;
