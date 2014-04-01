@@ -1,0 +1,30 @@
+@(form: Form[Application.Login])
+@main("Sphinx: Connecting Projects to People")("Please Log In"){
+<html>
+    <head>
+        <title>Login Placeholder</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+    </head>
+    <body>
+        @helper.form(routes.Login.authenticate) {
+            <h1>Sign in</h1>
+
+            @if(form.hasGlobalErrors) {
+                <p class="error">
+                @form.globalError.message
+                </p>
+                }
+            <p>
+               <input type="username" name="username" placeholder="Username" value="@form("username").value">
+           </p>
+           <p>
+               <input type="password" name="password" placeholder="Password">
+           </p>
+           <p>
+               <button type="submit">Login</button>
+           </p>
+        }
+    </body>
+</html>
+}
