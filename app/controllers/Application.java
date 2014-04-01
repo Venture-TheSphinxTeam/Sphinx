@@ -20,7 +20,9 @@ import views.html.*;
 
 public class Application extends Controller {
 	public static final String USERNAME = "jay-z";
-	public static final String DATABASE = "dev";
+	public static final String DATABASE = "sub_change";
+	public static final String MONGO_URL = "venture.se.rit.edu";
+	public static final int MONGO_PORT = 27017;
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {
@@ -38,8 +40,8 @@ public class Application extends Controller {
 							throws UnknownHostException {
 
 						MongoControlCenter control = new MongoControlCenter(
-								"venture.se.rit.edu", 27017);
-						control.setDatabase("dev");
+								MONGO_URL, MONGO_PORT);
+						control.setDatabase(DATABASE);
 
 						// find current user
 						userRate = control.getUserRefreshRate(USERNAME);
@@ -74,19 +76,19 @@ public class Application extends Controller {
 
 	public static Result index() throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
+				MONGO_URL, MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
 		// user name
 
 		// Object[] userEntities = control.getEventsForUser("jay-z");
-		ArrayList<Event> userEvents = control.getSingleEventsForUser("jay-z");
-		ArrayList<Event> teamEntities = control.getTeamEventsForUser("jay-z");
+		ArrayList<Event> userEvents = control.getSingleEventsForUser(USERNAME);
+		ArrayList<Event> teamEntities = control.getTeamEventsForUser(USERNAME);
 		ArrayList<Event> orgEntities = control
-				.getOrganizationEventsForUser("jay-z");
+				.getOrganizationEventsForUser(USERNAME);
 		Iterator<? extends models.Event> subscribedEvents = models.Event
-				.getSubscribedEventsForUser("jay-z");
+				.getSubscribedEventsForUser(USERNAME);
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();
@@ -99,8 +101,8 @@ public class Application extends Controller {
 			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
-		control.setDatabase("dev");
+				MONGO_URL, MONGO_PORT);
+		control.setDatabase(DATABASE);
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
 		if (keyword.equals("") && field.equals("")) {
@@ -185,7 +187,7 @@ public class Application extends Controller {
 
 		// Open connection to database
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
+				MONGO_URL, MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		ArrayList<Entity> result = new ArrayList<Entity>();
@@ -232,13 +234,13 @@ public class Application extends Controller {
 			throws UnknownHostException {
 
 		MongoControlCenter control = new MongoControlCenter(
-				"venture.se.rit.edu", 27017);
+				MONGO_URL, MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		if (type.equals("INITIATIVE")) {
 			Initiative entity_Initiative = control.getInitiativeById(arg);
 
-			if (((entity_Initiative.getAllowedAccessUsers().contains("jay-z") || ((entity_Initiative
+			if (((entity_Initiative.getAllowedAccessUsers().contains(USERNAME) || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
 
 				return ok(initiative.render(entity_Initiative, USERNAME));
@@ -251,7 +253,7 @@ public class Application extends Controller {
 		else if (type.equals("MILESTONE")) {
 			Milestone entity_Milestone = control.getMilestoneById(arg);
 
-			if (((entity_Milestone.getAllowedAccessUsers()).contains("jay-z") || ((entity_Milestone
+			if (((entity_Milestone.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Milestone
 					.getAllowedAccessUsers().isEmpty())))) {
 
 				return ok(milestone.render(entity_Milestone, USERNAME));
@@ -264,7 +266,7 @@ public class Application extends Controller {
 
 		else {
 			Risk entity_Risk = control.getRiskById(arg);
-			if (((entity_Risk.getAllowedAccessUsers()).contains("jay-z") || ((entity_Risk
+			if (((entity_Risk.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Risk
 					.getAllowedAccessUsers())).isEmpty())) {
 
 				return ok(risk.render(entity_Risk, USERNAME));

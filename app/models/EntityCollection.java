@@ -106,7 +106,7 @@ public void createIndices(){
     
     f=new FieldIndex();
     f.setFieldName("labels");
-    f.setFieldValues(new ArrayList<String>(status));
+    f.setFieldValues(new ArrayList<String>(labels));
     f.upsert();
     
 	

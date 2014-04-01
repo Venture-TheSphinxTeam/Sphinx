@@ -12,6 +12,7 @@ import models.Initiative;
 import models.Milestone;
 import models.Risk;
 import models.User;
+import models.EntitySubscription;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -130,17 +131,17 @@ public class MongoControlCenter {
 
 		Iterator<? extends Entity> entit = Initiative.findBy(query).iterator();
 		ArrayList<String> ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids,
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
 				Initiative.TYPE_STRING));
 
 		entit = Milestone.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids,
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
 				Milestone.TYPE_STRING));
 
 		entit = Risk.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids, Risk.TYPE_STRING));
+		result.addAll(Event.findByIDListAndEntityTypeA(ids, Risk.TYPE_STRING));
 
 		long unixTime = System.currentTimeMillis() / 1000L;
 		long threeMonths = 7776000L;
@@ -407,24 +408,29 @@ public class MongoControlCenter {
 
 	}
 
-	public ArrayList<String> getUserSubscriptionIds(String user,
+	public ArrayList<String> getUserSubscriptionIds(String username,
 			String subscriptionType) {
 
-		BasicDBObject userSearchQuery = new BasicDBObject("username", user);
-		DBCursor cursor = users.find(userSearchQuery);
+		User user = User.findByName(username);
 
-		ArrayList<String> userSubscriptions = null;
-
-		try {
-			while (cursor.hasNext()) {
-				userSubscriptions = ((ArrayList<String>) cursor.next().get(
-						subscriptionType));
-			}
-		} finally {
-			cursor.close();
+		List<EntitySubscription> subscriptionObjects = new ArrayList<EntitySubscription>();
+		if( subscriptionType.equals("initiativeSubscriptions") ){
+			subscriptionObjects = user.getInitiativeSubscriptions();
+		}else if( subscriptionType.equals("milestoneSubscriptions") ){
+			subscriptionObjects = user.getMilestoneSubscriptions();
+		}else if( subscriptionType.equals("riskSubscriptions") ){
+			subscriptionObjects = user.getRiskSubscriptions();
+		}else{
+			System.out.println("Someone attempted to get a subscription type that does not exist");
+			System.out.println("'"+subscriptionType+"'");
 		}
 
-		return userSubscriptions;
+		ArrayList<String> userSubscriptionIds = new ArrayList<String>();
+		for(int i=0; i<subscriptionObjects.size(); i++){
+			userSubscriptionIds.add( subscriptionObjects.get(i).getEntityId() );
+		}
+
+		return userSubscriptionIds;
 	}
 
 	/*
