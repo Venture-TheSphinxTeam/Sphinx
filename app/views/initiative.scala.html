@@ -87,12 +87,12 @@
 
 
 		<h4>
-			Created: @{new Date(init.getCreated())} <br /> Start Date: @{new
-			Date(init.getStartDate())} <br /> Desired Due Date: @{new
-			Date(init.getDesiredDueDate())} <br /> Desired Start Date: @{new
-			Date(init.getDesiredStartDate())} <br /> Due Date: @{new
-			Date(init.getDueDate())} <br /> Updated: @{new
-			Date(init.getUpdated())}
+			Created: @{init.getFormattedDate(new Date(init.getCreated()))} <br /> Start Date: @{init.getFormattedDate(new
+			Date(init.getStartDate()))} <br /> Desired Due Date: @{init.getFormattedDate(new
+			Date(init.getDesiredDueDate()))} <br /> Desired Start Date: @{init.getFormattedDate(new
+			Date(init.getDesiredStartDate()))} <br /> Due Date: @{init.getFormattedDate(new
+			Date(init.getDueDate()))} <br /> Updated: @{init.getFormattedDate(new
+			Date(init.getUpdated()))}
 		</h4>
 
 		<h4>
