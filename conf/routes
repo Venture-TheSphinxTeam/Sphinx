@@ -8,7 +8,7 @@ POST		/login 						controllers.LoginController.authenticate()
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /search						controllers.Application.search(arg: String ?="", field: String ?= "", priority: String?="", status: String?="", reporter: String?="", assignee: String?="", labe: String?="" )
+GET     /search						controllers.Application.search(arg: String ?="", field: String ?= "", priority: String?="", status: String?="", reporter: String?="", assignee: String?="", label: String?="" )
 GET		/subscriptions				controllers.Application.subscriptions()
 GET		/admin-tools				controllers.Application.adminTools()
 GET		/user-settings				controllers.Application.userSettings()

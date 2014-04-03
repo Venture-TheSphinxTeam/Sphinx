@@ -1,6 +1,5 @@
 package controllers;
 
-import java.net.ConnectException;
 import java.util.List;
 
 import javax.ws.rs.ProcessingException;
