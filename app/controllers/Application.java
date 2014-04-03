@@ -6,8 +6,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 import models.Entity;
 import models.Event;
 import models.Initiative;
@@ -135,9 +133,9 @@ public class Application extends Controller {
 			}
 
 			if (!label.equals("")) {
-				facetQuery += labelQuery;
+				facetQuery += labelQuery + ",";
 			}
-
+			System.out.println(facetQuery);
 			if (!facetQuery.equals("")) {
 				result = control.getEntitiesByQuery(facetQuery
 						+ control.createAllowedAccessUsersQuery(USERNAME));

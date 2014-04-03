@@ -1,8 +1,6 @@
 package controllers;
 
-import java.net.ConnectException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import helpers.JSONParser;

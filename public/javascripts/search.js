@@ -31,7 +31,6 @@ function facetSearch() {
 	if (label.localeCompare("Labels: All") == 0) {
 		label = "";
 	}
-
 	window.location.href = "./search?arg=" + "" + "&field=" + "" + "&priority="
 			+ priority + "&status=" + status + "&reporter=" + reporter
 			+ "&assignee=" + assignee + "&label=" + label;
