@@ -1,6 +1,8 @@
 package controllers;
 
 import models.User;
+import views.*;
+import views.html.login;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -30,7 +32,6 @@ public class LoginController extends Controller {
                     controllers.routes.Application.index()
             );
         }
-        return ok();
     }
 
     public static class Login {
