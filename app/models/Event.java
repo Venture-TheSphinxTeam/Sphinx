@@ -42,9 +42,35 @@ public class Event implements Comparable<Event> {
 		return _events().find("{" + query + "}").as(Event.class);
 	}
 
+    public static List<? extends Event> findByIDListAndEntityTypeA(
+            List<String> ids, String type) {
+
+
+        String idString = listToMongoString(ids);
+
+        String s = "\"entity.entityId\": {$in:" + idString + "},"
+                + "\"entity.entityType\": \"" + type + "\"";
+
+        ArrayList<Event> result;
+        Iterable<? extends Event> events = ReportEvent.findREBy(s);
+        result = Event.eventIterToList(events.iterator());
+
+        events = ChangeEvent.findCEby(s);
+        result.addAll(eventIterToList(events.iterator()));
+
+        events = TimeSpentEvent.findTSEBy(s);
+        result.addAll(eventIterToList(events.iterator()));
+
+        return result;
+    }
+
 	public static List<? extends Event> findByIDListAndEntityType(
-			List<String> ids, String type) {
-		String idString = listToMongoString(ids);
+			List<EntitySubscription> subs, String type) {
+
+        //Change Report
+        ArrayList<String> ids = EntitySubscription.getIdsForEventType(subs,"REPORT");
+
+        String idString = listToMongoString(ids);
 
 		String s = "\"entity.entityId\": {$in:" + idString + "},"
 				+ "\"entity.entityType\": \"" + type + "\"";
@@ -53,8 +79,21 @@ public class Event implements Comparable<Event> {
 		Iterable<? extends Event> events = ReportEvent.findREBy(s);
 		result = Event.eventIterToList(events.iterator());
 
+        //Change events
+        ids = EntitySubscription.getIdsForEventType(subs,"CREATE");
+        ids.addAll(EntitySubscription.getIdsForEventType(subs,"UPDATE"));
+        ids.addAll(EntitySubscription.getIdsForEventType(subs,"DELETE"));
+        idString = listToMongoString(ids);
+        s = "\"entity.entityId\": {$in:" + idString + "},"
+                + "\"entity.entityType\": \"" + type + "\"";
+
 		events = ChangeEvent.findCEby(s);
 		result.addAll(eventIterToList(events.iterator()));
+
+        ids = EntitySubscription.getIdsForEventType(subs,"TIMESPENT");
+        idString = listToMongoString(ids);
+        s = "\"entity.entityId\": {$in:" + idString + "},"
+                + "\"entity.entityType\": \"" + type + "\"";
 
 		events = TimeSpentEvent.findTSEBy(s);
 		result.addAll(eventIterToList(events.iterator()));
@@ -113,9 +152,9 @@ public class Event implements Comparable<Event> {
 		if (user == null) {
 			return result.iterator();
 		}
-		List<String> initIdList = user.getInitiativeSubscriptions();
-		List<String> mileIdList = user.getMilestoneSubscriptions();
-		List<String> riskIdList = user.getRiskSubscriptions();
+		List<EntitySubscription> initIdList = user.getInitiativeSubscriptions();
+		List<EntitySubscription> mileIdList = user.getMilestoneSubscriptions();
+		List<EntitySubscription> riskIdList = user.getRiskSubscriptions();
 
 		Iterator<? extends Event> initIter, mileIter, riskIter, resultIter;
 		List<? extends Event> i, m, r;

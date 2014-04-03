@@ -35,6 +35,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])
 							Across the Firm</a></li>
 					<li class=""><a href="#4" data-toggle="tab">Subscribed
 							Entities</a></li>
+							<li class=""><a href="#5" data-toggle="tab">Query Subscriptions</a><li>
 				</ul>
 				<div class="tab-content">
 					<!--  MY PROJECTS  -->
@@ -367,6 +368,25 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])
 						</div>
 						<br />
 					</div>
+					<!-- Query Subscriptions -->
+					<div class="tab-pane" id="5">
+					<br/>
+					<div id="page_container5">
+					<div class="page_navigation"></div>
+					<ul class="thumbnails">
+					<ul class="content">
+					
+					
+					
+					
+					
+					
+					
+					
+					</ul>
+					</ul>
+					</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -414,6 +434,18 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])
 
 	$(document).ready(function() {
 		$('#page_container3').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
+	});
+	$(document).ready(function() {
+		$('#page_container4').pajinate({
+			items_per_page : 15,
+			abort_on_small_lists : true
+		});
+	});
+	$(document).ready(function() {
+		$('#page_container5').pajinate({
 			items_per_page : 15,
 			abort_on_small_lists : true
 		});

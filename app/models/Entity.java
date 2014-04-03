@@ -1,15 +1,18 @@
 package models;
 
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+
 import com.mongodb.*;
+
 import play.data.validation.Constraints.*;
 
 import org.bson.types.ObjectId;
+
 import com.fasterxml.jackson.annotation.*;
+
 import org.jongo.*;
-import org.jongo.Jongo;
-import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
 
@@ -179,6 +182,13 @@ public class Entity {
     		this.allowedAccessUsers = allowedAccessUsers;
     	}
     }
+    
+    public String getFormattedDate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd yyyy");
+		String formattedDate = sdf.format(date);
+
+		return formattedDate;
+	}
     
 }
 

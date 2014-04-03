@@ -6,7 +6,7 @@ function setModalBody_Edit(entityType,entityId,username){
 	
 	$("#modal-label").html("Edit Entity Subscription");
 
-	//$("#modal-save").click(removeSubscription)
+	$("#modal-save").click(removeSubscription)
 
 	/*		<form action="">
 			<input type="checkbox" name="Test1" value="test1"> I am a test<br>
@@ -36,8 +36,30 @@ function setModalBody_Delete(entityType,entityId,username){
 
 	$("#modal-button2").html("Yes");
 	$("#modal-button2").removeClass();
-	$("#modal-button2").addClass("btn btn-primary");
-	//$("#modal-button2").click(function(){ alert(entityType) });
+	$("#modal-button2").addClass("btn btn-primary");=
+
+	// Add function to delete entity upon clicking 'Yes'
 	$("#modal-button2").click(function(){removeSubscription(entityType,entityId,username)});
+
+}
+
+function removeSubscription(entityType,entityId,username){
+
+	var json = { 'entityType': entityType, 
+				 'entityId': 	 entityId,
+				 'username':   username };
+
+	var url = "/deleteEntitySubscription";
+
+	$.ajax({
+		type: "POST",
+		url: url,
+		data: JSON.stringify(json),
+		datatype: "json",
+		contentType: 'application/json; charset=utf-8',
+		success: function (data){
+			location.reload();
+		}
+	})
 
 }

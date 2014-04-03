@@ -24,8 +24,13 @@ Opensource software utilized:
   - [Jackson](https://github.com/FasterXML/jackson) (JSON Parser)
   - [Play-Jongo](https://github.com/alexanderjarvis/play-jongo)/[Jongo](http://jongo.org/) (Database Connectors)
 
-##Install
-1. 'bash <(curl https://raw.github.com/Venture-TheSphinxTeam/Sphinx/dev/install.sh -o -)'
+
+##Installing and Running:
+1. Install mongodb (http://docs.mongodb.org/manual/installation/)
+2. Download play
+3. Unzip play
+4. Run play.bat or ./play in the directory of this project
+
 
 ##Setting Up Your Environment:
 
