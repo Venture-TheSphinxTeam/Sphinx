@@ -20,7 +20,7 @@ import views.html.*;
 
 public class Application extends Controller {
 	public static final String USERNAME = "jay-z";
-	public static final String DATABASE = "sub_change";
+	public static final String DATABASE = "dev";
 	public static final String MONGO_URL = "venture.se.rit.edu";
 	public static final int MONGO_PORT = 27017;
 
@@ -178,6 +178,8 @@ public class Application extends Controller {
 		}
 
 		ArrayList<Object> facets = control.getIndexedValues();
+		
+		
 
 		return ok(search.render(result, facets));
 
