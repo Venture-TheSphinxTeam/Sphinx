@@ -5,12 +5,15 @@ import helpers.MongoControlCenter;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import models.Entity;
 import models.Event;
 import models.Initiative;
 import models.Milestone;
 import models.Risk;
+import models.User;
+import models.facets.SavedQuery;
 import play.libs.F.Callback;
 import play.libs.F.Callback0;
 import play.mvc.*;
@@ -218,8 +221,11 @@ public class Application extends Controller {
 		}
 
 		control.closeConnection();
+		
+		List<SavedQuery> querySubs = User.findByName(USERNAME).getQuerySubscriptions();
+		
 
-		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, USERNAME));
+		return ok(subscriptions.render(initSubs, mileSubs, riskSubs,querySubs, USERNAME));
 	}
 
 	public static Result adminTools() {

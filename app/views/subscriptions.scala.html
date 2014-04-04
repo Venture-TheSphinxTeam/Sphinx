@@ -1,4 +1,4 @@
-@(userInitEntities: List[Initiative])(userMileEntities: List[Milestone])(userRiskEntities: List[Risk])(username: String)
+@(userInitEntities: List[Initiative])(userMileEntities: List[Milestone])(userRiskEntities: List[Risk])(userQueries: List[models.facets.SavedQuery])(username: String)
 @main("Sphinx: Connecting Projects to People")("") {
 
 <script src="@routes.Assets.at("javascripts/subscriptions.js")" type="text/javascript"></script>
@@ -166,7 +166,9 @@
 							<div class="info_text"></div>
 								<ul class="thumbnails">
 									<ul class="content">
+									@for(query <- userQueries){
 										<li>
+										@defining(query){ query=>
 											<div class="thumbnail">
 												<div class="optionButtons" align = "right">
 													<button 
@@ -176,11 +178,13 @@
 													<button class="btn btn-primary btn-sm">delete</button>
 												</div>
 												<div>
-													<h3>Query ID</h3>
+													<h3>Query ID - @query.toQueryString()</h3>
 													<h3>Query Summary</h3>
 												</div>
 											</div>
+											}
 										</li>
+										}
 									</ul>
 								</ul>
 							<br />
