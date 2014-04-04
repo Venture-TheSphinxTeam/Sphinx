@@ -76,8 +76,8 @@ public class Application extends Controller {
 	}
 
 	public static Result index() throws UnknownHostException {
-		MongoControlCenter control = new MongoControlCenter(
-				MONGO_URL, MONGO_PORT);
+		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
+				MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		// String username = "RickyWinterborn"; // TODO : Make this pull current
@@ -90,19 +90,30 @@ public class Application extends Controller {
 				.getOrganizationEventsForUser(USERNAME);
 		Iterator<? extends models.Event> subscribedEvents = models.Event
 				.getSubscribedEventsForUser(USERNAME);
+
+		ArrayList<Event> queryEvents = new ArrayList<Event>();
+
+		List<SavedQuery> querySubs = User.findByName(USERNAME)
+				.getQuerySubscriptions();
+
+		for (SavedQuery s : querySubs) {
+			queryEvents.addAll(control.getEventsForQueriedEntities("{" + s
+					.toQueryString() + "}"));
+		}
+
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();
 
 		return ok(index.render(userEvents, teamEntities, orgEntities, USERNAME,
-				subscribedEvents));
+				subscribedEvents, queryEvents));
 	}
 
 	public static Result search(String keyword, String field, String priority,
 			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
-		MongoControlCenter control = new MongoControlCenter(
-				MONGO_URL, MONGO_PORT);
+		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
+				MONGO_PORT);
 		control.setDatabase(DATABASE);
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
@@ -179,8 +190,6 @@ public class Application extends Controller {
 		}
 
 		ArrayList<Object> facets = control.getIndexedValues();
-		
-		
 
 		return ok(search.render(result, facets));
 
@@ -189,8 +198,8 @@ public class Application extends Controller {
 	public static Result subscriptions() throws UnknownHostException {
 
 		// Open connection to database
-		MongoControlCenter control = new MongoControlCenter(
-				MONGO_URL, MONGO_PORT);
+		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
+				MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		ArrayList<Entity> result = new ArrayList<Entity>();
@@ -221,11 +230,12 @@ public class Application extends Controller {
 		}
 
 		control.closeConnection();
-		
-		List<SavedQuery> querySubs = User.findByName(USERNAME).getQuerySubscriptions();
-		
 
-		return ok(subscriptions.render(initSubs, mileSubs, riskSubs,querySubs, USERNAME));
+		List<SavedQuery> querySubs = User.findByName(USERNAME)
+				.getQuerySubscriptions();
+
+		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, querySubs,
+				USERNAME));
 	}
 
 	public static Result adminTools() {
@@ -239,8 +249,8 @@ public class Application extends Controller {
 	public static Result entityView(String arg, String type)
 			throws UnknownHostException {
 
-		MongoControlCenter control = new MongoControlCenter(
-				MONGO_URL, MONGO_PORT);
+		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
+				MONGO_PORT);
 		control.setDatabase(DATABASE);
 
 		if (type.equals("INITIATIVE")) {
