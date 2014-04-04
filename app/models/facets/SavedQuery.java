@@ -1,0 +1,47 @@
+package models.facets;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SavedQuery {
+	protected List<FacetQuery> facets;
+	protected List<String> eventTypes;
+	
+	public SavedQuery(){
+		facets = new ArrayList<FacetQuery>();
+		eventTypes = new ArrayList<String>();
+	}
+
+	public List<FacetQuery> getFacets() {
+		return facets;
+	}
+
+	public void setFacets(List<FacetQuery> facets) {
+		this.facets = facets;
+	}
+	
+	public void addFacetQuery(FacetQuery fq){
+		facets.add(fq);
+	}
+	
+	public List<String> getEventTypes(){
+		return eventTypes;
+	}
+	
+	public void setEventTypes(List<String> eventTypes){
+		this.eventTypes = eventTypes;
+	}
+	
+	public String toQueryString(){
+		String queryString = "";
+		
+		for(int i=0; i< facets.size()-1; i++){
+			queryString += facets.get(i).toQueryString() +", ";
+		}
+		
+		queryString += facets.get(facets.size()-1).toQueryString();
+		
+		return queryString;
+	}
+
+}

@@ -2,14 +2,17 @@ package models;
 
 
 import java.util.*;
+
 import com.mongodb.*;
+
 import play.data.validation.Constraints.*;
+import models.facets.SavedQuery;
 
 import org.bson.types.ObjectId;
+
 import com.fasterxml.jackson.annotation.*;
+
 import org.jongo.*;
-import org.jongo.Jongo;
-import org.jongo.MongoCollection;
 
 import scala.math.Ordering;
 import uk.co.panaxiom.playjongo.PlayJongo;
@@ -52,7 +55,7 @@ public class User {
     private List<String> votes;
     private String password;
     private boolean admin;
-    private List<String> querySubscriptions;
+    private List<SavedQuery> querySubscriptions;
     private List<EntitySubscription> initiativeSubscriptions;
     private List<EntitySubscription> milestoneSubscriptions;
     private List<EntitySubscription> riskSubscriptions;
@@ -228,11 +231,11 @@ public class User {
         this.admin = admin;
     }
 
-    public List<String> getQuerySubscriptions() {
+    public List<SavedQuery> getQuerySubscriptions() {
         return querySubscriptions;
     }
 
-    public void setQuerySubscriptions(List<String> querySubscriptions) {
+    public void setQuerySubscriptions(List<SavedQuery> querySubscriptions) {
         this.querySubscriptions = querySubscriptions;
     }
 
