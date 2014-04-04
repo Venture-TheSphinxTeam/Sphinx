@@ -36,7 +36,7 @@ function setModalBody_Delete(entityType,entityId,username){
 
 	$("#modal-button2").html("Yes");
 	$("#modal-button2").removeClass();
-	$("#modal-button2").addClass("btn btn-primary");=
+	$("#modal-button2").addClass("btn btn-primary");
 
 	// Add function to delete entity upon clicking 'Yes'
 	$("#modal-button2").click(function(){removeSubscription(entityType,entityId,username)});
