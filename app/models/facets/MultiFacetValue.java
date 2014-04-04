@@ -23,7 +23,7 @@ public class MultiFacetValue extends FacetValue{
 	}
 
 	public String toQueryString() {
-		String valString = "$in{[";
+		String valString = "{$in: [";
 		
 		for(int i=0; i< values.size()-1; i++){
 			valString += values.get(i).toQueryString() + ",";
