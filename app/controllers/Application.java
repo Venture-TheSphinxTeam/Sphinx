@@ -99,7 +99,9 @@ public class Application extends Controller {
 		for (SavedQuery s : querySubs) {
 			System.out.println(s.toQueryString());
 			queryEvents.addAll(control.getEventsForQueriedEntities(s
-					.toQueryString()));
+					.toQueryString()
+					+ ","
+					+ control.createAllowedAccessUsersQuery(USERNAME)));
 		}
 		System.out.println(queryEvents);
 
