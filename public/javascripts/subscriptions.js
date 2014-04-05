@@ -8,14 +8,11 @@ function setModalBody_Edit(entityType,entityId,username){
 
 	// set body of modal
 	$("#modal-body-text").html("Event types subscribed to :");
-	$("#modal-form").html("<br><input type='checkbox' name='event-subscriptions' id='event-report'>Report<br> <input type='checkbox' name='event-subscriptions' id='event-timespent'>Timespent<br> <input type='checkbox' name='event-subscriptions' id='event-create'>Create<br> <input type='checkbox' name='event-subscriptions' id='event-update'>Update<br> <input type='checkbox' name='event-subscriptions' id='event-delete'>Delete"); 
-
+	
 	// set checkbox statuses
-	$event_subscriptions = getEventSubscriptions(entityType,entityId,username);
+	$eventsSubscribedTo = setModalCheckboxesAndReturnSubbedEvents(entityType,entityId,username);
 
 	//$("#modal-save").click(updateSubscription());
-
-	// TODO	
 
 	$("#modal-button1").html("Cancel");
 	$("#modal-button1").removeClass();
@@ -24,6 +21,13 @@ function setModalBody_Edit(entityType,entityId,username){
 	$("#modal-button2").html("Save Changes");
 	$("#modal-button2").removeClass();
 	$("#modal-button2").addClass("btn btn-default");
+
+	// Add function to delete entity upon clicking 'Yes'
+	$("#modal-button2").click(
+		function(){
+			updateSubscriptionsEvents( entityType, entityId, username, $eventsSubscribedTo )
+		}
+	);
 }
 
 function setModalBody_Delete(entityType,entityId,username){
@@ -44,7 +48,11 @@ function setModalBody_Delete(entityType,entityId,username){
 	$("#modal-button2").addClass("btn btn-primary");
 
 	// Add function to delete entity upon clicking 'Yes'
-	$("#modal-button2").click(function(){removeSubscription(entityType,entityId,username)});
+	$("#modal-button2").click(
+		function(){
+			removeSubscription(entityType,entityId,username)
+		})
+	;
 
 }
 
@@ -69,7 +77,7 @@ function removeSubscription(entityType,entityId,username){
 
 }
 
-function getEventSubscriptions(entityType,entityId,username){
+function setModalCheckboxesAndReturnSubbedEvents(entityType,entityId,username){
 
 	var json = { 'entityType': entityType, 
 			 	 'entityId': 	 entityId,
@@ -84,9 +92,58 @@ function getEventSubscriptions(entityType,entityId,username){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-			return  data['eventsSubscribedTo']
+
+			// Add iputs to form
+			$("#modal-form").html("<br><input type='checkbox' name='event-subscriptions' id='event-report'>Report<br> <input type='checkbox' name='event-subscriptions' id='event-timespent'>Timespent<br> <input type='checkbox' name='event-subscriptions' id='event-create'>Create<br> <input type='checkbox' name='event-subscriptions' id='event-update'>Update<br> <input type='checkbox' name='event-subscriptions' id='event-delete'>Delete"); 
+
+			// Set check box
+			$("#event-report").attr('checked', data["REPORT"]);
+			$("#event-timespent").attr('checked', data["TIMESPENT"]);
+			$("#event-create").attr('checked', data["CREATE"]);
+			$("#event-update").attr('checked', data["UPDATE"]);
+			$("#event-delete").attr('checked', data["DELETE"]);
+
+			// create array of events subscribed to
+			$eventsSubscribedTo = [];
+			if( $("#event-report").is(":checked") ){
+				$eventsSubscribedTo.push("REPORT");
+			}
+			if( $("#event-timespent").is(":checked")){
+				$eventsSubscribedTo.push("TIMESPENT");
+			}
+			if( $("#event-create").is(":checked") ){
+				$eventsSubscribedTo.push("CREATE");
+			}
+			if( $("#event-update").is(":checked") ){
+				$eventsSubscribedTo.push("UPDATE");
+			}
+			if( $("#event-delete").is(":checked") ){
+				$eventsSubscribedTo.push("DELETE");
+			}
+
+			return $eventsSubscribedTo;
 		}
 	})
 
-	return null;
+}
+
+function updateSubscriptionsEvents(entityType,entityId,username,eventSubscriptions){
+
+	var json = { 'entityType': entityType, 
+			     'entityId': 	 entityId,
+			 	 'username':   username,
+			 	 'eventSubscriptions': eventSubscriptions.toString()	//sent through as a string because had to
+			 	};
+
+	var url = "/updateSubscriptionsEvents";
+
+	$.ajax({
+		type: "POST",
+		url: url,
+		data: JSON.stringify(json),
+		datatype: "json",
+		contentType: 'application/json; charset=utf-8',
+		success: function (data){
+		}
+	})
 }

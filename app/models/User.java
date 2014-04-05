@@ -146,7 +146,11 @@ public class User {
      * entity subscription.
      */
     public static void updateEventsTiedToEntitySubscription(List<String> eventSubscriptions, User user, String entityId, String entityType){
-        // TO DO
+
+        EntitySubscription currSubscription = getEntitySubscription( user, entityId, entityType );
+        currSubscription.setEventTypes(eventSubscriptions); //TODO : Figure out why this code isn't running, it should be correct
+
+        users().save(user);
     }
 
     /**

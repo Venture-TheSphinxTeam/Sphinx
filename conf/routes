@@ -22,7 +22,7 @@ POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
 POST		/updateButtonStatus				controllers.ButtonStateController.UpdateButtonStatus()
 POST		/getButtonStatus				controllers.ButtonStateController.GetButtonStatus()
 POST		/getEntityEventSubscriptions	controllers.SubscriptionController.GetEntityEventSubscriptions()
-POST		/updateEntitySubscription		controllers.SubscriptionController.UpdateEntitySubscription()
+POST		/updateSubscriptionsEvents		controllers.SubscriptionController.UpdateSubscriptionsEvents()
 POST		/deleteEntitySubscription		controllers.SubscriptionController.DeleteEntitySubscription()
 
 
