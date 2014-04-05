@@ -97,9 +97,11 @@ public class Application extends Controller {
 				.getQuerySubscriptions();
 
 		for (SavedQuery s : querySubs) {
-			queryEvents.addAll(control.getEventsForQueriedEntities("{" + s
-					.toQueryString() + "}"));
+			System.out.println(s.toQueryString());
+			queryEvents.addAll(control.getEventsForQueriedEntities(s
+					.toQueryString()));
 		}
+		System.out.println(queryEvents);
 
 		// Object[] userSubscriptions = //TODO
 
