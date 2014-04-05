@@ -19,9 +19,11 @@ GET     /webbysockets               controllers.Application.webbysockets()
 POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
 
 #Subscription/Vote/Watch
-POST		/updateButtonStatus			controllers.ButtonStateController.UpdateButtonStatus()
-POST		/getButtonStatus			controllers.ButtonStateController.GetButtonStatus()
-POST		/deleteEntitySubscription	controllers.SubscriptionController.DeleteEntitySubscription()
+POST		/updateButtonStatus				controllers.ButtonStateController.UpdateButtonStatus()
+POST		/getButtonStatus				controllers.ButtonStateController.GetButtonStatus()
+POST		/getEntityEventSubscriptions	controllers.SubscriptionController.GetEntityEventSubscriptions()
+POST		/updateEntitySubscription		controllers.SubscriptionController.UpdateEntitySubscription()
+POST		/deleteEntitySubscription		controllers.SubscriptionController.DeleteEntitySubscription()
 
 
 
