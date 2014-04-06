@@ -20,6 +20,25 @@ public class Comment {
         return PlayJongo.getCollection("comments");
     }
 
+    public Comment(String new_entityType, String new_entityId, String new_createdBy, String new_commentHeader, String new_comment){
+        this.entityId = new_entityId;
+        this.entityType = new_entityType;
+        this.createdBy = new_createdBy; 
+        this.commentHeader = new_commentHeader;
+        this.comment = new_comment;
+    }
+
+    public Comment(){}
+
+    public void insert() {
+        comments().save(this);
+        //return this;
+    }
+
+    public void remove() {
+        //comments().remove(this);
+    }
+
     public static Iterable<? extends Comment> findBy(String query){
         return comments().find("{entityId: #}", query).as(Comment.class);
     }
@@ -61,6 +80,7 @@ public class Comment {
         //TODO: Actually test this
         this.commentHeader = newCommentHeader;
         //then save
+        comments().save(this);
     }
 
     public String getCommentBody(){
@@ -71,6 +91,7 @@ public class Comment {
         //TODo: Actually test this
         this.comment = newCommentBody;
         //then save
+        comments().save(this);
     }
 }
 
