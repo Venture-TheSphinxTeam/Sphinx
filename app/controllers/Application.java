@@ -277,6 +277,7 @@ public class Application extends Controller {
 
 		else if (type.equals("MILESTONE")) {
 			Milestone entity_Milestone = control.getMilestoneById(arg);
+			ArrayList<Comment> entityComments = control.getComments(entity_Milestone.getEntityId());
 
 			if (((entity_Milestone.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Milestone
 					.getAllowedAccessUsers().isEmpty())))) {
