@@ -15,7 +15,8 @@ function createComment(entityType, entityId,createdBy,commentHeader,comment){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function(){
-			$("#entity-comments").load("/ #comment-container div");
+			//$("#entity-comments").load("/ #comment-container div");
+			window.location.reload();
 		}
 	})
 
