@@ -1,4 +1,4 @@
-@(initiative: Initiative)(username: String) 
+@(initiative: Initiative)(username: String)(children: List[Entity]) 
 @main("Sphinx: Connecting Projects to People")("") {
 <div class="thumbnail">
 	@defining(initiative.asInstanceOf[Initiative]){ init=>
@@ -107,6 +107,18 @@
 				Breakdown Parent</a> }
 				}
 		</h4>
+		
+		<h4>Entity Children:</h4>
+		@for(child <- children){
+			
+			
+			<a
+				href="./entity?arg=@child.getEntityId()&entityType=@child.getEntityType()">@child.getSummary()</a>
+			<br/>
+			
+			
+			}
+		
 	</div>
 	}
 </div>

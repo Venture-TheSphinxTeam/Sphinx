@@ -261,7 +261,7 @@ public class Application extends Controller {
 			if (((entity_Initiative.getAllowedAccessUsers().contains(USERNAME) || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
 
-				return ok(initiative.render(entity_Initiative, USERNAME));
+				return ok(initiative.render(entity_Initiative, USERNAME, control.getEntitiesByQuery("\"workBreakdownParent.entityId\":" + "\"" + entity_Initiative.getEntityId() + "\"")));
 			} else {
 				return ok(accessError.render());
 			}
