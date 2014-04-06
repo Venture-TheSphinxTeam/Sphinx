@@ -282,7 +282,12 @@ public class Application extends Controller {
 			if (((entity_Milestone.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Milestone
 					.getAllowedAccessUsers().isEmpty())))) {
 
-				return ok(milestone.render(entity_Milestone, USERNAME));
+				return ok(milestone.render(entity_Milestone, USERNAME, control.getEntitiesByQuery("\"workBreakdownParent.entityId\":"
+						+ "\""
+						+ entity_Milestone.getEntityId()
+						+ "\","
+						+ control
+								.createAllowedAccessUsersQuery(USERNAME))));
 			}
 
 			else {
@@ -305,5 +310,4 @@ public class Application extends Controller {
 		}
 
 	}
-
 }

@@ -1,4 +1,4 @@
-@(milestone: Milestone)(username: String) 
+@(milestone: Milestone)(username: String)(children: List[Entity]) 
 @main("Sphinx: Connecting Projects to People")("") {
 <div class="thumbnail">
 	@defining(milestone.asInstanceOf[Milestone]){ mile=>
@@ -90,11 +90,24 @@
 		<h4>Verification Steps: @mile.getVerificationSteps()</h4>
 
 		<h4>
-			@defining(mile.getWorkBreakdownParent().asInstanceOf[Entity]){ WBP=>
-			<a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
-				Breakdown Parent</a> }
+		Work Breakdown Parent:
+		<br/>
+		@if(mile.getWorkBreakdownParent != null){
+			@defining(mile.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
+				}
 		</h4>
+		
+		<h4>Entity Children:</h4>
+		@for(child <- children){
+			
+			
+			<a
+				href="./entity?arg=@child.getEntityId()&entityType=@child.getEntityType()">@child.getSummary()</a>
+			<br/>
+			
+			
+			}
 	</div>
 	}
 </div>
