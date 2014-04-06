@@ -472,7 +472,6 @@ public class MongoControlCenter {
 	}
 
 	public ArrayList<Entity> getEntitiesByQuery(String query) {
-		System.out.println(query);
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
 		Iterator<? extends Entity> initIter = Initiative.findBy(query)
@@ -492,7 +491,6 @@ public class MongoControlCenter {
 		while (riskIter.hasNext()) {
 			result.add(riskIter.next());
 		}
-		System.out.println(result);
 		return result;
 
 	}
