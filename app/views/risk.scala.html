@@ -78,8 +78,8 @@
 		</h4>
 
 		<h4>
-			Created: @{new Date(ri.getCreated())} <br /> Due Date: @{new
-			Date(ri.getDueDate())} <br /> Updated: @{new Date(ri.getUpdated())}
+			Created: @{ri.getFormattedDate(new Date(ri.getCreated()))} <br /> Due Date: @{ri.getFormattedDate(new
+			Date(ri.getDueDate()))} <br /> Updated: @{ri.getFormattedDate(new Date(ri.getUpdated()))}
 		</h4>
 
 		<h4>

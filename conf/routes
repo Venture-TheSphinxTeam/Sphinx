@@ -2,9 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+#User Auth
+GET 		/login						controllers.LoginController.login()
+POST		/login 						controllers.LoginController.authenticate()
+
 # Home page
 GET     /                           controllers.Application.index()
-GET     /search						controllers.Application.search(arg: String ?="", field: String ?= "" )
+GET     /search						controllers.Application.search(arg: String ?="", field: String ?= "", priority: String?="", status: String?="", reporter: String?="", assignee: String?="", label: String?="" )
 GET		/subscriptions				controllers.Application.subscriptions()
 GET		/admin-tools				controllers.Application.adminTools()
 GET		/user-settings				controllers.Application.userSettings()
@@ -14,9 +18,11 @@ GET     /webbysockets               controllers.Application.webbysockets()
 #Admin Tools
 POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
 
-#Logic in progress TODO
+#Subscription/Vote/Watch
 POST		/updateButtonStatus			controllers.ButtonStateController.UpdateButtonStatus()
 POST		/getButtonStatus			controllers.ButtonStateController.GetButtonStatus()
+POST		/deleteEntitySubscription	controllers.SubscriptionController.DeleteEntitySubscription()
+
 
 #User Settings
 POST	/user-settings/update		controllers.UserSettingsController.updateInterval()

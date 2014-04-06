@@ -79,12 +79,12 @@
 
 
 		<h4>
-			Created: @{new Date(mile.getCreated())} <br /> Start Date: @{new
-			Date(mile.getStartDate())} <br /> Desired Due Date: @{new
-			Date(mile.getDesiredDueDate())} <br /> Desired Start Date: @{new
-			Date(mile.getDesiredStartDate())} <br /> Due Date: @{new
-			Date(mile.getDueDate())} <br /> Updated: @{new
-			Date(mile.getUpdated())}
+			Created: @{mile.getFormattedDate(new Date(mile.getCreated()))} <br /> Start Date: @{mile.getFormattedDate(new
+			Date(mile.getStartDate()))} <br /> Desired Due Date: @{mile.getFormattedDate(new
+			Date(mile.getDesiredDueDate()))} <br /> Desired Start Date: @{mile.getFormattedDate(new
+			Date(mile.getDesiredStartDate()))} <br /> Due Date: @{mile.getFormattedDate(new
+			Date(mile.getDueDate()))} <br /> Updated: @{mile.getFormattedDate(new
+			Date(mile.getUpdated()))}
 		</h4>
 
 		<h4>Verification Steps: @mile.getVerificationSteps()</h4>

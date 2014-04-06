@@ -1,6 +1,5 @@
 package controllers;
 
-import java.net.ConnectException;
 import java.util.List;
 
 import javax.ws.rs.ProcessingException;
@@ -41,6 +40,7 @@ public class AdminController extends Controller{
 			for(Risk r : lr){
 				r.upsert();
 			}
+			ec.createIndices();
 			message += "\nEntities pulled";
 		}
         EventCollection events =null;

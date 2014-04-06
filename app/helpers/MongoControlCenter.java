@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import views.html.initiative;
 import models.Entity;
 import models.Event;
 import models.Initiative;
@@ -15,6 +14,8 @@ import models.Milestone;
 import models.Risk;
 import models.User;
 import models.Comment;
+import models.EntitySubscription;
+
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -24,6 +25,8 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.QueryBuilder;
 import com.mongodb.BasicDBList;
+
+//import com.sun.xml.internal.rngom.digested.DContainerPattern;   TODO
 
 public class MongoControlCenter {
 
@@ -36,6 +39,8 @@ public class MongoControlCenter {
 	private DBCollection events;
 	private DBCollection users;
 	private DBCollection comments;
+	private DBCollection fieldIncices;
+
 
 	private BasicDBList ids;
 
@@ -63,6 +68,8 @@ public class MongoControlCenter {
 		events = db.getCollection("events");
 		users = db.getCollection("users");
 		comments = db.getCollection("comments");
+		fieldIncices = db.getCollection("fieldIncices");
+
 
 		ids = new BasicDBList();
 	}
@@ -73,6 +80,8 @@ public class MongoControlCenter {
 	public void closeConnection() {
 		mongoClient.close();
 	}
+
+	// ------------------ GET ENTITIES BY ID ----------------//
 
 	public Initiative getInitiativeById(String entityId) {
 
@@ -99,6 +108,8 @@ public class MongoControlCenter {
 
 		return Risk.getFirstWithId(entityId);
 	}
+
+	// ------------------ GET EVENTS ---------------------//
 
 	public ArrayList<Event> getSingleEventsForUser(String user) {
 		ArrayList<Event> result;
@@ -127,29 +138,27 @@ public class MongoControlCenter {
 
 		Iterator<? extends Entity> entit = Initiative.findBy(query).iterator();
 		ArrayList<String> ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids,
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
 				Initiative.TYPE_STRING));
 
 		entit = Milestone.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids,
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
 				Milestone.TYPE_STRING));
 
 		entit = Risk.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityType(ids, Risk.TYPE_STRING));
+		result.addAll(Event.findByIDListAndEntityTypeA(ids, Risk.TYPE_STRING));
 
 		long unixTime = System.currentTimeMillis() / 1000L;
 		long threeMonths = 7776000L;
 		Iterator<Event> iEvent = result.iterator();
 
-		/**
-		 * Code for filtering out non-relevant events. Will uncomment when can
-		 * test. while (iEvent.hasNext()) { if (iEvent.next().getDateAsLong() <=
-		 * (unixTime - threeMonths)) { iEvent.remove();
-		 * 
-		 * } }
-		 **/
+		while (iEvent.hasNext()) {
+			if (iEvent.next().getComDate() <= (unixTime - threeMonths)) {
+				iEvent.remove();
+			}
+		}
 
 		Collections.sort(result);
 		return result;
@@ -380,6 +389,8 @@ public class MongoControlCenter {
 		return results.toArray();
 	}
 
+	// ----------------- USER SETTINGS -------------------//
+
 	@SuppressWarnings("unchecked")
 	public Integer getUserRefreshRate(String user) {
 
@@ -404,7 +415,6 @@ public class MongoControlCenter {
 
 	}
 
-
 	/**
 	 *Gets comments associated with an Entity
 	 *
@@ -428,6 +438,30 @@ public class MongoControlCenter {
     	return result;
     }
 
+	public ArrayList<String> getUserSubscriptionIds(String username,
+			String subscriptionType) {
+
+		User user = User.findByName(username);
+
+		List<EntitySubscription> subscriptionObjects = new ArrayList<EntitySubscription>();
+		if( subscriptionType.equals("initiativeSubscriptions") ){
+			subscriptionObjects = user.getInitiativeSubscriptions();
+		}else if( subscriptionType.equals("milestoneSubscriptions") ){
+			subscriptionObjects = user.getMilestoneSubscriptions();
+		}else if( subscriptionType.equals("riskSubscriptions") ){
+			subscriptionObjects = user.getRiskSubscriptions();
+		}else{
+			System.out.println("Someone attempted to get a subscription type that does not exist");
+			System.out.println("'"+subscriptionType+"'");
+		}
+
+		ArrayList<String> userSubscriptionIds = new ArrayList<String>();
+		for(int i=0; i<subscriptionObjects.size(); i++){
+			userSubscriptionIds.add( subscriptionObjects.get(i).getEntityId() );
+		}
+
+		return userSubscriptionIds;
+	}
 
 	/*
 	 * -----------Helper Functions--------------
@@ -491,11 +525,40 @@ public class MongoControlCenter {
 		return result;
 
 	}
-	
+
+	// -------------------- CREATE QUERIES ----------------------//
+
 	public String createRegexQuery(String field, String regex) {
 		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
 				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}";
 	}
 
+
+	public String createAllowedAccessUsersQuery(String username) {
+		return "$or:[{allowedAccessUsers:\"" + username
+				+ "\"},{allowedAccessUsers:{$size: 0}}]";
+	}
+
+	public String createSimpleFindQuery(String field, String value) {
+		return  field + ":\"" + value + "\"";
+	}
+
+	public ArrayList<Object> getIndexedValues() {
+
+		DBCursor cursor = fieldIncices.find();
+
+		ArrayList<Object> temp = new ArrayList<Object>();
+
+		try {
+			while (cursor.hasNext()) {
+				temp.add(cursor.next());
+
+			}
+		} finally {
+			cursor.close();
+		}
+		return temp;
+
+	}
 
 }

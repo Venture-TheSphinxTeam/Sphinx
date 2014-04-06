@@ -8,6 +8,7 @@ import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class ChangeEvent extends Event{
 
     public void setEventDate(long eventDate) {
         this.eventDate = eventDate;
+        this.com_date = eventDate;
     }
 
     public String getChangedBy() {
@@ -90,8 +92,8 @@ public class ChangeEvent extends Event{
     }
     
     @Override
-    public Date getDate(){
-    	return new Date(eventDate);
+    public String getDate() {
+    	return super.getFormattedDate(new Date(eventDate));
     }
     
 }
