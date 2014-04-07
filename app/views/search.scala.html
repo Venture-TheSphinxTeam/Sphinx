@@ -18,6 +18,14 @@
       
       </select>
       }
+      <script type="text/javascript">
+		if(getCookie("priority").localeCompare(document.getElementById("priority")) != ""){
+			document.getElementById("priority").value = getCookie("priority");
+		}
+
+		deleteAllCookies();
+      </script>
+      
       <br/>
       <button class="btn btn-default" type="button" onclick="facetSearch();">
                         <span class="glyphicon glyphicon-search"></span>
