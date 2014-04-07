@@ -282,7 +282,7 @@ public class Application extends Controller {
 			if (((entity_Milestone.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Milestone
 					.getAllowedAccessUsers().isEmpty())))) {
 
-				return ok(milestone.render(entity_Milestone, USERNAME));
+				return ok(milestone.render(entity_Milestone, USERNAME, entityComments));
 			}
 
 			else {
@@ -292,10 +292,12 @@ public class Application extends Controller {
 
 		else {
 			Risk entity_Risk = control.getRiskById(arg);
+			ArrayList<Comment> entityComments = control.getComments(entity_Risk.getEntityId());
+
 			if (((entity_Risk.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Risk
 					.getAllowedAccessUsers())).isEmpty())) {
 
-				return ok(risk.render(entity_Risk, USERNAME));
+				return ok(risk.render(entity_Risk, USERNAME, entityComments));
 			}
 
 			else {
