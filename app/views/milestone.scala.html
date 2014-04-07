@@ -1,4 +1,5 @@
-@(milestone: Milestone)(username: String)(entityComments: List[Comment]) 
+
+@(milestone: Milestone)(username: String)(children: List[Entity])(entityComments: List[Comment])
 @main("Sphinx: Connecting Projects to People")("") {
 
 <head>
@@ -166,12 +167,28 @@
 
 		<h4>Verification Steps: @mile.getVerificationSteps()</h4>
 
+	@if(mile.getWorkBreakdownParent != null){
 		<h4>
-			@defining(mile.getWorkBreakdownParent().asInstanceOf[Entity]){ WBP=>
-			<a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
-				Breakdown Parent</a> }
+		Work Breakdown Parent:
+		<br/>
+		
+			@defining(mile.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
+				
 		</h4>
+		
+		}
+		@if(children.size() != 0){
+		<h4>Entity Children:</h4>
+		@for(child <- children){
+			
+			
+			<a
+				href="./entity?arg=@child.getEntityId()&entityType=@child.getEntityType()">@child.getSummary()</a>
+			<br/>
+			}
+			
+			}
 	</div>
 	}
 </div>

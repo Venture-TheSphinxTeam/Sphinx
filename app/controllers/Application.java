@@ -267,8 +267,16 @@ public class Application extends Controller {
 			if (((entity_Initiative.getAllowedAccessUsers().contains(USERNAME) || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
 
-				return ok(initiative.render(entity_Initiative, USERNAME, control.getEntitiesByQuery("\"workBreakdownParent.entityId\":" + "\"" + entity_Initiative.getEntityId() + "\""),entityComments));
-
+				return ok(initiative
+						.render(entity_Initiative,
+								USERNAME,
+								control.getEntitiesByQuery("\"workBreakdownParent.entityId\":"
+										+ "\""
+										+ entity_Initiative.getEntityId()
+										+ "\","
+										+ control
+												.createAllowedAccessUsersQuery(USERNAME)),
+								entityComments));
 			} else {
 				return ok(accessError.render());
 			}
@@ -282,7 +290,13 @@ public class Application extends Controller {
 			if (((entity_Milestone.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Milestone
 					.getAllowedAccessUsers().isEmpty())))) {
 
-				return ok(milestone.render(entity_Milestone, USERNAME, entityComments));
+				return ok(milestone.render(entity_Milestone, USERNAME, control.getEntitiesByQuery("\"workBreakdownParent.entityId\":"
+						+ "\""
+						+ entity_Milestone.getEntityId()
+						+ "\","
+						+ control
+								.createAllowedAccessUsersQuery(USERNAME)),
+				entityComments));
 			}
 
 			else {
@@ -307,5 +321,4 @@ public class Application extends Controller {
 		}
 
 	}
-
 }
