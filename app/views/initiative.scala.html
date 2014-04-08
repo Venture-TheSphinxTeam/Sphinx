@@ -69,8 +69,43 @@
 			}
 		});
 
+		$("#dialog-edit").dialog({
+			autoOpen: false,
+			height: 400,
+			width: 400,
+			modal: true,
+			buttons: {
+				"Submit": function(){
+					var bValid = true;
+					var commentHeader = $("#commentHeader"); 
+					var comment = $("#comment");
+					allFields.removeClass("ui-state-error");
+
+					bValid = bValid && checkNull(commentHeader, "comment header");
+					bValid = bValid && checkNull(comment, "comment body");
+
+					if(bValid){
+						//submit info
+						createComment('@initiative.getEntityType()', '@initiative.getEntityId()','@username',commentHeader.val(),comment.val())
+						$(this).dialog("close");
+					}
+
+				},
+				Cancel: function(){
+					$(this).dialog("close");
+				}
+			}, 
+			close: function(){
+				allFields.val("").removeClass("ui-state-error");
+			}
+		});
+
 		$("#create-comment").button().click(function(){
 			$("#dialog-form").dialog("open");
+		});
+
+		$("#edit-comment").button().click(function(){
+			$("#dialog-edit").dialog("open");
 		});
 	});</script>
 
@@ -231,6 +266,7 @@ title="Watch/Unwatch"></span>
 				<h4>@comment.getCommentHeader()</h4>
 				posted by @comment.getCreatedBy()
 				<p>@comment.getCommentBody()</p>
+				
 			</div>
 		</div>
 		}
