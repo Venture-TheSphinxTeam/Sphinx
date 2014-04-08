@@ -274,6 +274,24 @@ public class Event implements Comparable<Event> {
 			return -1;
 		}
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		boolean result = false;
+		if(o instanceof Event){
+			Event e = (Event) o;
+			if(id.equals(e.getId())){
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int hashCode(){
+		return id.hashCode();
+	}
 
 	protected String getFormattedDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd yyyy"); // the format of your date

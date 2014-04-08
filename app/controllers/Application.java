@@ -4,6 +4,7 @@ import helpers.MongoControlCenter;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -96,24 +97,31 @@ public class Application extends Controller {
 		Iterator<? extends models.Event> subscribedEvents = models.Event
 				.getSubscribedEventsForUser(USERNAME);
 
-		ArrayList<Event> queryEvents = new ArrayList<Event>();
+		//ArrayList<Event> queryEvents = new ArrayList<Event>();
+		HashSet<Event> queryEvents = new HashSet<Event>();
 
 		List<SavedQuery> querySubs = User.findByName(USERNAME)
 				.getQuerySubscriptions();
 
 		for (SavedQuery s : querySubs) {
-			queryEvents.addAll(control.getEventsForQueriedEntities(s
+			ArrayList<Event> allEvents = control.getEventsForQueriedEntities(s
 					.toQueryString()
 					+ ","
-					+ control.createAllowedAccessUsersQuery(USERNAME)));
+					+ control.createAllowedAccessUsersQuery(USERNAME)); 
+			for(Event ev: allEvents){
+				queryEvents.add(ev);
+			}
 		}
+		
+		ArrayList<Event> queryEvList = new ArrayList<Event>();
+		queryEvList.addAll(queryEvents);
 
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();
 
 		return ok(index.render(userEvents, teamEntities, orgEntities, USERNAME,
-				subscribedEvents, queryEvents));
+				subscribedEvents, queryEvList));
 	}
 
 	public static Result search(String keyword, String field, String priority,
