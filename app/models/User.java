@@ -129,11 +129,29 @@ public class User {
     }
 
     /**
+     * Gets event types subscribed to from a particular subscription for a specific user.
+     */
+    public static List<String> getEventsTiedToEntitySubscription(User user, String entityId, String entityType){
+
+        List<String> eventsSubscribedTo;
+        EntitySubscription subscription;
+
+        subscription = getEntitySubscription(user, entityId, entityType);
+        eventsSubscribedTo = subscription.getEventTypes();
+
+        return eventsSubscribedTo;
+    }
+
+    /**
      *   Updates what events the user will see updates on for a specific
      * entity subscription.
      */
     public static void updateEventsTiedToEntitySubscription(List<String> eventSubscriptions, User user, String entityId, String entityType){
-        // TO DO
+
+        EntitySubscription currSubscription = getEntitySubscription( user, entityId, entityType );
+        currSubscription.setEventTypes(eventSubscriptions); //TODO : Figure out why this code isn't running, it should be correct
+
+        users().save(user);
     }
 
     /**
@@ -303,6 +321,36 @@ public class User {
                 }
             }
         }
+    }
+
+    private static EntitySubscription getEntitySubscription(User user, String entityId, String entityType){
+
+        EntitySubscription retVal = null;
+
+        if( entityType.toLowerCase().equals("initiative") ){
+            for(int i=0; i<user.initiativeSubscriptions.size(); i++){
+                if( user.initiativeSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = user.initiativeSubscriptions.get(i);
+                    break;
+                }
+            }
+        } else if( entityType.toLowerCase().equals("milestone") ){
+            for(int i=0; i<user.milestoneSubscriptions.size(); i++){
+                if( user.milestoneSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = user.milestoneSubscriptions.get(i);
+                    break;
+                }
+            }
+        } else {
+            for(int i=0; i<user.riskSubscriptions.size(); i++){
+                if( user.riskSubscriptions.get(i).getEntityId().equals( entityId ) ){
+                    retVal = user.riskSubscriptions.get(i);
+                    break;
+                }
+            }
+        }
+
+        return retVal;
     }
 
 
