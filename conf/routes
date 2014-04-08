@@ -25,8 +25,10 @@ POST		/getEntityEventSubscriptions	controllers.SubscriptionController.GetEntityE
 POST		/updateSubscriptionsEvents		controllers.SubscriptionController.UpdateSubscriptionsEvents()
 POST		/deleteEntitySubscription		controllers.SubscriptionController.DeleteEntitySubscription()
 
+
 #Saving Queries
 POST        /saveQuery                  controllers.SavedQueryController.saveQuery()
+POST		/deleteQuerySubscription	controllers.SavedQueryController.deleteQuerySubscription()
 
 #User Settings
 POST	/user-settings/update		controllers.UserSettingsController.updateInterval()

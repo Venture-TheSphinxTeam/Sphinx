@@ -18,6 +18,53 @@ function setSQModalBody(){
 	$("#save").click(saveQuery);
 }
 
+function setModalBody_DeleteQuery(queryName, username){
+	
+	$("#modal-label").html("Delete Query Subscription");
+
+	// set inner html
+	$("#modal-body-text").html("<p>Are you sure you would like to unsubscribe from this query?</p>");
+	$("#modal-form").html("");
+
+	// update buttons
+	$("#modal-button1").html("Cancel");
+	$("#modal-button1").removeClass();
+	$("#modal-button1").addClass("btn btn-default");
+
+	$("#modal-button2").html("Yes");
+	$("#modal-button2").removeClass();
+	$("#modal-button2").addClass("btn btn-primary");
+
+	// Add function to delete entity upon clicking 'Yes'
+	$("#modal-button2").click(
+		function(){
+			removeQuerySubscription(queryName, username)
+		})
+	;
+
+}
+
+function removeQuerySubscription(queryName, username){
+
+	var json = { 'name': queryName, 
+				 'username':   username };
+
+	var url = "/deleteQuerySubscription";
+
+	$.ajax({
+		type: "POST",
+		url: url,
+		data: JSON.stringify(json),
+		datatype: "json",
+		contentType: 'application/json; charset=utf-8',
+		success: function (data){
+			location.reload();
+		}
+	})
+
+}
+
+
 function saveQuery(username) {
 
     var facets = "";
