@@ -1,5 +1,6 @@
 package models;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParseException;
@@ -13,10 +14,20 @@ import java.util.List;
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import controllers.Ingester;
 
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
+
+
+
+
+import play.Play;
 //import sun.util.resources.CalendarData;
 import uk.co.panaxiom.playjongo.PlayJongo;
 
@@ -125,17 +136,41 @@ public class Event implements Comparable<Event> {
         Entity id = entity;
         
         if(id != null){
-            if(id.getEntityType().equals(Initiative.TYPE_STRING)){
-                this.entity = Initiative.getFirstInitiativeById(id.getEntityId());
+        	String entityType = id.getEntityType();
+        	Entity e = null;
+            if(entityType.equals(Initiative.TYPE_STRING)){
+                e = Initiative.getFirstInitiativeById(id.getEntityId());
             }
-            else if(id.getEntityType().equals( Milestone.TYPE_STRING)){
-                this.entity = Milestone.getFirstWithId(id.getEntityId());
+            else if(entityType.equals( Milestone.TYPE_STRING)){
+                e = Milestone.getFirstWithId(id.getEntityId());
+            }
+            else if(entityType.equals( Risk.TYPE_STRING)){
+                e = Risk.getFirstWithId(id.getEntityId());
+            }
+            
+            if(e != null){
+            	this.entity = entity;
             }
             else{
-                this.entity = Risk.getFirstWithId(id.getEntityId());
+            	String base = Play.application().configuration().getString("external.json.source");
+            	Ingester i = new Ingester(base + "/entity/" +entityType + "/"+id.getEntityId());
+            	String ent = i.getResponse();
+            	if(ent != null){
+            		ObjectMapper om = new ObjectMapper();
+            		try {
+						this.entity = om.readValue(ent, Entity.class);
+					} catch (JsonParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (JsonMappingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+            	}
             }
-        }else{
-            this.entity = entity;
         }
     }
     

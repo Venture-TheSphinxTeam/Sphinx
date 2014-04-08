@@ -61,7 +61,7 @@ public class Ingester {
 	  return null;
 	}
 
-        public String getMessageFromTarget(String target){
+    public String getMessageFromTarget(String target){
           WebTarget t = client.target(target);
 
 	  Invocation.Builder ib = t.request();
