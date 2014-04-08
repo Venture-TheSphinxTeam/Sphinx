@@ -156,7 +156,7 @@ public class Application extends Controller {
 			if (!label.equals("")) {
 				facetQuery += labelQuery + ",";
 			}
-			System.out.println(facetQuery);
+			
 			if (!facetQuery.equals("")) {
 				result = control.getEntitiesByQuery(facetQuery
 						+ control.createAllowedAccessUsersQuery(USERNAME));
