@@ -160,9 +160,12 @@
 		</h4>
 
 		<h4>
+		Work Breakdown Parent:
+		<br/>
+		@if(ri.getWorkBreakdownParent != null){
 			@defining(ri.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
-				Breakdown Parent</a> }
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
+				}
 		</h4>
 	</div>
 	}

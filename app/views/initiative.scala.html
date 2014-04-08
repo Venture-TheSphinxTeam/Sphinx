@@ -178,11 +178,12 @@ title="Watch/Unwatch"></span>
 		</h4>
 		
 		<h4>
+		Work Breakdown Parent:
+		<br/>
 		@if(init.getWorkBreakdownParent != null){
 
 			@defining(init.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
-				Breakdown Parent</a> }
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
 				}
 		</h4>
 		
