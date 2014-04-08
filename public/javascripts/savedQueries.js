@@ -29,7 +29,7 @@ function saveQuery(username) {
     function () {
         //console.log($(":selected", this).val());
         if ($(":selected", this).val() != $("option", this).first().val()) {
-            facets = facets + "{ name: \"" + $(this).attr('id') + "\", value: \"" + $(":selected", this).text() + "\"}, ";
+            facets = facets + "{ \"name\": \"" + $(this).attr('id') + "\", \"value\": \"" + $(":selected", this).text() + "\"}, ";
         }
     });
 
@@ -56,10 +56,10 @@ function saveQuery(username) {
     
 
     var json = {
-        'facets': "[" + facets + "]",
-            'name': name,
-            'username': username,
-            'eventTypes': eventTypes
+        "facets": "[" + facets + "]",
+            "name": name,
+            "username": "jay-z",
+            "eventTypes": eventTypes
     };
 
     $.ajax({
