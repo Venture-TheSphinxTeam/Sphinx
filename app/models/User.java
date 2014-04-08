@@ -16,6 +16,7 @@ import org.jongo.*;
 
 import scala.math.Ordering;
 import uk.co.panaxiom.playjongo.PlayJongo;
+import views.html.subscriptions;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
@@ -28,7 +29,7 @@ public class User {
     @JsonProperty("_id")
     public ObjectId id;
 
-    public User insert() {
+    public User save() {
         users().save(this);
         return this;
     }
@@ -270,6 +271,10 @@ public class User {
     public void setUpdateFrequency(int updateFrequency) {
     	this.updateFrequency = updateFrequency;
         users().save(this);
+    }
+
+    public void addSavedQuery(SavedQuery q){
+        querySubscriptions.add(q);
     }
 
     //------------PRIVATE FUNCTIONS---------------//

@@ -6,7 +6,6 @@ import static play.test.Helpers.running;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import models.ChangeEvent;
 import models.Entity;
@@ -53,7 +52,7 @@ public class EventTest extends WithApplication{
 				User u = new User();
 				u.setInitiativeSubscriptions(id);
 				u.setUsername("jay-z");
-				user = u.insert();
+				user = u.save();
 
 			   }});
 		
