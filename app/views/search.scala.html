@@ -22,7 +22,18 @@
 		if(getCookie("priority").localeCompare(document.getElementById("priority")) != ""){
 			document.getElementById("priority").value = getCookie("priority");
 		}
-
+		if(getCookie("status").localeCompare(document.getElementById("status")) != ""){
+			document.getElementById("status").value = getCookie("status");
+		}
+		if(getCookie("reporter").localeCompare(document.getElementById("reporter")) != ""){
+			document.getElementById("reporter").value = getCookie("reporter");
+		}
+		if(getCookie("assignee").localeCompare(document.getElementById("assignee")) != ""){
+			document.getElementById("assignee").value = getCookie("assignee");
+		}
+		if(getCookie("labels").localeCompare(document.getElementById("labels")) != ""){
+			document.getElementById("labels").value = getCookie("labels");
+		}
 		deleteAllCookies();
       </script>
       
