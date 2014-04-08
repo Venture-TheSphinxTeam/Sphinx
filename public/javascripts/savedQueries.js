@@ -58,7 +58,7 @@ function saveQuery(username) {
     var json = {
         "facets": "[" + facets + "]",
             "name": name,
-            "username": "jay-z",
+            "username": username,
             "eventTypes": eventTypes
     };
 
