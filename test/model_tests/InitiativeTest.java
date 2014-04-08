@@ -85,7 +85,7 @@ public class InitiativeTest extends WithApplication {
     			i.setDescription("So Cool");
     			i.upsert();
     			Initiative r = Initiative.getFirstInitiativeByKey(TEST_STRING);
-    			assertNotNull("Upsert should insert record",r);
+    			assertNotNull("Upsert should save record",r);
     			assertEquals(r.getDescription(),"So Cool");
     			i.setDescription("Even Cooler!");
     			i.upsert();

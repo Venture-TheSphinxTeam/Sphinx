@@ -23,6 +23,8 @@ POST		/updateButtonStatus			controllers.ButtonStateController.UpdateButtonStatus
 POST		/getButtonStatus			controllers.ButtonStateController.GetButtonStatus()
 POST		/deleteEntitySubscription	controllers.SubscriptionController.DeleteEntitySubscription()
 
+#Saving Queries
+POST        /saveQuery                  controllers.SavedQueryController.saveQuery()
 
 #User Settings
 POST	/user-settings/update		controllers.UserSettingsController.updateInterval()

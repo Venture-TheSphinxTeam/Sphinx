@@ -89,7 +89,7 @@
       			<input id="queryName" type="text" class="form-control" value="New Saved Query"></br>
       		</div>
       		<div class="form-group">
-      			<label for="eventTypes">Event Types</label>
+      			<label for="eventTypes" id="modal-chkbox">Event Types</label>
       			<div class="checkbox">
       				<input type="checkbox" value="CHANGE" checked>
       					Change Events
@@ -113,7 +113,7 @@
       </div>
       <div class="modal-footer" id="modal-footer">
         <button type="button" id="cancel" class="" data-dismiss="modal">Cancel</button>
-        <button type="button" id="save" class="" data-dismiss="modal" onclick="">Save</button>
+        <button type="button" id="save" class="" data-dismiss="modal" onclick="saveQuery(@username)">Save</button>
       </div>
     </div>
   </div>

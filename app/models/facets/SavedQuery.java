@@ -6,6 +6,7 @@ import java.util.List;
 public class SavedQuery {
 	protected List<FacetQuery> facets;
 	protected List<String> eventTypes;
+    protected String name;
 	
 	public SavedQuery(){
 		facets = new ArrayList<FacetQuery>();
@@ -31,8 +32,29 @@ public class SavedQuery {
 	public void setEventTypes(List<String> eventTypes){
 		this.eventTypes = eventTypes;
 	}
-	
-	public String toQueryString(){
+
+    public void addFacet(Facet f){
+        FacetQuery fq = new FacetQuery();
+        FacetValue fv = new SingleFacetValue(f.getValue());
+        fq.setValue(fv);
+        fq.setFacetName(f.getName());
+
+        addFacetQuery(fq);
+    }
+
+    public void addEventType(String s){
+        eventTypes.add(s);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String toQueryString(){
 		String queryString = "";
 		
 		for(int i=0; i< facets.size()-1; i++){
