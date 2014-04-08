@@ -212,16 +212,18 @@ title="Watch/Unwatch"></span>
 			@init.getVerificationSteps()
 		</h4>
 		
+		@if(init.getWorkBreakdownParent != null){
 		<h4>
 		Work Breakdown Parent:
 		<br/>
-		@if(init.getWorkBreakdownParent != null){
-
+		
 			@defining(init.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
 				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
-				}
+				
 		</h4>
+		}
 		
+		@if(children.size() != 0){
 		<h4>Entity Children:</h4>
 		@for(child <- children){
 			
@@ -232,7 +234,7 @@ title="Watch/Unwatch"></span>
 			
 			
 			}
-		
+		}
 	</div>
 	}
 </h4>

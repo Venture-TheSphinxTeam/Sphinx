@@ -156,7 +156,7 @@ public class Application extends Controller {
 			if (!label.equals("")) {
 				facetQuery += labelQuery + ",";
 			}
-			System.out.println(facetQuery);
+			
 			if (!facetQuery.equals("")) {
 				result = control.getEntitiesByQuery(facetQuery
 						+ control.createAllowedAccessUsersQuery(USERNAME));
@@ -267,15 +267,16 @@ public class Application extends Controller {
 			if (((entity_Initiative.getAllowedAccessUsers().contains(USERNAME) || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
 
-				return ok(initiative.render(entity_Initiative,
+				return ok(initiative
+						.render(entity_Initiative,
 								USERNAME,
 								control.getEntitiesByQuery("\"workBreakdownParent.entityId\":"
 										+ "\""
 										+ entity_Initiative.getEntityId()
 										+ "\","
 										+ control
-												.createAllowedAccessUsersQuery(USERNAME)),entityComments));
-
+												.createAllowedAccessUsersQuery(USERNAME)),
+								entityComments));
 			} else {
 				return ok(accessError.render());
 			}
@@ -294,8 +295,8 @@ public class Application extends Controller {
 						+ entity_Milestone.getEntityId()
 						+ "\","
 						+ control
-								.createAllowedAccessUsersQuery(USERNAME)), entityComments));
-
+								.createAllowedAccessUsersQuery(USERNAME)),
+				entityComments));
 			}
 
 			else {

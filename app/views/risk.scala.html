@@ -159,14 +159,16 @@
 			Date(ri.getDueDate()))} <br /> Updated: @{ri.getFormattedDate(new Date(ri.getUpdated()))}
 		</h4>
 
+	@if(ri.getWorkBreakdownParent != null){
 		<h4>
 		Work Breakdown Parent:
 		<br/>
-		@if(ri.getWorkBreakdownParent != null){
+		
 			@defining(ri.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
 				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
-				}
+				
 		</h4>
+		}
 	</div>
 	}
 </div>

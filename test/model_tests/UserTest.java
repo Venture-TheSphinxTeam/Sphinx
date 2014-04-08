@@ -22,7 +22,7 @@ public class UserTest extends WithApplication {
 				   ArrayList<String> inits = new ArrayList<String>();
 				   inits.add("100");
 				   user.setInitiativeSubscriptions(inits);
-				   user.insert();
+				   user.save();
 			   }
 		}
 		);
@@ -61,7 +61,7 @@ public class UserTest extends WithApplication {
 		   public void run(){
 			   User u = new User();
 		        u.setUsername("Bob");
-		        u.insert();
+		        u.save();
 		        User bob = User.findByName("Bob");
 		        assertNotNull(bob);
 		        assertEquals("Bob", bob.getUsername());

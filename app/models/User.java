@@ -1,6 +1,5 @@
 package models;
 
-
 import java.util.*;
 
 import com.mongodb.*;
@@ -16,290 +15,381 @@ import org.jongo.*;
 
 import scala.math.Ordering;
 import uk.co.panaxiom.playjongo.PlayJongo;
+import views.html.subscriptions;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
-    public static MongoCollection users() {
-        return PlayJongo.getCollection("users");
-    }
+	public static MongoCollection users() {
+		return PlayJongo.getCollection("users");
+	}
 
+	@JsonProperty("_id")
+	public ObjectId id;
 
-    @JsonProperty("_id")
-    public ObjectId id;
+	public User save() {
+		users().save(this);
+		return this;
+	}
 
-    public User insert() {
-        users().save(this);
-        return this;
-    }
+	public void remove() {
+		users().remove(this.id);
+	}
 
-    public void remove() {
-        users().remove(this.id);
-    }
-    
-    public static void removeAll(){
-    	users().remove();
-    }
+	public static void removeAll() {
+		users().remove();
+	}
 
-    public static User findByName(String name) {
-        return users().findOne("{username: #}", name).as(User.class);
-    }
+	public static User findByName(String name) {
+		return users().findOne("{username: #}", name).as(User.class);
+	}
 
-    public User(){}
+	public User() {
+	}
 
-    private String username;
-    private String emailAddress;
-    private String pictureURL;
-    private List<String> groups;
-    private List<String> watches;
-    private List<String> votes;
-    private String password;
-    private boolean admin;
-    private List<SavedQuery> querySubscriptions;
-    private List<EntitySubscription> initiativeSubscriptions;
-    private List<EntitySubscription> milestoneSubscriptions;
-    private List<EntitySubscription> riskSubscriptions;
-    private int updateFrequency;
+	private String username;
+	private String emailAddress;
+	private String pictureURL;
+	private List<String> groups;
+	private List<String> watches;
+	private List<String> votes;
+	private String password;
+	private boolean admin;
+	private List<SavedQuery> querySubscriptions;
+	private List<EntitySubscription> initiativeSubscriptions;
+	private List<EntitySubscription> milestoneSubscriptions;
+	private List<EntitySubscription> riskSubscriptions;
+	private int updateFrequency;
 
+	// ----------------------------SUBSCRIPTIONS/WATCHES/VOTES---------------------------------//
 
-    //----------------------------SUBSCRIPTIONS/WATCHES/VOTES---------------------------------//
+	public static boolean doesUserSubscribeToEntity(User user, String entityId,
+			String entityType) { // TODO: FIX
+		boolean retVal = false;
 
-    public static boolean doesUserSubscribeToEntity(User user, String entityId, String entityType){     //TODO: FIX
-    	boolean retVal = false;
-
-        if( entityType.toLowerCase().equals("initiative") ){
-            for(int i=0; i<user.initiativeSubscriptions.size(); i++){
-                if( user.initiativeSubscriptions.get(i).getEntityId().equals( entityId ) ){
-                    retVal = true;
-                    break;
-                }
-            }
-        } else if( entityType.toLowerCase().equals("milestone") ){
-            for(int i=0; i<user.milestoneSubscriptions.size(); i++){
-                if( user.milestoneSubscriptions.get(i).getEntityId().equals( entityId ) ){
-                    retVal = true;
-                    break;
-                }
-            }
-        } else {
-            for(int i=0; i<user.riskSubscriptions.size(); i++){
-                if( user.riskSubscriptions.get(i).getEntityId().equals( entityId ) ){
-                    retVal = true;
-                    break;
-                }
-            }
-        }
-		
-    	return retVal;
-    }
-    
-    public static boolean doesUserVoteForEntity(User user, String entityId, String entityType){
-        return user.votes.contains(entityId) ;
-    }
-
-
-    public static boolean doesUserWatchEntity(User user, String entityId, String entityType){
-        return user.watches.contains(entityId) ;
-    }
-
-    /**
-     * Subscribe to or unsubscribe from an entity.                      // TO DO : TEST IF NEW CHANGES WORK
-     * @return				the new status of the subscription
-     */
-    public static void setUserEntitySubscriptionStatus(boolean status, User user, String entityId, String entityType){
-        List<String> defaultEventSubscriptions = Arrays.asList("REPORT", "TIMESPENT", "CREATE", "UPDATE", "DELETE");
-
-        // Add subscription
-		if( status == true ){
-	        if( entityType.toLowerCase().equals("initiative") ){
-	        	user.initiativeSubscriptions.add(new EntitySubscription(entityId, defaultEventSubscriptions)) ; 
-	        } else if( entityType.toLowerCase().equals("milestone") ){                    
-	        	user.milestoneSubscriptions.add(new EntitySubscription(entityId, defaultEventSubscriptions)) ;     
- 	        } else {
-	        	user.riskSubscriptions.add(new EntitySubscription(entityId, defaultEventSubscriptions)) ;
-	        }
+		if (entityType.toLowerCase().equals("initiative")) {
+			for (int i = 0; i < user.initiativeSubscriptions.size(); i++) {
+				if (user.initiativeSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					retVal = true;
+					break;
+				}
+			}
+		} else if (entityType.toLowerCase().equals("milestone")) {
+			for (int i = 0; i < user.milestoneSubscriptions.size(); i++) {
+				if (user.milestoneSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					retVal = true;
+					break;
+				}
+			}
+		} else {
+			for (int i = 0; i < user.riskSubscriptions.size(); i++) {
+				if (user.riskSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					retVal = true;
+					break;
+				}
+			}
 		}
-        // Remove subscription
+
+		return retVal;
+	}
+
+	public static boolean doesUserVoteForEntity(User user, String entityId,
+			String entityType) {
+		return user.votes.contains(entityId);
+	}
+
+	public static boolean doesUserWatchEntity(User user, String entityId,
+			String entityType) {
+		return user.watches.contains(entityId);
+	}
+
+	/**
+	 * Subscribe to or unsubscribe from an entity. // TO DO : TEST IF NEW
+	 * CHANGES WORK
+	 * 
+	 * @return the new status of the subscription
+	 */
+	public static void setUserEntitySubscriptionStatus(boolean status,
+			User user, String entityId, String entityType) {
+		List<String> defaultEventSubscriptions = Arrays.asList("REPORT",
+				"TIMESPENT", "CREATE", "UPDATE", "DELETE");
+
+		// Add subscription
+		if (status == true) {
+			if (entityType.toLowerCase().equals("initiative")) {
+				user.initiativeSubscriptions.add(new EntitySubscription(
+						entityId, defaultEventSubscriptions));
+			} else if (entityType.toLowerCase().equals("milestone")) {
+				user.milestoneSubscriptions.add(new EntitySubscription(
+						entityId, defaultEventSubscriptions));
+			} else {
+				user.riskSubscriptions.add(new EntitySubscription(entityId,
+						defaultEventSubscriptions));
+			}
+		}
+		// Remove subscription
 		else {
-	        deleteEntitySubscription(user, entityId, entityType);
+			deleteEntitySubscription(user, entityId, entityType);
 		}
 
-        users().save(user);
-    }
+		users().save(user);
+	}
 
-    /**
-     *   Updates what events the user will see updates on for a specific
-     * entity subscription.
-     */
-    public static void updateEventsTiedToEntitySubscription(List<String> eventSubscriptions, User user, String entityId, String entityType){
-        // TO DO
-    }
+	/**
+	 * Gets event types subscribed to from a particular subscription for a
+	 * specific user.
+	 */
+	public static List<String> getEventsTiedToEntitySubscription(User user,
+			String entityId, String entityType) {
 
-    /**
-     * Watch to unwatch an initiative. 
-     * @return              the new status of the watch
-     */
-    public static void setUserEntityWatchStatus(boolean status, User user, String entityId, String entityType){
+		List<String> eventsSubscribedTo;
+		EntitySubscription subscription;
 
-        if( status == true ){
-            user.watches.add(entityId);
-        }
-        else {
-            user.watches.remove(entityId);
-        }
+		subscription = getEntitySubscription(user, entityId, entityType);
+		eventsSubscribedTo = subscription.getEventTypes();
 
-        users().save(user);
-    }
+		return eventsSubscribedTo;
+	}
 
-    /**
-     * Vote or unvote for an initiative. 
-     * @return              the new status of the vote
-     */
-    public static void setUserEntityVoteStatus(boolean status, User user, String entityId, String entityType){
+	/**
+	 * Updates what events the user will see updates on for a specific entity
+	 * subscription.
+	 */
+	public static void updateEventsTiedToEntitySubscription(
+			List<String> eventSubscriptions, User user, String entityId,
+			String entityType) {
 
-        if( status == true ){
-            user.votes.add(entityId);
-        }
-        else {
-            user.votes.remove(entityId);
-        }
+		EntitySubscription currSubscription = getEntitySubscription(user,
+				entityId, entityType);
+		currSubscription.setEventTypes(eventSubscriptions); // TODO : Figure out
+															// why this code
+															// isn't running, it
+															// should be correct
 
-        users().save(user);
-    }
+		users().save(user);
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	/**
+	 * Watch to unwatch an initiative.
+	 * 
+	 * @return the new status of the watch
+	 */
+	public static void setUserEntityWatchStatus(boolean status, User user,
+			String entityId, String entityType) {
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+		if (status == true) {
+			user.watches.add(entityId);
+		} else {
+			user.watches.remove(entityId);
+		}
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+		users().save(user);
+	}
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+	/**
+	 * Vote or unvote for an initiative.
+	 * 
+	 * @return the new status of the vote
+	 */
+	public static void setUserEntityVoteStatus(boolean status, User user,
+			String entityId, String entityType) {
 
-    public String getPictureURL() {
-        return pictureURL;
-    }
+		if (status == true) {
+			user.votes.add(entityId);
+		} else {
+			user.votes.remove(entityId);
+		}
 
-    public void setPictureURL(String pictureURL) {
-        this.pictureURL = pictureURL;
-    }
+		users().save(user);
+	}
 
-    public List<String> getGroups() {
-        return groups;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setGroups(List<String> groups) {
-        this.groups = groups;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public List<String> getWatches() {
-        return watches;
-    }
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 
-    public void setWatches(List<String> watches) {
-        this.watches = watches;
-    }
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
 
-    public List<String> getVotes() {
-        return votes;
-    }
+	public String getPictureURL() {
+		return pictureURL;
+	}
 
-    public void setVotes(List<String> votes) {
-        this.votes = votes;
-    }
+	public void setPictureURL(String pictureURL) {
+		this.pictureURL = pictureURL;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public List<String> getGroups() {
+		return groups;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setGroups(List<String> groups) {
+		this.groups = groups;
+	}
 
-    public boolean getAdmin() {
-        return admin;
-    }
+	public List<String> getWatches() {
+		return watches;
+	}
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
+	public void setWatches(List<String> watches) {
+		this.watches = watches;
+	}
 
-    public List<SavedQuery> getQuerySubscriptions() {
-        return querySubscriptions;
-    }
+	public List<String> getVotes() {
+		return votes;
+	}
 
-    public void setQuerySubscriptions(List<SavedQuery> querySubscriptions) {
-        this.querySubscriptions = querySubscriptions;
-    }
+	public void setVotes(List<String> votes) {
+		this.votes = votes;
+	}
 
-    public List<EntitySubscription> getInitiativeSubscriptions() {
-        return initiativeSubscriptions;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setInitiativeSubscriptions(List<EntitySubscription> initiativeSubscriptions) {
-        this.initiativeSubscriptions = initiativeSubscriptions;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public List<EntitySubscription> getMilestoneSubscriptions() {
-        return milestoneSubscriptions;
-    }
+	public boolean getAdmin() {
+		return admin;
+	}
 
-    public void setMilestoneSubscriptions(List<EntitySubscription> milestoneSubscriptions) {
-        this.milestoneSubscriptions = milestoneSubscriptions;
-    }
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 
-    public List<EntitySubscription> getRiskSubscriptions() {
-        return riskSubscriptions;
-    }
+	public List<SavedQuery> getQuerySubscriptions() {
+		return querySubscriptions;
+	}
 
-    public void setRiskSubscriptions(List<EntitySubscription> riskSubscriptions) {
-        this.riskSubscriptions = riskSubscriptions;
-    }
+	public void setQuerySubscriptions(List<SavedQuery> querySubscriptions) {
+		this.querySubscriptions = querySubscriptions;
+	}
 
-    public int getUpdateFrequency() {
-        return updateFrequency;
-    }
+	public List<EntitySubscription> getInitiativeSubscriptions() {
+		return initiativeSubscriptions;
+	}
 
-    public void setUpdateFrequency(int updateFrequency) {
-    	this.updateFrequency = updateFrequency;
-        users().save(this);
-    }
+	public void setInitiativeSubscriptions(
+			List<EntitySubscription> initiativeSubscriptions) {
+		this.initiativeSubscriptions = initiativeSubscriptions;
+	}
 
-    //------------PRIVATE FUNCTIONS---------------//
+	public List<EntitySubscription> getMilestoneSubscriptions() {
+		return milestoneSubscriptions;
+	}
 
-    private static void deleteEntitySubscription(User user, String entityId, String entityType){
+	public void setMilestoneSubscriptions(
+			List<EntitySubscription> milestoneSubscriptions) {
+		this.milestoneSubscriptions = milestoneSubscriptions;
+	}
 
-        if( entityType.toLowerCase().equals("initiative") ){
-            for(int i=0; i<user.initiativeSubscriptions.size(); i++){
-                if( user.initiativeSubscriptions.get(i).getEntityId().equals( entityId ) ){
-                    user.initiativeSubscriptions.remove(i);
-                    break;
-                }
-            }
-        } else if( entityType.toLowerCase().equals("milestone") ){
-            for(int i=0; i<user.milestoneSubscriptions.size(); i++){
-                if( user.milestoneSubscriptions.get(i).getEntityId().equals( entityId ) ){
-                    user.milestoneSubscriptions.remove(i);
-                    break;
-                }
-            }
-        } else {
-            for(int i=0; i<user.riskSubscriptions.size(); i++){
-                if( user.riskSubscriptions.get(i).getEntityId().equals( entityId ) ){
-                    user.riskSubscriptions.remove(i);
-                    break;
-                }
-            }
-        }
-    }
+	public List<EntitySubscription> getRiskSubscriptions() {
+		return riskSubscriptions;
+	}
 
+	public void setRiskSubscriptions(List<EntitySubscription> riskSubscriptions) {
+		this.riskSubscriptions = riskSubscriptions;
+	}
+
+	public int getUpdateFrequency() {
+		return updateFrequency;
+	}
+
+	public void setUpdateFrequency(int updateFrequency) {
+		this.updateFrequency = updateFrequency;
+		users().save(this);
+	}
+
+	public void addSavedQuery(SavedQuery q) {
+		querySubscriptions.add(q);
+	}
+
+	public void removeSavedQuery(String queryName) {
+		Iterator<SavedQuery> queryIter = querySubscriptions.iterator();
+		while (queryIter.hasNext()) {
+			if (queryIter.next().getName().equals(queryName)) {
+				queryIter.remove();
+			}
+		}
+	}
+
+	// ------------PRIVATE FUNCTIONS---------------//
+
+	private static void deleteEntitySubscription(User user, String entityId,
+			String entityType) {
+
+		if (entityType.toLowerCase().equals("initiative")) {
+			for (int i = 0; i < user.initiativeSubscriptions.size(); i++) {
+				if (user.initiativeSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					user.initiativeSubscriptions.remove(i);
+					break;
+				}
+			}
+		} else if (entityType.toLowerCase().equals("milestone")) {
+			for (int i = 0; i < user.milestoneSubscriptions.size(); i++) {
+				if (user.milestoneSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					user.milestoneSubscriptions.remove(i);
+					break;
+				}
+			}
+		} else {
+			for (int i = 0; i < user.riskSubscriptions.size(); i++) {
+				if (user.riskSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					user.riskSubscriptions.remove(i);
+					break;
+				}
+			}
+		}
+	}
+
+	private static EntitySubscription getEntitySubscription(User user,
+			String entityId, String entityType) {
+
+		EntitySubscription retVal = null;
+
+		if (entityType.toLowerCase().equals("initiative")) {
+			for (int i = 0; i < user.initiativeSubscriptions.size(); i++) {
+				if (user.initiativeSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					retVal = user.initiativeSubscriptions.get(i);
+					break;
+				}
+			}
+		} else if (entityType.toLowerCase().equals("milestone")) {
+			for (int i = 0; i < user.milestoneSubscriptions.size(); i++) {
+				if (user.milestoneSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					retVal = user.milestoneSubscriptions.get(i);
+					break;
+				}
+			}
+		} else {
+			for (int i = 0; i < user.riskSubscriptions.size(); i++) {
+				if (user.riskSubscriptions.get(i).getEntityId()
+						.equals(entityId)) {
+					retVal = user.riskSubscriptions.get(i);
+					break;
+				}
+			}
+		}
+
+		return retVal;
+	}
 
 }
-
