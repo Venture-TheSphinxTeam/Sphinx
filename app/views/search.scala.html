@@ -70,7 +70,9 @@
 				
 					<h3>@entity.getKey()</h3>
 					<h3 id="summary">@entity.getSummary()</h3>
-					<h4>@entity.getDescription()</h4>
+					@if(entity.getDescription() != null){
+					  <h4>@Html(entity.getDescription())</h4>
+					}
 					<label hidden="true" id="proposed">@entity.getCreated()</label>
 					<label hidden="true" id="updated">@entity.getUpdated()</label>
 
