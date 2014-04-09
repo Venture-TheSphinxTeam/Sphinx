@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import helpers.JSONParser;
 import models.User;
 import models.facets.Facet;
@@ -21,51 +22,69 @@ import java.util.List;
  */
 public class SavedQueryController extends Controller {
 
-    public static Result saveQuery(){
-        JsonNode json = request().body().asJson();
+	public static Result saveQuery() {
+		JsonNode json = request().body().asJson();
 
-        ObjectMapper om = new ObjectMapper();
-        String facetJson = json.get("facets").asText();
+		ObjectMapper om = new ObjectMapper();
+		String facetJson = json.get("facets").asText();
 
-        List<Facet> facets = new ArrayList<Facet>();
-        try {
-            facets = om.readValue(facetJson, new TypeReference<List<Facet>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ok();
-        }
-        String name = json.get("name").asText();
-        String eventTypes = json.get("eventTypes").asText();
-        String username = json.get("username").asText();
+		List<Facet> facets = new ArrayList<Facet>();
+		try {
+			facets = om.readValue(facetJson, new TypeReference<List<Facet>>() {
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ok();
+		}
+		String name = json.get("name").asText();
+		String eventTypes = json.get("eventTypes").asText();
+		String username = json.get("username").asText();
 
-        ObjectNode result = Json.newObject();
+		ObjectNode result = Json.newObject();
 
+		SavedQuery sq = new SavedQuery();
 
-        SavedQuery sq = new SavedQuery();
+		for (Facet f : facets) {
+			sq.addFacet(f);
+		}
 
-        for(Facet f: facets){
-            sq.addFacet(f);
-        }
+		if (eventTypes != null && eventTypes.length() > 0
+				&& eventTypes.equals("[]")) {
+			String[] evs = eventTypes.substring(1, eventTypes.length() - 1)
+					.split(",");
 
-        if(eventTypes != null && eventTypes.length() >0 && eventTypes.equals("[]")){
-            String[] evs = eventTypes.substring(1,eventTypes.length()-1).split(",");
+			for (String s : evs) {
+				sq.addEventType(s);
+			}
+		} else {
+			return ok();
+		}
 
-            for(String s : evs){
-                sq.addEventType(s);
-            }
-        }
-        else{
-            return ok();
-        }
+		sq.setName(name);
 
-        sq.setName(name);
+		User user = User.findByName(username);
+		user.addSavedQuery(sq);
+		user.save();
 
-        User user = User.findByName(username);
-        user.addSavedQuery(sq);
-        user.save();
+		// user.setUserEntitySubscriptionStatus(false, user, entityId,
+		// entityType);
 
-        //user.setUserEntitySubscriptionStatus(false, user, entityId, entityType);
+		return ok(result);
+	}
 
-        return ok(result);
-    }
+	public static Result deleteQuerySubscription() {
+		// Get json information sent in
+		JsonNode json = request().body().asJson();
+
+		String queryName = json.get("name").asText();
+		String username = json.get("username").asText();
+		User user = User.findByName(username);
+
+		user.removeSavedQuery(queryName);
+		user.save();
+
+		ObjectNode result = Json.newObject();
+
+		return ok(result);
+	}
 }

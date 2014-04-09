@@ -51,7 +51,7 @@
 												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
-													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													href="/entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
 													more &raquo;</a> <br />
 											</div>
 										</div>
@@ -175,10 +175,14 @@
 														class="btn btn-primary btn-sm"
 														data-toggle="modal"
 														data-target="#editEntityModal">edit</button>
-													<button class="btn btn-primary btn-sm">delete</button>
+													<button 
+													class="btn btn-primary btn-sm"
+													data-toggle="modal"
+													data-target="#modal"
+													onclick="setModalBody_DeleteQuery('@query.getName()','@username')">delete</button>
 												</div>
 												<div>
-													<h3>Query ID - @query.getFacets()</h3>
+													<h3>Query ID - @query.getName()</h3>
 													<h3>Query Summary - @query.toQueryString()</h3>
 												</div>
 											</div>
