@@ -251,6 +251,29 @@
       
       </select>
       }
+      <form>
+      		<div class="form-group">
+      			<label for="eventTypes" id="modal-chkbox">Event Types</label>
+      			<div class="checkbox">
+      				<input type="checkbox" value="CHANGE" checked>
+      					Change Events
+      				</input>
+      			</div>
+
+				<div class="checkbox">
+      				<input type="checkbox" value="REPORT" checked>
+      					Report Events
+      				</input>
+      			</div>
+
+      			<div class="checkbox">
+      				<input type="checkbox" value="TIMESPENT" checked>
+      					Timespent Events
+      				</input>
+      			</div>
+
+      		</div>
+		</form>
       	    
       	    
       	    
@@ -297,6 +320,8 @@
 		});
 	});
 
-	$('.selectpicker').selectpicker();
+	$('#editQueryModal').on('hidden.bs.modal', function (e) {
+		$('.selectpicker').selectpicker('hide');
+		})
 </script>
 }

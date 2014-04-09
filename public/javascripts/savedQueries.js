@@ -44,15 +44,26 @@ function setModalBody_DeleteQuery(queryName, username){
 
 }
 
+
 function setModalBody_UpdateQuery(queryName, username, facets){
+	
+	 var form = document.getElementById("editQueryModal-form").innerHTML;
+	
+	
+	
 	$("#editQueryModal-label").html("Edit Query Subscription");
 	// set inner html
 	$("#editQueryModal-body-text").html("<p>Please choose new facets for this query.</p>");
+	$("#editQueryModal-form").empty();
+	$("#editQueryModal-form").html(form);
+	
+	
 	var priority = facets.match(/priority: "(.*)"/)[1];
 	
 	
+	document.getElementById("priority").value = priority;
 	
-	document.getElementById("priority").value = "Critical";
+	$('.selectpicker').selectpicker();
 	
 	// update buttons
 	$("#editQueryModal-button1").html("Cancel");
@@ -70,6 +81,8 @@ function setModalBody_UpdateQuery(queryName, username, facets){
 		})
 	;
 }
+
+
 
 
 function removeQuerySubscription(queryName, username){
