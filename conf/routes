@@ -29,6 +29,7 @@ POST		/deleteEntitySubscription		controllers.SubscriptionController.DeleteEntity
 #Saving Queries
 POST        /saveQuery                  controllers.SavedQueryController.saveQuery()
 POST		/deleteQuerySubscription	controllers.SavedQueryController.deleteQuerySubscription()
+POST		/updateQuerySubscription	controllers.SavedQueryController.updateQuerySubscription()
 
 #User Settings
 POST	/user-settings/update		controllers.UserSettingsController.updateInterval()

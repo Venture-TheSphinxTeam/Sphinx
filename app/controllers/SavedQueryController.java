@@ -87,4 +87,15 @@ public class SavedQueryController extends Controller {
 
 		return ok(result);
 	}
+	
+	public static Result updateQuerySubscription(){
+		
+		JsonNode json = request().body().asJson();
+		
+		ObjectNode result = Json.newObject();
+
+		return ok(result);
+		
+	}
+	
 }

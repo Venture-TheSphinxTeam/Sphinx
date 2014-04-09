@@ -1,4 +1,4 @@
-@(userInitEntities: List[Initiative])(userMileEntities: List[Milestone])(userRiskEntities: List[Risk])(userQueries: List[models.facets.SavedQuery])(username: String)
+@(userInitEntities: List[Initiative])(userMileEntities: List[Milestone])(userRiskEntities: List[Risk])(userQueries: List[models.facets.SavedQuery])(username: String)(facets: java.util.ArrayList[Object])
 @main("Sphinx: Connecting Projects to People")("") {
 
 <script src="@routes.Assets.at("javascripts/subscriptions.js")" type="text/javascript"></script>
@@ -174,7 +174,9 @@
 													<button 
 														class="btn btn-primary btn-sm"
 														data-toggle="modal"
-														data-target="#editEntityModal">edit</button>
+														data-target="#editQueryModal"
+														onclick="setModalBody_UpdateQuery('@query.getName()', '@username', '@query.toQueryString()')">edit
+														</button>
 													<button 
 													class="btn btn-primary btn-sm"
 													data-toggle="modal"
@@ -223,6 +225,48 @@
   </div>
 </div>
 
+<div class="modal fade" id="editQueryModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="editQueryModal-label"></h4>
+      </div>
+      <div class="modal-body" id="editQueryModal-body">
+      		<div id="editQueryModal-body-text"></div>
+
+      	    <div id="editQueryModal-form">
+      	     @for(index <- facets){
+      <select class="selectpicker" data-width="135px" id="@index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldName")">
+      @defining(index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldName")) { field =>
+      <option selected="selected">@field.asInstanceOf[String].capitalize: All</option>
+      }
+      
+      @defining(index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldValues")){ list =>
+      	@for(value <- list.asInstanceOf[List[String]]){
+      		<option>@value</option>
+      	}
+      	
+      }
+      
+      </select>
+      }
+      	    
+      	    
+      	    
+      	    
+      	    
+      	    </div>
+      </div>
+      <div class="modal-footer" id="editQueryModal-footer">
+        <button type="button" id="editQueryModal-button1" class="" data-dismiss="modal"></button>
+        <button type="button" id="editQueryModal-button2" class="" data-dismiss="modal" onclick=""></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Pagination of tabs -->
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -252,5 +296,7 @@
 			abort_on_small_lists : true
 		});
 	});
+
+	$('.selectpicker').selectpicker();
 </script>
 }

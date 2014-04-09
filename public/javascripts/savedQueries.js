@@ -44,6 +44,34 @@ function setModalBody_DeleteQuery(queryName, username){
 
 }
 
+function setModalBody_UpdateQuery(queryName, username, facets){
+	$("#editQueryModal-label").html("Edit Query Subscription");
+	// set inner html
+	$("#editQueryModal-body-text").html("<p>Please choose new facets for this query.</p>");
+	var priority = facets.match(/priority: "(.*)"/)[1];
+	
+	
+	
+	document.getElementById("priority").value = "Critical";
+	
+	// update buttons
+	$("#editQueryModal-button1").html("Cancel");
+	$("#editQueryModal-button1").removeClass();
+	$("#editQueryModal-button1").addClass("btn btn-default");
+
+	$("#editQueryModal-button2").html("Save");
+	$("#editQueryModal-button2").removeClass();
+	$("#editQueryModal-button2").addClass("btn btn-primary");
+
+	// Add function to update entity upon clicking 'Yes'
+	$("#editQueryModal-button2").click(
+		function(){
+			updateQuerySubscription(queryName, username)
+		})
+	;
+}
+
+
 function removeQuerySubscription(queryName, username){
 
 	var json = { 'name': queryName, 
@@ -62,6 +90,10 @@ function removeQuerySubscription(queryName, username){
 		}
 	})
 
+}
+
+function updateQuerySubscription(queryName, username){
+	
 }
 
 

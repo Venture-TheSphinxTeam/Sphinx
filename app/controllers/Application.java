@@ -243,14 +243,17 @@ public class Application extends Controller {
 		for (String id : riskSubIds) {
 			riskSubs.add(control.getRiskById(id));
 		}
+		
+		ArrayList<Object> facets = control.getIndexedValues();
 
 		control.closeConnection();
 
 		List<SavedQuery> querySubs = User.findByName(USERNAME)
 				.getQuerySubscriptions();
 
+		
 		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, querySubs,
-				USERNAME));
+				USERNAME, facets));
 	}
 
 	public static Result adminTools() {
