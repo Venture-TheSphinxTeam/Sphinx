@@ -70,6 +70,12 @@ function saveQuery(username) {
     var facets = "";
     var pickers = $(".selectpicker");
 
+    var keyword = $("#entitySearch").val().trim();
+    var keyType;
+    if(keyword.length >0){
+        keyType = $("#radio_div :selected").val().trim();
+        facets += "{\"name\" : \"" +keyType + "\", \"value\" : \"" + keyword + "\" }, "
+    }
     //Construct a string of facet objects
     pickers.each(
 

@@ -63,8 +63,15 @@ public class SavedQueryController extends Controller {
 		sq.setName(name);
 
 		User user = User.findByName(username);
-		user.addSavedQuery(sq);
-		user.save();
+		
+		List<SavedQuery> existing = user.getQuerySubscriptions();
+		if(existing.contains(sq)){
+			//TODO: Return an error message
+		}
+		else{
+			user.addSavedQuery(sq);
+			user.save();
+		}
 
 		// user.setUserEntitySubscriptionStatus(false, user, entityId,
 		// entityType);
