@@ -58,10 +58,32 @@ function setModalBody_UpdateQuery(queryName, username, facets){
 	$("#editQueryModal-form").html(form);
 	
 	
-	var priority = facets.match(/priority: "(.*)"/)[1];
+	var priority = facets.match(/priority: "(.*?)"/);
+	var status = facets.match(/status: "(.*?)"/);
+	var reporter = facets.match(/reporter: "(.*?)"/);
+	var assignee = facets.match(/assignee: "(.*?)"/);
+	var label = facets.match(/label: "(.*?)"/);
 	
+	if(priority != null){
+	document.getElementById("priority").value = priority[1];
+	}
 	
-	document.getElementById("priority").value = priority;
+	if(status != null){
+		document.getElementById("status").value = status[1];
+		}
+	
+	if(reporter != null){
+		document.getElementById("reporter").value = reporter[1];
+		}
+	
+	if(assignee != null){
+		document.getElementById("assignee").value = assignee[1];
+		}
+	
+	if(label != null){
+		document.getElementById("label").value = label[1];
+		}
+	
 	
 	$('.selectpicker').selectpicker();
 	
