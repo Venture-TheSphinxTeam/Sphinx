@@ -33,7 +33,7 @@ public class SubscriptionController extends Controller{
 	}
 
 	public static Result UpdateSubscriptionsEvents(){
-
+		
 		// Get json information sent in
 		JsonNode json = request().body().asJson();
 		

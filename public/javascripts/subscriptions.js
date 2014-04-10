@@ -10,9 +10,7 @@ function setModalBody_Edit(entityType,entityId,username){
 	$("#modal-body-text").html("Event types subscribed to :");
 	
 	// set checkbox statuses
-	$eventsSubscribedTo = setModalCheckboxesAndReturnSubbedEvents(entityType,entityId,username);
-
-	//$("#modal-save").click(updateSubscription());
+	setModalCheckboxes(entityType,entityId,username);
 
 	$("#modal-button1").html("Cancel");
 	$("#modal-button1").removeClass();
@@ -25,7 +23,7 @@ function setModalBody_Edit(entityType,entityId,username){
 	// Add function to delete entity upon clicking 'Yes'
 	$("#modal-button2").click(
 		function(){
-			updateSubscriptionsEvents( entityType, entityId, username, $eventsSubscribedTo )
+			updateSubscriptionsEvents( entityType, entityId, username )
 		}
 	);
 }
@@ -77,7 +75,7 @@ function removeSubscription(entityType,entityId,username){
 
 }
 
-function setModalCheckboxesAndReturnSubbedEvents(entityType,entityId,username){
+function setModalCheckboxes(entityType,entityId,username){
 
 	var json = { 'entityType': entityType, 
 			 	 'entityId': 	 entityId,
@@ -102,37 +100,35 @@ function setModalCheckboxesAndReturnSubbedEvents(entityType,entityId,username){
 			$("#event-create").attr('checked', data["CREATE"]);
 			$("#event-update").attr('checked', data["UPDATE"]);
 			$("#event-delete").attr('checked', data["DELETE"]);
-
-			// create array of events subscribed to
-			$eventsSubscribedTo = [];
-			if( $("#event-report").is(":checked") ){
-				$eventsSubscribedTo.push("REPORT");
-			}
-			if( $("#event-timespent").is(":checked")){
-				$eventsSubscribedTo.push("TIMESPENT");
-			}
-			if( $("#event-create").is(":checked") ){
-				$eventsSubscribedTo.push("CREATE");
-			}
-			if( $("#event-update").is(":checked") ){
-				$eventsSubscribedTo.push("UPDATE");
-			}
-			if( $("#event-delete").is(":checked") ){
-				$eventsSubscribedTo.push("DELETE");
-			}
-
-			return $eventsSubscribedTo;
 		}
 	})
 
 }
 
-function updateSubscriptionsEvents(entityType,entityId,username,eventSubscriptions){
+function updateSubscriptionsEvents(entityType,entityId,username){
+
+	// create array of events subscribed to
+	$eventsSubscribedTo = [];
+	if( $("#event-report").is(":checked") ){
+		$eventsSubscribedTo.push("REPORT");
+	}
+	if( $("#event-timespent").is(":checked")){
+		$eventsSubscribedTo.push("TIMESPENT");
+	}
+	if( $("#event-create").is(":checked") ){
+		$eventsSubscribedTo.push("CREATE");
+	}
+	if( $("#event-update").is(":checked") ){
+		$eventsSubscribedTo.push("UPDATE");
+	}
+	if( $("#event-delete").is(":checked") ){
+		$eventsSubscribedTo.push("DELETE");
+	}
 
 	var json = { 'entityType': entityType, 
 			     'entityId': 	 entityId,
 			 	 'username':   username,
-			 	 'eventSubscriptions': eventSubscriptions.toString()	//sent through as a string because had to
+			 	 'eventSubscriptions': $eventsSubscribedTo.toString()	//sent through as a string because had to
 			 	};
 
 	var url = "/updateSubscriptionsEvents";
