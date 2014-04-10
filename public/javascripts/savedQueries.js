@@ -61,7 +61,7 @@ function setModalBody_UpdateQuery(queryName, username, facets, types){
 	var status = facets.match(/status: "(.*?)"/);
 	var reporter = facets.match(/reporter: "(.*?)"/);
 	var assignee = facets.match(/assignee: "(.*?)"/);
-	var label = facets.match(/label: "(.*?)"/);
+	var label = facets.match(/labels: "(.*?)"/);
 	
 	if(priority != null){
 	document.getElementById("priority").value = priority[1];
@@ -80,7 +80,7 @@ function setModalBody_UpdateQuery(queryName, username, facets, types){
 		}
 	
 	if(label != null){
-		document.getElementById("label").value = label[1];
+		document.getElementById("labels").value = label[1];
 		}
 	
 	
