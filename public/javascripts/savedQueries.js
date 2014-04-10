@@ -45,10 +45,9 @@ function setModalBody_DeleteQuery(queryName, username){
 }
 
 
-function setModalBody_UpdateQuery(queryName, username, facets){
+function setModalBody_UpdateQuery(queryName, username, facets, types){
 	
 	 var form = document.getElementById("editQueryModal-form").innerHTML;
-	
 	
 	
 	$("#editQueryModal-label").html("Edit Query Subscription");
@@ -128,6 +127,43 @@ function removeQuerySubscription(queryName, username){
 }
 
 function updateQuerySubscription(queryName, username){
+	
+	var facets = "";
+    var pickers = $(".selectpicker");
+
+    //Construct a string of facet objects
+    pickers.each(
+
+    function () {
+        //console.log($(":selected", this).val());
+        if ($(":selected", this).val() != $("option", this).first().val()) {
+            facets = facets + "{ \"name\": \"" + $(this).attr('id') + "\", \"value\": \"" + $(":selected", this).text() + "\"}, ";
+        }
+    });
+
+    //Cut off the trailing comma
+    if (facets.length > 0) {
+        facets = facets.slice(0, facets.length - 2);
+    }
+    
+    var json = {
+            "facets": "[" + facets + "]",
+                "name": queryName,
+                "username": username
+        };
+
+        $.ajax({
+    		type: "POST",
+    		url: "/updateQuerySubscription",
+    		data: JSON.stringify(json),
+    		datatype: "json",
+    		contentType: 'application/json; charset=utf-8',
+    		success: function (data){
+    			location.reload();
+    		}
+    	})
+
+	
 	
 }
 

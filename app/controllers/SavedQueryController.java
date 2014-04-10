@@ -87,15 +87,40 @@ public class SavedQueryController extends Controller {
 
 		return ok(result);
 	}
-	
-	public static Result updateQuerySubscription(){
-		
+
+	public static Result updateQuerySubscription() {
+
 		JsonNode json = request().body().asJson();
-		
+
+		ObjectMapper om = new ObjectMapper();
+		String facetJson = json.get("facets").asText();
+
+		List<Facet> facets = new ArrayList<Facet>();
+		try {
+			facets = om.readValue(facetJson, new TypeReference<List<Facet>>() {
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ok();
+		}
+		String name = json.get("name").asText();
+		String username = json.get("username").asText();
+
+		SavedQuery sq = new SavedQuery();
+
+		for (Facet f : facets) {
+			sq.addFacet(f);
+		}
+		sq.setName(name);
+
+		User user = User.findByName(username);
+		user.updateSavedQuery(name, sq);
+		user.save();
+
 		ObjectNode result = Json.newObject();
 
 		return ok(result);
-		
+
 	}
-	
+
 }
