@@ -77,11 +77,10 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getKey()</h3>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br /> @event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -150,11 +149,10 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getKey()</h3>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br /> @event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -223,11 +221,10 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getKey()</h3>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br /> @event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -294,14 +291,14 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br />@event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-                                    more &raquo;</a>
+                                    more &raquo;</a> <br />
                                  </div>
                                  }
                               </div>
@@ -324,14 +321,14 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                               @defining(event.getEntity()){ entity=>
                               <div class="thumbnail">
                                  <div>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br />@event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-                                    more &raquo;</a>
+                                    more &raquo;</a> <br />
                                  </div>
                               </div>
                               }
