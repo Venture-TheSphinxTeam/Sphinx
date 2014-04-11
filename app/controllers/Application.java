@@ -127,7 +127,7 @@ public class Application extends Controller {
 	}
 
 	@Security.Authenticated(Secured.class)
-	public static Result search(String keyword, String field, String priority,
+	public static Result search(String keyword, String priority,
 			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
 		String username = request().username();
@@ -136,7 +136,7 @@ public class Application extends Controller {
 		control.setDatabase(DATABASE);
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
-		if (keyword.equals("") && field.equals("")) {
+		if (keyword.equals("")) {
 
 			String priorityQuery = control.createSimpleFindQuery("priority",
 					priority);
@@ -184,7 +184,7 @@ public class Application extends Controller {
 					.createAllowedAccessUsersQuery(username));
 		}
 
-		else if (field.equals("undefined")) {
+		else {
 			result = control.getEntitiesByQuery("$or:[{"
 					+ control.createRegexQuery("summary", keyword) + "},{"
 					+ control.createRegexQuery("description", keyword) + "}]");
@@ -199,13 +199,6 @@ public class Application extends Controller {
 				}
 			}
 
-		}
-
-		else {
-			result = control.getEntitiesByQuery(control.createRegexQuery(field,
-					keyword)
-					+ ","
-					+ control.createAllowedAccessUsersQuery(username));
 		}
 
 		ArrayList<Object> facets = control.getIndexedValues();

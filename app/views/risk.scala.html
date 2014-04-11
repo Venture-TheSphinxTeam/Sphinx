@@ -79,6 +79,7 @@
 
 <div class="thumbnail">
 	@defining(risk.asInstanceOf[Risk]){ ri=>
+		<img align="left"src="@routes.Assets.at(ri.getImage())"</img>
 	<div class="entityStateButtons" align="right">
 
 		<!-- SUBSCRIBE BUTTON -->
@@ -131,12 +132,14 @@
 
 	</div>
 	<div>
-		<h1>Key: @ri.getKey()</h1>
-
-		<h2>
-			Entity Type: @ri.getEntityType() <br /> Labels: @ri.getLabels()
-
-		</h2>
+		<br/>
+			<h1>@ri.getKey() - @ri.getSummary()</h1>
+			
+			<h2>Description: @ri.getDescription()</h2>
+			
+			<h3>Labels:
+			@ri.getLabels() <br />
+		</h3>
 
 		<h4>
 			Assignee: @ri.getAssignee() <br /> Reporter: @ri.getReporter() <br />
