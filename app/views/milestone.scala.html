@@ -80,6 +80,7 @@
 
 <div class="thumbnail">
 	@defining(milestone.asInstanceOf[Milestone]){ mile=>
+		<img align="left"src="@routes.Assets.at(mile.getImage())"</img>
 	<div class="entityStateButtons" align="right">
 
 		<!-- SUBSCRIBE BUTTON -->
@@ -132,14 +133,12 @@
 
 	</div>
 	<div>
-		<h1>
-			Key: @mile.getKey() <br /> Summary: @mile.getSummary()
-		</h1>
+		<br/>
+			<h1>@mile.getKey() - @mile.getSummary()</h1>
 
 		<h2>Description: @mile.getDescription()</h2>
 
-		<h3>
-			Entity Type: @mile.getEntityType() <br> Labels:
+		<h3>Labels:
 			@mile.getLabels() <br />
 		</h3>
 		<br />
