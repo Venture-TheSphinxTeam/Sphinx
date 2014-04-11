@@ -65,5 +65,17 @@ public class SavedQuery {
 		
 		return queryString;
 	}
+    
+    @Override
+    public boolean equals(Object o){
+    	boolean result = false;
+    	
+    	if(o instanceof SavedQuery){
+    		
+    	}
+    	
+    	
+    	return result;
+    }
 
 }

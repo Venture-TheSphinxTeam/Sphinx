@@ -13,7 +13,7 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 
 	$.ajax({
 		type: "POST",
-		url: url,
+		url: '@routes.ButtonStateController.UpdateButtonStatus()',
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',

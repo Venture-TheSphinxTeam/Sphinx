@@ -38,7 +38,7 @@ public class SavedQueryController extends Controller {
 		}
 		String name = json.get("name").asText();
 		String eventTypes = json.get("eventTypes").asText();
-		String username = json.get("username").asText();
+		String username = request().username();//json.get("username").asText();
 
 		ObjectNode result = Json.newObject();
 
@@ -66,7 +66,7 @@ public class SavedQueryController extends Controller {
 		
 		List<SavedQuery> existing = user.getQuerySubscriptions();
 		if(existing.contains(sq)){
-			//TODO: Return an error message
+			flash("A query with this name already exists.");
 		}
 		else{
 			user.addSavedQuery(sq);
@@ -84,7 +84,7 @@ public class SavedQueryController extends Controller {
 		JsonNode json = request().body().asJson();
 
 		String queryName = json.get("name").asText();
-		String username = json.get("username").asText();
+		String username = request().username();//json.get("username").asText();
 		User user = User.findByName(username);
 
 		user.removeSavedQuery(queryName);
@@ -111,7 +111,7 @@ public class SavedQueryController extends Controller {
 			return ok();
 		}
 		String name = json.get("name").asText();
-		String username = json.get("username").asText();
+		String username = request().username();//json.get("username").asText();
 
 		SavedQuery sq = new SavedQuery();
 

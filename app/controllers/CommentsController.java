@@ -34,5 +34,7 @@ public class CommentsController extends Controller {
 		//return 
 		return Application.entityView(entityId, entityType);
 	}
+	
+	
 
 }

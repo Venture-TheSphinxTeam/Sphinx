@@ -6,7 +6,6 @@ import views.html.login;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-
 import static play.data.Form.form;
 
 /**
@@ -51,4 +50,10 @@ public class LoginController extends Controller {
             return null;
         }
     }
+    
+    public static Result logout(){
+		session().clear();
+		flash("You have successfully logged out.");
+		return redirect(routes.LoginController.login());
+	}
 }
