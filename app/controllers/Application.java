@@ -124,7 +124,7 @@ public class Application extends Controller {
 				subscribedEvents, queryEvList));
 	}
 
-	public static Result search(String keyword, String field, String priority,
+	public static Result search(String keyword, String priority,
 			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
 		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
@@ -132,7 +132,7 @@ public class Application extends Controller {
 		control.setDatabase(DATABASE);
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
-		if (keyword.equals("") && field.equals("")) {
+		if (keyword.equals("")) {
 
 			String priorityQuery = control.createSimpleFindQuery("priority",
 					priority);
@@ -180,7 +180,7 @@ public class Application extends Controller {
 					.createAllowedAccessUsersQuery(USERNAME));
 		}
 
-		else if (field.equals("undefined")) {
+		else {
 			result = control.getEntitiesByQuery("$or:[{"
 					+ control.createRegexQuery("summary", keyword) + "},{"
 					+ control.createRegexQuery("description", keyword) + "}]");
@@ -195,13 +195,6 @@ public class Application extends Controller {
 				}
 			}
 
-		}
-
-		else {
-			result = control.getEntitiesByQuery(control.createRegexQuery(field,
-					keyword)
-					+ ","
-					+ control.createAllowedAccessUsersQuery(USERNAME));
 		}
 
 		ArrayList<Object> facets = control.getIndexedValues();
