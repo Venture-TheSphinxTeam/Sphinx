@@ -77,6 +77,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
                                     <h4>@entity.getKey() - @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
@@ -149,6 +150,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
                                     <h4>@entity.getKey() - @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
@@ -221,6 +223,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
                                     <h4>@entity.getKey() - @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
@@ -291,6 +294,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
                                     <h4>@entity.getKey() - @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
@@ -321,6 +325,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                               @defining(event.getEntity()){ entity=>
                               <div class="thumbnail">
                                  <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
                                     <h4>@entity.getKey() - @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
