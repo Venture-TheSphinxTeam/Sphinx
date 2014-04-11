@@ -30,7 +30,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                      <div class="page_navigation"></div>
                      <br />
                      <div class="info_text"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- userEntities){
                            <li>
@@ -102,7 +102,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                      <div class="page_navigation"></div>
                      <br />
                      <div class="info_text"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- teamEntities){
                            <li>
@@ -174,7 +174,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                      <div class="page_navigation"></div>
                      <br />
                      <div class="info_text"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- orgEntities){
                            <li>
@@ -244,7 +244,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                   <br />
                   <div id="page_container4">
                      <div class="page_navigation"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- subscribed){
                            <li>
@@ -314,7 +314,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                   <br/>
                   <div id="page_container5">
                      <div class="page_navigation"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- queryEntities){
                            <li>
