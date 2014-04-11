@@ -59,7 +59,7 @@
 	<br />
 	
 	<div class="info_text"></div>
-	<ul class="content" id="entities">
+	<ul class="content" id="entities" style="overflow-y: auto; height:700px;">
 		@for(entity <- userEntities){
 
 		<li>
@@ -99,7 +99,7 @@
       	<form>
       		<div class="form-group">
       			<label for="queryName">Query Name</label>
-      			<input id="queryName" type="text" class="form-control" value="New Saved Query"></br>
+      			<input id="queryName" type="text" class="form-control" placeholder="New Saved Query"></br>
       		</div>
       		<div class="form-group">
       			<label for="eventTypes" id="modal-chkbox">Event Types</label>

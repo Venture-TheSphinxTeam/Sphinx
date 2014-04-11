@@ -326,6 +326,11 @@ public class User {
 		}
 	}
 
+	public void updateSavedQuery(String queryName, SavedQuery query) {
+		removeSavedQuery(queryName);
+		addSavedQuery(query);
+	}
+
 	// ------------PRIVATE FUNCTIONS---------------//
 
 	private static void deleteEntitySubscription(User user, String entityId,

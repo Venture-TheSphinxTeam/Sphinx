@@ -44,6 +44,68 @@ function setModalBody_DeleteQuery(queryName, username){
 
 }
 
+
+function setModalBody_UpdateQuery(queryName, username, facets, types){
+	
+	 var form = document.getElementById("editQueryModal-form").innerHTML;
+	
+	
+	$("#editQueryModal-label").html("Edit Query Subscription");
+	// set inner html
+	$("#editQueryModal-body-text").html("<p>Please choose new facets for this query.</p>");
+	$("#editQueryModal-form").empty();
+	$("#editQueryModal-form").html(form);
+	
+	
+	var priority = facets.match(/priority: "(.*?)"/);
+	var status = facets.match(/status: "(.*?)"/);
+	var reporter = facets.match(/reporter: "(.*?)"/);
+	var assignee = facets.match(/assignee: "(.*?)"/);
+	var label = facets.match(/labels: "(.*?)"/);
+	
+	if(priority != null){
+	document.getElementById("priority").value = priority[1];
+	}
+	
+	if(status != null){
+		document.getElementById("status").value = status[1];
+		}
+	
+	if(reporter != null){
+		document.getElementById("reporter").value = reporter[1];
+		}
+	
+	if(assignee != null){
+		document.getElementById("assignee").value = assignee[1];
+		}
+	
+	if(label != null){
+		document.getElementById("labels").value = label[1];
+		}
+	
+	
+	$('.selectpicker').selectpicker();
+	
+	// update buttons
+	$("#editQueryModal-button1").html("Cancel");
+	$("#editQueryModal-button1").removeClass();
+	$("#editQueryModal-button1").addClass("btn btn-default");
+
+	$("#editQueryModal-button2").html("Save");
+	$("#editQueryModal-button2").removeClass();
+	$("#editQueryModal-button2").addClass("btn btn-primary");
+
+	// Add function to update entity upon clicking 'Yes'
+	$("#editQueryModal-button2").click(
+		function(){
+			updateQuerySubscription(queryName, username)
+		})
+	;
+}
+
+
+
+
 function removeQuerySubscription(queryName, username){
 
 	var json = { 'name': queryName, 
@@ -62,6 +124,47 @@ function removeQuerySubscription(queryName, username){
 		}
 	})
 
+}
+
+function updateQuerySubscription(queryName, username){
+	
+	var facets = "";
+    var pickers = $(".selectpicker");
+
+    //Construct a string of facet objects
+    pickers.each(
+
+    function () {
+        //console.log($(":selected", this).val());
+        if ($(":selected", this).val() != $("option", this).first().val()) {
+            facets = facets + "{ \"name\": \"" + $(this).attr('id') + "\", \"value\": \"" + $(":selected", this).text() + "\"}, ";
+        }
+    });
+
+    //Cut off the trailing comma
+    if (facets.length > 0) {
+        facets = facets.slice(0, facets.length - 2);
+    }
+    
+    var json = {
+            "facets": "[" + facets + "]",
+                "name": queryName,
+                "username": username
+        };
+
+        $.ajax({
+    		type: "POST",
+    		url: "/updateQuerySubscription",
+    		data: JSON.stringify(json),
+    		datatype: "json",
+    		contentType: 'application/json; charset=utf-8',
+    		success: function (data){
+    			location.reload();
+    		}
+    	})
+
+	
+	
 }
 
 
