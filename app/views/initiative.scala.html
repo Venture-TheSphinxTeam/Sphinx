@@ -249,7 +249,7 @@ title="Watch/Unwatch"></span>
 		<br/>
 		
 			@defining(init.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getSummary()</a> }
 				
 		</h4>
 		}
