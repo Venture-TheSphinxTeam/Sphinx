@@ -203,7 +203,7 @@ public class Application extends Controller {
 
 		ArrayList<Object> facets = control.getIndexedValues();
 
-		return ok(search.render(result, facets));
+		return ok(search.render(result, facets, username));
 
 	}
 
