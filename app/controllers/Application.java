@@ -122,7 +122,7 @@ public class Application extends Controller {
 
 		control.closeConnection();
 
-		return ok(index.render(userEvents, teamEntities, orgEntities, username,
+		return ok(index.render(userEvents, teamEntities, orgEntities,
 				subscribedEvents, queryEvList));
 	}
 
@@ -203,7 +203,7 @@ public class Application extends Controller {
 
 		ArrayList<Object> facets = control.getIndexedValues();
 
-		return ok(search.render(result, facets, username));
+		return ok(search.render(result, facets));
 
 	}
 
@@ -251,8 +251,7 @@ public class Application extends Controller {
 				.getQuerySubscriptions();
 
 		
-		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, querySubs,
-				username, facets));
+		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, querySubs, facets));
 	}
 
 	@Security.Authenticated(Secured.class)

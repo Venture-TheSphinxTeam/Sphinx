@@ -7,6 +7,8 @@ import models.User;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import play.mvc.Http.Request;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -19,10 +21,10 @@ public class SubscriptionController extends Controller{
 
 		// Get json information sent in
 		JsonNode json = request().body().asJson();
-		
+
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
+		String username = request().username();
 		
 		ObjectNode result = Json.newObject();
 
@@ -39,7 +41,7 @@ public class SubscriptionController extends Controller{
 		
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
+		String username = request().username();
 		List<String> eventTypes = Arrays.asList( json.get("eventSubscriptions").asText().split(",") );
 
 		ObjectNode result = Json.newObject();
@@ -57,8 +59,8 @@ public class SubscriptionController extends Controller{
 		
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
-		
+		String username = request().username();  // user is showing up as null
+
 		ObjectNode result = Json.newObject();
 
 		User user = User.findByName(username);

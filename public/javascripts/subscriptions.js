@@ -2,7 +2,7 @@
  *   Set HTML parameters in body of modal 
  * for a specific entityType-entityId 
  */
-function setModalBody_Edit(entityType,entityId,username){ 
+function setModalBody_Edit(entityType,entityId){ 
 	
 	$("#modal-label").html("Edit Entity Subscription");
 
@@ -10,7 +10,7 @@ function setModalBody_Edit(entityType,entityId,username){
 	$("#modal-body-text").html("Event types subscribed to :");
 	
 	// set checkbox statuses
-	setModalCheckboxes(entityType,entityId,username);
+	setModalCheckboxes(entityType,entityId);
 
 	$("#modal-button1").html("Cancel");
 	$("#modal-button1").removeClass();
@@ -23,12 +23,12 @@ function setModalBody_Edit(entityType,entityId,username){
 	// Add function to delete entity upon clicking 'Yes'
 	$("#modal-button2").click(
 		function(){
-			updateSubscriptionsEvents( entityType, entityId, username )
+			updateSubscriptionsEvents( entityType, entityId )
 		}
 	);
 }
 
-function setModalBody_Delete(entityType,entityId,username){
+function setModalBody_Delete(entityType,entityId){
 	
 	$("#modal-label").html("Delete Entity Subscription");
 
@@ -48,17 +48,16 @@ function setModalBody_Delete(entityType,entityId,username){
 	// Add function to delete entity upon clicking 'Yes'
 	$("#modal-button2").click(
 		function(){
-			removeSubscription(entityType,entityId,username)
+			removeSubscription(entityType,entityId)
 		})
 	;
 
 }
 
-function removeSubscription(entityType,entityId,username){
+function removeSubscription(entityType,entityId){
 
 	var json = { 'entityType': entityType, 
-				 'entityId': 	 entityId,
-				 'username':   username };
+				 'entityId': 	 entityId };
 
 	var url = "/deleteEntitySubscription";
 
@@ -75,11 +74,10 @@ function removeSubscription(entityType,entityId,username){
 
 }
 
-function setModalCheckboxes(entityType,entityId,username){
+function setModalCheckboxes(entityType,entityId){
 
 	var json = { 'entityType': entityType, 
-			 	 'entityId': 	 entityId,
-			 	 'username':   username };
+			 	 'entityId': 	 entityId };
 
 	var url = "/getEntityEventSubscriptions";
 
@@ -105,7 +103,7 @@ function setModalCheckboxes(entityType,entityId,username){
 
 }
 
-function updateSubscriptionsEvents(entityType,entityId,username){
+function updateSubscriptionsEvents(entityType,entityId){
 
 	// create array of events subscribed to
 	$eventsSubscribedTo = [];
@@ -127,7 +125,6 @@ function updateSubscriptionsEvents(entityType,entityId,username){
 
 	var json = { 'entityType': entityType, 
 			     'entityId': 	 entityId,
-			 	 'username':   username,
 			 	 'eventSubscriptions': $eventsSubscribedTo.toString()	//sent through as a string because had to
 			 	};
 
