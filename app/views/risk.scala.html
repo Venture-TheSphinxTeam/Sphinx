@@ -133,42 +133,62 @@
 	</div>
 	<div>
 		<br/>
-			<h1>@ri.getKey() - @ri.getSummary()</h1>
-			
-			<h2>Description: @ri.getDescription()</h2>
-			
-			<h3>Labels:
-			@ri.getLabels() <br />
-		</h3>
-
+			<h3><b>@ri.getKey()</b> - <b>@ri.getSummary()</b></h3>
+		
 		<h4>
-			Assignee: @ri.getAssignee() <br /> Reporter: @ri.getReporter() <br />
-			Watchers: @ri.getWatchers()
+			@if(ri.getLabels() != null){
+					<label>Labels:</label>
+					<dl class="list-group">
+					@for(label <- ri.getLabels()){
+					<dd>&nbsp;&nbsp;-@label</dd>		
+					}
+					</dl>
+					}
 		</h4>
 
-		<h4>
-			Risk Impact: @ri.getRiskImpact() <br /> Risk Likelihood:
-			@ri.getRiskLikelihood() <br /> Risk Response Plan:
-			@ri.getRiskResponsePlan() <br /> Risk Response Strategy:
-			@ri.getRiskResponseStrategy() <br /> Risk Types: @ri.getRiskTypes()
-		</h4>
-
-		<h4>
-			Priority: @ri.getPriority() <br /> Status: @ri.getStatus()
-		</h4>
-
-		<h4>
-			Created: @{ri.getFormattedDate(new Date(ri.getCreated()))} <br /> Due Date: @{ri.getFormattedDate(new
-			Date(ri.getDueDate()))} <br /> Updated: @{ri.getFormattedDate(new Date(ri.getUpdated()))}
-		</h4>
+<div id="content">
+  <div id="left" style="float: left;">
+  <b>Priority:</b> @ri.getPriority() <br /> <b>Status:</b> @ri.getStatus() <br />
+			<b>Created:</b> @{ri.getFormattedDate(new Date(ri.getCreated()))} <br /> <b>Due Date:</b> @{ri.getFormattedDate(new
+			Date(ri.getDueDate()))} <br /> <b>Updated:</b> @{ri.getFormattedDate(new
+			Date(ri.getUpdated()))} <br/><b>Assignee:</b> @ri.getAssignee() <br /> 
+			<b>Reporter:</b> @ri.getReporter() <br />
+			@if(ri.getWatchers() != null){
+					<label>Watchers:</label>
+					<dl>
+					@for(watcher <- ri.getWatchers()){
+					<dd>&nbsp;&nbsp;-@watcher</dd>		
+					}
+					</dl>
+					 <br/> 
+					}
+  </div>
+  <div id="right" style="float: right;">
+  <b>Risk Impact:</b> @ri.getRiskImpact() <br /> <b>Risk Likelihood:</b>
+			@ri.getRiskLikelihood() <br /> <b>Risk Response Strategy:</b>
+			@ri.getRiskResponseStrategy() <br /> @if(ri.getRiskTypes() != null){
+					<label>Risk Types:</label>
+					<dl>
+					@for(risk <- ri.getRiskTypes()){
+					<dd>&nbsp;&nbsp;-@risk</dd>		
+					}
+					</dl>
+					 <br/> 
+					}
+  </div>
+  <br style="clear:both;"/>
+  </div>
+  
+  <b>Risk Response Plan:</b>
+			@ri.getRiskResponsePlan() <br /> 
 
 	@if(ri.getWorkBreakdownParent != null){
 		<h4>
-		Work Breakdown Parent:
+		<b>Work Breakdown Parent:</b>
 		<br/>
 		
 			@defining(ri.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getSummary()</a> }
 				
 		</h4>
 		}
