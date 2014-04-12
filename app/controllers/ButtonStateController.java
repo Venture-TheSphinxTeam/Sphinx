@@ -22,6 +22,8 @@ public class ButtonStateController extends Controller{
 	 * @return	New state of button
 	 */
 	public static Result UpdateButtonStatus(){
+
+		System.out.println("HERE");
 		
 		String username = request().username();
 		
@@ -37,6 +39,8 @@ public class ButtonStateController extends Controller{
 
 		// create return object
 		ObjectNode result = Json.newObject();
+
+		System.out.println("HERE");
 
 		if( buttonType.equals("subscription") ) {
 			result.put("status",UpdateSubscriptionStatus(user,entityId,entityType));
