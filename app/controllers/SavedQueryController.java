@@ -38,7 +38,7 @@ public class SavedQueryController extends Controller {
 		}
 		String name = json.get("name").asText();
 		String eventTypes = json.get("eventTypes").asText();
-		String username = request().username();//json.get("username").asText();
+		String username = request().username();
 
 		ObjectNode result = Json.newObject();
 
@@ -84,7 +84,7 @@ public class SavedQueryController extends Controller {
 		JsonNode json = request().body().asJson();
 
 		String queryName = json.get("name").asText();
-		String username = request().username();//json.get("username").asText();
+		String username = request().username();
 		User user = User.findByName(username);
 
 		user.removeSavedQuery(queryName);
@@ -111,7 +111,7 @@ public class SavedQueryController extends Controller {
 			return ok();
 		}
 		String name = json.get("name").asText();
-		String username = request().username();//json.get("username").asText();
+		String username = request().username();
 
 		SavedQuery sq = new SavedQuery();
 
