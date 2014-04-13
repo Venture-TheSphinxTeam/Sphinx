@@ -45,6 +45,7 @@ public class LoginController extends Controller {
             }
 
             if (!user.getPassword().equals(password)) {
+            	
                 return "Invalid password";
             }
             return null;

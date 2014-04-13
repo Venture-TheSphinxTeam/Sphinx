@@ -61,9 +61,7 @@ function removeSubscription(entityType,entityId){
 
 	var url = "/deleteEntitySubscription";
 
-	$.ajax({
-		type: "POST",
-		url: url,
+	myJsRoutes.controllers.SubscriptionController.DeleteEntitySubscription().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
@@ -81,9 +79,7 @@ function setModalCheckboxes(entityType,entityId){
 
 	var url = "/getEntityEventSubscriptions";
 
-	$.ajax({
-		type: "POST",
-		url: url,
+	myJsRoutes.controllers.SubscriptionController.GetEntityEventSubscriptions().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
@@ -130,13 +126,12 @@ function updateSubscriptionsEvents(entityType,entityId){
 
 	var url = "/updateSubscriptionsEvents";
 
-	$.ajax({
-		type: "POST",
-		url: url,
+	myJsRoutes.controllers.SubscriptionController.UpdateSubscriptionsEvents().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
 		}
 	})
+
 }

@@ -21,6 +21,7 @@ public class ButtonStateController extends Controller{
 	 *
 	 * @return	New state of button
 	 */
+	@Security.Authenticated(Secured.class)
 	public static Result UpdateButtonStatus(){
 		
 		// Get json information sent in

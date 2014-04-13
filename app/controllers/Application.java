@@ -84,6 +84,7 @@ public class Application extends Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result index() throws UnknownHostException {
 
+		
 		String username = request().username();
 		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
 				MONGO_PORT);

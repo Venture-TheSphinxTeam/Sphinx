@@ -17,6 +17,7 @@ import java.util.Arrays;
 public class SubscriptionController extends Controller{
 	private static final ArrayList<String> ALL_EVENT_TYPES = new ArrayList(Arrays.asList("REPORT", "TIMESPENT", "CREATE", "UPDATE", "DELETE"));
 
+	@Security.Authenticated(Secured.class)
 	public static Result DeleteEntitySubscription(){
 
 		// Get json information sent in
@@ -34,6 +35,7 @@ public class SubscriptionController extends Controller{
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result UpdateSubscriptionsEvents(){
 		
 		// Get json information sent in
@@ -52,6 +54,7 @@ public class SubscriptionController extends Controller{
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result GetEntityEventSubscriptions(){
 
 		// Get json information sent in

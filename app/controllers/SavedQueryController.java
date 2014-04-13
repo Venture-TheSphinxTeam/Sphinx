@@ -12,6 +12,7 @@ import models.facets.SavedQuery;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 public class SavedQueryController extends Controller {
 
+	@Security.Authenticated(Secured.class)
 	public static Result saveQuery() {
 		JsonNode json = request().body().asJson();
 
@@ -79,6 +81,7 @@ public class SavedQueryController extends Controller {
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result deleteQuerySubscription() {
 		// Get json information sent in
 		JsonNode json = request().body().asJson();
@@ -95,6 +98,7 @@ public class SavedQueryController extends Controller {
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result updateQuerySubscription() {
 
 		JsonNode json = request().body().asJson();

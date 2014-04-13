@@ -103,9 +103,7 @@ function removeQuerySubscription(queryName){
 
 	var url = "/deleteQuerySubscription";
 
-	$.ajax({
-		type: "POST",
-		url: url,
+	myJsRoutes.controllers.SavedQueryController.deleteQuerySubscription().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
@@ -141,18 +139,14 @@ function updateQuerySubscription(queryName){
                 "name": queryName
         };
 
-        $.ajax({
-    		type: "POST",
-    		url: "/updateQuerySubscription",
-    		data: JSON.stringify(json),
+    myJsRoutes.controllers.SavedQueryController.updateQuerySubscription().ajax({
+    	data: JSON.stringify(json),
     		datatype: "json",
     		contentType: 'application/json; charset=utf-8',
     		success: function (data){
     			location.reload();
     		}
-    	})
-
-	
+    })
 	
 }
 
@@ -206,16 +200,14 @@ function saveQuery() {
             "eventTypes": eventTypes
     };
 
-    $.ajax({
-		type: "POST",
-		url: "/saveQuery",
-		data: JSON.stringify(json),
+    myJsRoutes.controllers.SavedQueryController.saveQuery().ajax({
+    	data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
 			location.reload();
 		}
-	})
+    })
 }
 
 
