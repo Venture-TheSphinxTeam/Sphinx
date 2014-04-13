@@ -22,25 +22,19 @@ public class ButtonStateController extends Controller{
 	 * @return	New state of button
 	 */
 	public static Result UpdateButtonStatus(){
-
-		System.out.println("HERE");
-		
-		String username = request().username();
 		
 		// Get json information sent in
 		JsonNode json = request().body().asJson();
 		
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		//String username = json.get("username").asText();
 		String buttonType = json.get("buttonType").asText();
+		String username = request().username();
 		
 		User user = User.findByName(username);
 
 		// create return object
 		ObjectNode result = Json.newObject();
-
-		System.out.println("HERE");
 
 		if( buttonType.equals("subscription") ) {
 			result.put("status",UpdateSubscriptionStatus(user,entityId,entityType));
@@ -65,13 +59,13 @@ public class ButtonStateController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public static Result GetButtonStatus(){
 
+		// Get json information sent in
 		JsonNode json = request().body().asJson();
-		Request req = play.mvc.Http.Context.current().request();
-		String username = play.mvc.Http.Context.current().request().username();
+
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		//String username = json.get("username").asText();
 		String buttonType = json.get("buttonType").asText();
+		String username = request().username();
 		
 		User user = User.findByName(username);
 

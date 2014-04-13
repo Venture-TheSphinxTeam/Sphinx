@@ -1,4 +1,4 @@
-@(userEntities: List[Entity])(facets: java.util.ArrayList[Object])(username: String)
+@(userEntities: List[Entity])(facets: java.util.ArrayList[Object])
 @main("Sphinx: Connecting Projects to People")("") {
 	
 <div class="panel panel-default" style="position: absolute; right: 900px; top: 250px">
@@ -77,7 +77,7 @@
                            type="button" 
                            class="" 
                            data-toggle="button"
-                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
                         <span class="glyphicon glyphicon-heart"
                            title="Subscribe/Unsubscribe"></span>
                         </button>
@@ -88,7 +88,7 @@
                            type="button" 
                            class="" 
                            data-toggle="button"
-                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', vote' )">
                         <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                         </button>
                         <!-- WATCH BUTTON -->
@@ -98,15 +98,14 @@
                            type="button" 
                            class="" 
                            data-toggle="button"
-                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
                         <span class="glyphicon glyphicon-eye-open"
                            title="Watch/Unwatch"></span>
                         </button>
                         <script>
                            setStatusOfAllButtons(
                            		'@entity.getEntityType()',
-                           		'@entity.getEntityId()',
-                           		'@username')
+                           		'@entity.getEntityId()')
                         </script>
                      </div>
 

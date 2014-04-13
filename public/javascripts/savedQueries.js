@@ -1,14 +1,6 @@
 function setSQModalBody(){ 
 	
 	$("#modal-label").html("Save As Saved Query");
-	//alert("Beep Boop");
-	//$("#modal-save").click()
-
-	
-
-	/*		<form>
-		<input type="" name = "queryName" value="New Query"></br>
-	</form>*/
 
 	$("#cancel").removeClass();
 	$("#cancel").addClass("btn btn-primary");
@@ -18,7 +10,7 @@ function setSQModalBody(){
 	$("#save").click(saveQuery);
 }
 
-function setModalBody_DeleteQuery(queryName, username){
+function setModalBody_DeleteQuery(queryName){
 	
 	$("#modal-label").html("Delete Query Subscription");
 
@@ -38,17 +30,16 @@ function setModalBody_DeleteQuery(queryName, username){
 	// Add function to delete entity upon clicking 'Yes'
 	$("#modal-button2").click(
 		function(){
-			removeQuerySubscription(queryName, username)
+			removeQuerySubscription(queryName)
 		})
 	;
 
 }
 
 
-function setModalBody_UpdateQuery(queryName, username, facets, types){
+function setModalBody_UpdateQuery(queryName, facets, types){
 	
-	 var form = document.getElementById("editQueryModal-form").innerHTML;
-	
+	var form = document.getElementById("editQueryModal-form").innerHTML;
 	
 	$("#editQueryModal-label").html("Edit Query Subscription");
 	// set inner html
@@ -98,7 +89,7 @@ function setModalBody_UpdateQuery(queryName, username, facets, types){
 	// Add function to update entity upon clicking 'Yes'
 	$("#editQueryModal-button2").click(
 		function(){
-			updateQuerySubscription(queryName, username)
+			updateQuerySubscription(queryName)
 		})
 	;
 }
@@ -106,10 +97,9 @@ function setModalBody_UpdateQuery(queryName, username, facets, types){
 
 
 
-function removeQuerySubscription(queryName, username){
+function removeQuerySubscription(queryName){
 
-	var json = { 'name': queryName, 
-				 'username':   username };
+	var json = { 'name': queryName};
 
 	var url = "/deleteQuerySubscription";
 
@@ -126,7 +116,7 @@ function removeQuerySubscription(queryName, username){
 
 }
 
-function updateQuerySubscription(queryName, username){
+function updateQuerySubscription(queryName){
 	
 	var facets = "";
     var pickers = $(".selectpicker");
@@ -148,8 +138,7 @@ function updateQuerySubscription(queryName, username){
     
     var json = {
             "facets": "[" + facets + "]",
-                "name": queryName,
-                "username": username
+                "name": queryName
         };
 
         $.ajax({
@@ -168,7 +157,7 @@ function updateQuerySubscription(queryName, username){
 }
 
 
-function saveQuery(username) {
+function saveQuery() {
 
     var facets = "";
     var pickers = $(".selectpicker");
@@ -214,7 +203,6 @@ function saveQuery(username) {
     var json = {
         "facets": "[" + facets + "]",
             "name": name,
-            "username": username,
             "eventTypes": eventTypes
     };
 

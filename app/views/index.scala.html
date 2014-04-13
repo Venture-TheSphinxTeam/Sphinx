@@ -1,5 +1,5 @@
 @(userEntities: List[Event])(teamEntities: List[Event])(orgEntities:
-List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEntities: List[Event])
+List[Event])(subscribed: Iterator[ _ <: models.Event])(queryEntities: List[Event])
 @main("Sphinx: Connecting Projects to People")(username) {
 <!-- Main jumbotron for a primary marketing message or call to action -->
 
@@ -44,7 +44,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -55,7 +55,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -65,15 +65,14 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>
@@ -117,7 +116,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -128,7 +127,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -138,15 +137,14 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>
@@ -190,7 +188,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -201,7 +199,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -211,15 +209,14 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>
@@ -261,7 +258,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -272,7 +269,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -282,15 +279,14 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>

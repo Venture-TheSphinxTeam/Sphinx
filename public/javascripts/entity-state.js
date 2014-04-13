@@ -2,11 +2,10 @@
 /** 
  * Subscribe/vote/watch status change toggled from true to false or vice versa
  */
-function updateEntityStateStatus(entityType,entityId,username,buttonType){
+function updateEntityStateStatus(entityType,entityId,buttonType){
 
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
-				 'username':   username,
 				 'buttonType': buttonType };
 
 	var url = "/updateButtonStatus";
@@ -27,20 +26,19 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 /**
  * Gets and updates status of all buttons of entityType-entityId on the page
  */
-function setStatusOfAllButtons(entityType,entityId,username){
-	setStatusOfButtons(entityType,entityId,username,"subscription");
-	setStatusOfButtons(entityType,entityId,username,"vote");
-	setStatusOfButtons(entityType,entityId,username,"watch");
+function setStatusOfAllButtons(entityType,entityId){
+	setStatusOfButtons(entityType,entityId,"subscription");
+	setStatusOfButtons(entityType,entityId,"vote");
+	setStatusOfButtons(entityType,entityId,"watch");
 }
 
 /**
  * Gets and updates status of all of a buttonType on the page
  */
-function setStatusOfButtons(entityType,entityId,username,buttonType){
+function setStatusOfButtons(entityType,entityId,buttonType){
 
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
-				 'username':   username,
 				 'buttonType': buttonType };
 
 	var url = '/getButtonStatus';
@@ -82,11 +80,10 @@ function updateButtonsOnPage(entityType,entityId,status,buttonType){
 /** 
  * Subscribe/vote/watch status change toggled from true to false or vice versa
  */
-function removeSubscription(entityType,entityId,username){
+function removeSubscription(entityType,entityId){
 
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
-				 'username':   username,
 				 'buttonType': 'subscription' };
 
 	var url = "/updateButtonStatus";
