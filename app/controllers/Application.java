@@ -83,15 +83,12 @@ public class Application extends Controller {
 
 	@Security.Authenticated(Secured.class)
 	public static Result index() throws UnknownHostException {
+
 		String username = request().username();
 		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
 				MONGO_PORT);
 		control.setDatabase(DATABASE);
 
-		// String username = "RickyWinterborn"; // TODO : Make this pull current
-		// user name
-
-		// Object[] userEntities = control.getEventsForUser("jay-z");
 		ArrayList<Event> userEvents = control.getSingleEventsForUser(username);
 		ArrayList<Event> teamEntities = control.getTeamEventsForUser(username);
 		ArrayList<Event> orgEntities = control
@@ -99,7 +96,6 @@ public class Application extends Controller {
 		Iterator<? extends models.Event> subscribedEvents = models.Event
 				.getSubscribedEventsForUser(username);
 
-		//ArrayList<Event> queryEvents = new ArrayList<Event>();
 		HashSet<Event> queryEvents = new HashSet<Event>();
 
 		List<SavedQuery> querySubs = User.findByName(username)
@@ -122,7 +118,7 @@ public class Application extends Controller {
 
 		control.closeConnection();
 
-		return ok(index.render(userEvents, teamEntities, orgEntities,
+		return ok(index.render(userEvents, teamEntities, orgEntities, username,
 				subscribedEvents, queryEvList));
 	}
 

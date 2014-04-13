@@ -1,5 +1,5 @@
 @(userEntities: List[Event])(teamEntities: List[Event])(orgEntities:
-List[Event])(subscribed: Iterator[ _ <: models.Event])(queryEntities: List[Event])
+List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEntities: List[Event])
 @main("Sphinx: Connecting Projects to People")(username) {
 <!-- Main jumbotron for a primary marketing message or call to action -->
 
