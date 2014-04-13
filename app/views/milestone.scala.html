@@ -1,5 +1,5 @@
-
 @(milestone: Milestone)(username: String)(children: List[Entity])(entityComments: List[Comment])
+
 @main("Sphinx: Connecting Projects to People")("") {
 
 <head>
@@ -80,6 +80,7 @@
 
 <div class="thumbnail">
 	@defining(milestone.asInstanceOf[Milestone]){ mile=>
+		<img align="left"src="@routes.Assets.at(mile.getImage())"</img>
 	<div class="entityStateButtons" align="right">
 
 		<!-- SUBSCRIBE BUTTON -->
@@ -132,54 +133,65 @@
 
 	</div>
 	<div>
-		<h1>
-			Key: @mile.getKey() <br /> Summary: @mile.getSummary()
-		</h1>
+		<br/>
+			<h3><b>@mile.getKey()</b> - <b>@mile.getSummary()</b></h3>
+		
+		<h4><b>Description:</b> @mile.getDescription()</h4>
 
-		<h2>Description: @mile.getDescription()</h2>
-
-		<h3>
-			Entity Type: @mile.getEntityType() <br> Labels:
-			@mile.getLabels() <br />
-		</h3>
-		<br />
 
 		<h4>
-			Assignee: @mile.getAssignee() <br /> Reporter: @mile.getReporter() <br />
-			Watchers: @mile.getWatchers()
+			@if(mile.getLabels() != null){
+					<label>Labels:</label>
+					<dl class="list-group">
+					@for(label <- mile.getLabels()){
+					<dd>&nbsp;&nbsp;-@label</dd>		
+					}
+					</dl>
+					}
 		</h4>
 
-
-		<h4>
-			Priority: @mile.getPriority() <br /> Status: @mile.getStatus() <br />
-			Health: @mile.getHealth()
-		</h4>
-
-
-		<h4>
-			Created: @{mile.getFormattedDate(new Date(mile.getCreated()))} <br /> Start Date: @{mile.getFormattedDate(new
-			Date(mile.getStartDate()))} <br /> Desired Due Date: @{mile.getFormattedDate(new
-			Date(mile.getDesiredDueDate()))} <br /> Desired Start Date: @{mile.getFormattedDate(new
-			Date(mile.getDesiredStartDate()))} <br /> Due Date: @{mile.getFormattedDate(new
-			Date(mile.getDueDate()))} <br /> Updated: @{mile.getFormattedDate(new
+<div id="content">
+  <div id="left" style="float: left;">		
+			<b>Priority:</b> @mile.getPriority() <br /> <b>Status:</b> @mile.getStatus() <br />
+			<b>Health:</b> @mile.getHealth()<br/>
+			<b>Created:</b> @{mile.getFormattedDate(new Date(mile.getCreated()))} <br /> <b>Start Date:</b> @{mile.getFormattedDate(new
+			Date(mile.getStartDate()))} <br /> <b>Desired Due Date:</b> @{mile.getFormattedDate(new
+			Date(mile.getDesiredDueDate()))} <br /> <b>Desired Start Date:</b> @{mile.getFormattedDate(new
+			Date(mile.getDesiredStartDate()))} <br /> <b>Due Date:</b> @{mile.getFormattedDate(new
+			Date(mile.getDueDate()))} <br /> <b>Updated:</b> @{mile.getFormattedDate(new
 			Date(mile.getUpdated()))}
-		</h4>
+  </div>
 
-		<h4>Verification Steps: @mile.getVerificationSteps()</h4>
+  <div id="right" style="float: right;">
+     <b>Assignee:</b> @mile.getAssignee() <br /> <b>Reporter:</b> @mile.getReporter() <br />
+			@if(mile.getWatchers() != null){
+					<label>Watchers:</label>
+					<dl>
+					@for(watcher <- mile.getWatchers()){
+					<dd>&nbsp;&nbsp;-@watcher</dd>		
+					}
+					</dl>
+					 <br/> 
+					}
+  </div>
+  <br style="clear:both;"/>
+</div>
+
+		<h4><b>Verification Steps:</b> @mile.getVerificationSteps()</h4>
 
 	@if(mile.getWorkBreakdownParent != null){
 		<h4>
-		Work Breakdown Parent:
+		<b>Work Breakdown Parent:</b>
 		<br/>
 		
 			@defining(mile.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getEntityId()</a> }
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getSummary()</a> }
 				
 		</h4>
 		
 		}
 		@if(children.size() != 0){
-		<h4>Entity Children:</h4>
+		<h4><b>Entity Children:</b></h4>
 		@for(child <- children){
 			
 			

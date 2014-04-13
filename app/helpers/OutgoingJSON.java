@@ -1,5 +1,8 @@
 package helpers;
 
+import java.net.ConnectException;
+
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -22,9 +25,12 @@ public class OutgoingJSON {
 	public Response sendJson(){
 		Client c = ClientBuilder.newClient();
         WebTarget wt = c.target(url);
-
-        Response response = wt.request().post(Entity.json(json));
-        
+        Response response = null;
+        try{
+        	response = wt.request().post(Entity.json(json));
+        }catch(ProcessingException e){
+        	e.printStackTrace();
+        }
         return response;
 	}
 

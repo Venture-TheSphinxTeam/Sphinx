@@ -30,7 +30,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                      <div class="page_navigation"></div>
                      <br />
                      <div class="info_text"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- userEntities){
                            <li>
@@ -44,7 +44,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -55,7 +55,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -65,23 +65,22 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getKey()</h3>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br /> @event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -103,7 +102,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                      <div class="page_navigation"></div>
                      <br />
                      <div class="info_text"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- teamEntities){
                            <li>
@@ -117,7 +116,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -128,7 +127,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -138,23 +137,22 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getKey()</h3>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br /> @event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -176,7 +174,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                      <div class="page_navigation"></div>
                      <br />
                      <div class="info_text"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- orgEntities){
                            <li>
@@ -190,7 +188,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -201,7 +199,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -211,23 +209,22 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getKey()</h3>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br /> @event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -247,7 +244,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                   <br />
                   <div id="page_container4">
                      <div class="page_navigation"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- subscribed){
                            <li>
@@ -261,7 +258,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
                                     <span class="glyphicon glyphicon-heart"
                                        title="Subscribe/Unsubscribe"></span>
                                     </button>
@@ -272,7 +269,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'vote' )">
                                     <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
                                     </button>
                                     <!-- WATCH BUTTON -->
@@ -282,26 +279,26 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                        type="button" 
                                        class="" 
                                        data-toggle="button"
-                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
                                     <span class="glyphicon glyphicon-eye-open"
                                        title="Watch/Unwatch"></span>
                                     </button>
                                     <script>
                                        setStatusOfAllButtons(
                                        		'@entity.getEntityType()',
-                                       		'@entity.getEntityId()',
-                                       		'@username')
+                                       		'@entity.getEntityId()')
                                     </script>
                                  </div>
                                  <div>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br />@event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-                                    more &raquo;</a>
+                                    more &raquo;</a> <br />
                                  </div>
                                  }
                               </div>
@@ -317,21 +314,22 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                   <br/>
                   <div id="page_container5">
                      <div class="page_navigation"></div>
-                     <ul class="thumbnails">
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- queryEntities){
                            <li>
                               @defining(event.getEntity()){ entity=>
                               <div class="thumbnail">
                                  <div>
-                                    <h3>@entity.getSummary()</h3>
-                                    <h4>@Html(event.getEventDetails())</h4>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
-                                       @entity.getKey() <br />@event.getDate()
+                                       Event Submitted: @event.getDate()
                                     </p>
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-                                    more &raquo;</a>
+                                    more &raquo;</a> <br />
                                  </div>
                               </div>
                               }

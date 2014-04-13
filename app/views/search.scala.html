@@ -1,4 +1,4 @@
-@(userEntities: List[Entity])(facets: java.util.ArrayList[Object]) 
+@(userEntities: List[Entity])(facets: java.util.ArrayList[Object])
 @main("Sphinx: Connecting Projects to People")("") {
 	
 <div class="panel panel-default" style="position: absolute; right: 900px; top: 250px">
@@ -22,7 +22,18 @@
 		if(getCookie("priority").localeCompare(document.getElementById("priority")) != ""){
 			document.getElementById("priority").value = getCookie("priority");
 		}
-
+		if(getCookie("status").localeCompare(document.getElementById("status")) != ""){
+			document.getElementById("status").value = getCookie("status");
+		}
+		if(getCookie("reporter").localeCompare(document.getElementById("reporter")) != ""){
+			document.getElementById("reporter").value = getCookie("reporter");
+		}
+		if(getCookie("assignee").localeCompare(document.getElementById("assignee")) != ""){
+			document.getElementById("assignee").value = getCookie("assignee");
+		}
+		if(getCookie("labels").localeCompare(document.getElementById("labels")) != ""){
+			document.getElementById("labels").value = getCookie("labels");
+		}
 		deleteAllCookies();
       </script>
       
@@ -48,7 +59,7 @@
 	<br />
 	
 	<div class="info_text"></div>
-	<ul class="content" id="entities">
+	<ul class="content" id="entities" style="overflow-y: auto; height:700px;">
 		@for(entity <- userEntities){
 
 		<li>
@@ -56,16 +67,68 @@
 
 
 				<div>
-				
-					<h3>@entity.getKey()</h3>
-					<h3 id="summary">@entity.getSummary()</h3>
-					<h4>@entity.getDescription()</h4>
+				<img src="@routes.Assets.at(entity.getImage())"</img>
+
+	                <div class="entityStateButtons, pull-right" align="right">
+                        <!-- SUBSCRIBE BUTTON -->
+                        <button 
+                           title="Subscribe/Unsubscribe"
+                           name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
+                           type="button" 
+                           class="" 
+                           data-toggle="button"
+                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
+                        <span class="glyphicon glyphicon-heart"
+                           title="Subscribe/Unsubscribe"></span>
+                        </button>
+                        <!-- VOTE BUTTON -->
+                        <button 
+                           title="Vote/Unvote"
+                           name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
+                           type="button" 
+                           class="" 
+                           data-toggle="button"
+                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', vote' )">
+                        <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+                        </button>
+                        <!-- WATCH BUTTON -->
+                        <button 
+                           title="Watch/Unwatch"
+                           name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
+                           type="button" 
+                           class="" 
+                           data-toggle="button"
+                           onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
+                        <span class="glyphicon glyphicon-eye-open"
+                           title="Watch/Unwatch"></span>
+                        </button>
+                        <script>
+                           setStatusOfAllButtons(
+                           		'@entity.getEntityType()',
+                           		'@entity.getEntityId()')
+                        </script>
+                     </div>
+
+					<h4><label>@entity.getKey()</label> - <label id="summary">@entity.getSummary()</label></h4>
+					@if(entity.getDescription() != null){
+					  <h5>@Html(entity.getDescription().substring(0, Math.min(entity.getDescription().length(), 200)))</h5>
+					}
 					<label hidden="true" id="proposed">@entity.getCreated()</label>
 					<label hidden="true" id="updated">@entity.getUpdated()</label>
-
-
+					<label>Assignee</label> - @entity.getAssignee()<br/>
+					<label>Reporter</label> - @entity.getReporter()<br/>
+					<label>Status</label> - @entity.getStatus()<br/>
+					<label>Priority</label> - @entity.getPriority()<br/>
+					@if(entity.getLabels() != null){
+					<label>Labels</label>
+					<dl class="list-group">
+					@for(label <- entity.getLabels()){
+					<dd>&nbsp;&nbsp;-@label</dd>		
+					}
+					</dl>
+					}
 					<a class="btn btn-primary btn-sm"
-													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+													href="/entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
 													more &raquo;</a> <br />
 				</div>
 
@@ -86,7 +149,7 @@
       	<form>
       		<div class="form-group">
       			<label for="queryName">Query Name</label>
-      			<input id="queryName" type="text" class="form-control" value="New Saved Query"></br>
+      			<input id="queryName" type="text" class="form-control" placeholder="New Saved Query"></br>
       		</div>
       		<div class="form-group">
       			<label for="eventTypes" id="modal-chkbox">Event Types</label>
@@ -113,7 +176,7 @@
       </div>
       <div class="modal-footer" id="modal-footer">
         <button type="button" id="cancel" class="" data-dismiss="modal">Cancel</button>
-        <button type="button" id="save" class="" data-dismiss="modal" onclick="saveQuery(@username)">Save</button>
+        <button type="button" id="save" class="" data-dismiss="modal" onclick="saveQuery('jay-z')">Save</button>
       </div>
     </div>
   </div>

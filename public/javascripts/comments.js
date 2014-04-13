@@ -8,9 +8,7 @@ function createComment(entityType, entityId,createdBy,commentHeader,comment){
 
 	var url = "/newComment";
 
-	$.ajax({
-		type: "POST",
-		url: url,
+	myJsRoutes.controllers.CommentsController.newComment().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',

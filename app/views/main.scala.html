@@ -3,25 +3,27 @@
 <html ng-app>
 <head>
 <title>@title</title>
+
+<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+<script src='@routes.JavaScriptController.jsRoutes()'type= "text/javascript"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="@routes.Assets.at("javascripts/angular.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/entity-state.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/jquery.pajinate.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/comments.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/search.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/bootstrap-select.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/savedQueries.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/bootstrap-tab.js")" type="text/javascript"></script>
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/offcanvas.css")"/>
 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/pajinate.css")">
 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap-select.min.css")">
 <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.ico")">
-<link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
-<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/bootstrap-tab.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/angular.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/entity-state.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/jquery.pajinate.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/comments.js")" type="text/javascript"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-<script src="@routes.Assets.at("javascripts/search.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/bootstrap-select.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/savedQueries.js")" type="text/javascript"></script>
 
 </head>
 <body>
@@ -39,22 +41,12 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search For Entity" id="entitySearch">
         </div>
-        <button class="btn btn-default" type="button" onclick="keywordSearch();">
+        <button class="btn btn-default" type="submit" onclick="keywordSearch();">
                         <span class="glyphicon glyphicon-search"></span>
                         </button>
-        
-        
-            <div class="btn-group" data-toggle="buttons" id="radio_div">
-                     <label class="btn btn-primary" id="summary">
-                      <input type="radio" name="keyword" value="summary" id="summary">Summary
-                      </label>
-                      <label class="btn btn-primary" id="description">
-                      <input type="radio" name="keyword" value="description" id="description">Description<br/>
-                   </label>
-                     </div>
       </form>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="./user-settings">Settings</a></li>
+				<li><a href="/user-settings">Settings</a></li>
 			</ul>
 		</div>
 		<!-- /.container -->
@@ -66,10 +58,10 @@
 				role="navigation">
 				<div class="well sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked">
-						<li><a href="./">Dashboard</a></li>
-						<li><a href="./search">Search</a></li>
-						<li><a href="./subscriptions">My Subscriptions</a></li>
-						<li><a href="./admin-tools">Admin Tools</a></li>
+						<li><a href="/">Dashboard</a></li>
+						<li><a href="/search">Search</a></li>
+						<li><a href="/subscriptions">My Subscriptions</a></li>
+						<li><a href="/admin-tools">Admin Tools</a></li>
 					</ul>
 				</div>
 				<!--/.well -->

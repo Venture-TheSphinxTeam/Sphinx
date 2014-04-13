@@ -4,6 +4,7 @@ import helpers.MongoControlCenter;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,51 +81,59 @@ public class Application extends Controller {
 
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result index() throws UnknownHostException {
+
+		
+		String username = request().username();
 		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
 				MONGO_PORT);
 		control.setDatabase(DATABASE);
 
-		// String username = "RickyWinterborn"; // TODO : Make this pull current
-		// user name
-
-		// Object[] userEntities = control.getEventsForUser("jay-z");
-		ArrayList<Event> userEvents = control.getSingleEventsForUser(USERNAME);
-		ArrayList<Event> teamEntities = control.getTeamEventsForUser(USERNAME);
+		ArrayList<Event> userEvents = control.getSingleEventsForUser(username);
+		ArrayList<Event> teamEntities = control.getTeamEventsForUser(username);
 		ArrayList<Event> orgEntities = control
-				.getOrganizationEventsForUser(USERNAME);
+				.getOrganizationEventsForUser(username);
 		Iterator<? extends models.Event> subscribedEvents = models.Event
-				.getSubscribedEventsForUser(USERNAME);
+				.getSubscribedEventsForUser(username);
 
-		ArrayList<Event> queryEvents = new ArrayList<Event>();
+		HashSet<Event> queryEvents = new HashSet<Event>();
 
-		List<SavedQuery> querySubs = User.findByName(USERNAME)
+		List<SavedQuery> querySubs = User.findByName(username)
 				.getQuerySubscriptions();
 
 		for (SavedQuery s : querySubs) {
-			queryEvents.addAll(control.getEventsForQueriedEntities(s
+			ArrayList<Event> allEvents = control.getEventsForQueriedEntities(s
 					.toQueryString()
 					+ ","
-					+ control.createAllowedAccessUsersQuery(USERNAME)));
+					+ control.createAllowedAccessUsersQuery(username)); 
+			for(Event ev: allEvents){
+				queryEvents.add(ev);
+			}
 		}
+		
+		ArrayList<Event> queryEvList = new ArrayList<Event>();
+		queryEvList.addAll(queryEvents);
 
 		// Object[] userSubscriptions = //TODO
 
 		control.closeConnection();
 
-		return ok(index.render(userEvents, teamEntities, orgEntities, USERNAME,
-				subscribedEvents, queryEvents));
+		return ok(index.render(userEvents, teamEntities, orgEntities, username,
+				subscribedEvents, queryEvList));
 	}
 
-	public static Result search(String keyword, String field, String priority,
+	@Security.Authenticated(Secured.class)
+	public static Result search(String keyword, String priority,
 			String status, String reporter, String assignee, String label)
 			throws UnknownHostException {
+		String username = request().username();
 		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
 				MONGO_PORT);
 		control.setDatabase(DATABASE);
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
-		if (keyword.equals("") && field.equals("")) {
+		if (keyword.equals("")) {
 
 			String priorityQuery = control.createSimpleFindQuery("priority",
 					priority);
@@ -156,23 +165,23 @@ public class Application extends Controller {
 			if (!label.equals("")) {
 				facetQuery += labelQuery + ",";
 			}
-			System.out.println(facetQuery);
+			
 			if (!facetQuery.equals("")) {
 				result = control.getEntitiesByQuery(facetQuery
-						+ control.createAllowedAccessUsersQuery(USERNAME));
+						+ control.createAllowedAccessUsersQuery(username));
 			} else {
 				result = control.getEntitiesByQuery(control
-						.createAllowedAccessUsersQuery(USERNAME));
+						.createAllowedAccessUsersQuery(username));
 			}
 
 		}
 
 		else if (keyword.equals("")) {
 			result = control.getEntitiesByQuery(control
-					.createAllowedAccessUsersQuery(USERNAME));
+					.createAllowedAccessUsersQuery(username));
 		}
 
-		else if (field.equals("undefined")) {
+		else {
 			result = control.getEntitiesByQuery("$or:[{"
 					+ control.createRegexQuery("summary", keyword) + "},{"
 					+ control.createRegexQuery("description", keyword) + "}]");
@@ -181,19 +190,12 @@ public class Application extends Controller {
 
 			while (enIter.hasNext()) {
 				Entity e = enIter.next();
-				if (!e.getAllowedAccessUsers().contains(USERNAME)
+				if (!e.getAllowedAccessUsers().contains(username)
 						&& e.getAllowedAccessUsers().size() != 0) {
 					enIter.remove();
 				}
 			}
 
-		}
-
-		else {
-			result = control.getEntitiesByQuery(control.createRegexQuery(field,
-					keyword)
-					+ ","
-					+ control.createAllowedAccessUsersQuery(USERNAME));
 		}
 
 		ArrayList<Object> facets = control.getIndexedValues();
@@ -202,8 +204,10 @@ public class Application extends Controller {
 
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result subscriptions() throws UnknownHostException {
 
+		String username = request().username();
 		// Open connection to database
 		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
 				MONGO_PORT);
@@ -211,11 +215,11 @@ public class Application extends Controller {
 
 		ArrayList<Entity> result = new ArrayList<Entity>();
 
-		ArrayList<String> initSubIds = control.getUserSubscriptionIds(USERNAME,
+		ArrayList<String> initSubIds = control.getUserSubscriptionIds(username,
 				"initiativeSubscriptions");
-		ArrayList<String> mileSubIds = control.getUserSubscriptionIds(USERNAME,
+		ArrayList<String> mileSubIds = control.getUserSubscriptionIds(username,
 				"milestoneSubscriptions");
-		ArrayList<String> riskSubIds = control.getUserSubscriptionIds(USERNAME,
+		ArrayList<String> riskSubIds = control.getUserSubscriptionIds(username,
 				"riskSubscriptions");
 
 		// Collect initiative objects
@@ -235,26 +239,33 @@ public class Application extends Controller {
 		for (String id : riskSubIds) {
 			riskSubs.add(control.getRiskById(id));
 		}
+		
+		ArrayList<Object> facets = control.getIndexedValues();
 
 		control.closeConnection();
 
-		List<SavedQuery> querySubs = User.findByName(USERNAME)
+		List<SavedQuery> querySubs = User.findByName(username)
 				.getQuerySubscriptions();
 
-		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, querySubs,
-				USERNAME));
+		
+		return ok(subscriptions.render(initSubs, mileSubs, riskSubs, querySubs, facets));
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result adminTools() {
+		//TODO: Make admin only
 		return ok(adminTools.render("", AdminController.entitForm));
 	}
 
+	
 	public static Result userSettings() {
 		return ok(settings.render("", UserSettingsController.intervalForm));
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result entityView(String arg, String type)
 			throws UnknownHostException {
+		String username = request().username();
 
 		MongoControlCenter control = new MongoControlCenter(MONGO_URL,
 				MONGO_PORT);
@@ -264,18 +275,18 @@ public class Application extends Controller {
 			Initiative entity_Initiative = control.getInitiativeById(arg);
 			ArrayList<Comment> entityComments = control.getComments(entity_Initiative.getEntityId());
 
-			if (((entity_Initiative.getAllowedAccessUsers().contains(USERNAME) || ((entity_Initiative
+			if (((entity_Initiative.getAllowedAccessUsers().contains(username) || ((entity_Initiative
 					.getAllowedAccessUsers().isEmpty()))))) {
 
 				return ok(initiative
 						.render(entity_Initiative,
-								USERNAME,
+								username,
 								control.getEntitiesByQuery("\"workBreakdownParent.entityId\":"
 										+ "\""
 										+ entity_Initiative.getEntityId()
 										+ "\","
 										+ control
-												.createAllowedAccessUsersQuery(USERNAME)),
+												.createAllowedAccessUsersQuery(username)),
 								entityComments));
 			} else {
 				return ok(accessError.render());
@@ -287,15 +298,15 @@ public class Application extends Controller {
 			Milestone entity_Milestone = control.getMilestoneById(arg);
 			ArrayList<Comment> entityComments = control.getComments(entity_Milestone.getEntityId());
 
-			if (((entity_Milestone.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Milestone
+			if (((entity_Milestone.getAllowedAccessUsers()).contains(username) || ((entity_Milestone
 					.getAllowedAccessUsers().isEmpty())))) {
 
-				return ok(milestone.render(entity_Milestone, USERNAME, control.getEntitiesByQuery("\"workBreakdownParent.entityId\":"
+				return ok(milestone.render(entity_Milestone, username, control.getEntitiesByQuery("\"workBreakdownParent.entityId\":"
 						+ "\""
 						+ entity_Milestone.getEntityId()
 						+ "\","
 						+ control
-								.createAllowedAccessUsersQuery(USERNAME)),
+								.createAllowedAccessUsersQuery(username)),
 				entityComments));
 			}
 
@@ -308,10 +319,10 @@ public class Application extends Controller {
 			Risk entity_Risk = control.getRiskById(arg);
 			ArrayList<Comment> entityComments = control.getComments(entity_Risk.getEntityId());
 
-			if (((entity_Risk.getAllowedAccessUsers()).contains(USERNAME) || ((entity_Risk
+			if (((entity_Risk.getAllowedAccessUsers()).contains(username) || ((entity_Risk
 					.getAllowedAccessUsers())).isEmpty())) {
 
-				return ok(risk.render(entity_Risk, USERNAME, entityComments));
+				return ok(risk.render(entity_Risk, username, entityComments));
 			}
 
 			else {
