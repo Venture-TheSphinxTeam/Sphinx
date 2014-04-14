@@ -1,8 +1,6 @@
 package controllers;
 
-import java.net.ConnectException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import helpers.JSONParser;
@@ -63,7 +61,7 @@ public class Ingester {
 	  return null;
 	}
 
-        public String getMessageFromTarget(String target){
+    public String getMessageFromTarget(String target){
           WebTarget t = client.target(target);
 
 	  Invocation.Builder ib = t.request();

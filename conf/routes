@@ -3,12 +3,12 @@
 # ~~~~
 
 #User Auth
-GET 		/login						controllers.LoginController.login()
-POST		/login 						controllers.LoginController.authenticate()
-
+GET		/login						controllers.LoginController.login()
+POST	/login 						controllers.LoginController.authenticate()
+GET		/logout						controllers.LoginController.logout()
 # Home page
 GET     /                           controllers.Application.index()
-GET     /search						controllers.Application.search(arg: String ?="", field: String ?= "", priority: String?="", status: String?="", reporter: String?="", assignee: String?="", labe: String?="" )
+GET     /search						controllers.Application.search(arg: String ?="", priority: String?="", status: String?="", reporter: String?="", assignee: String?="", label: String?="" )
 GET		/subscriptions				controllers.Application.subscriptions()
 GET		/admin-tools				controllers.Application.adminTools()
 GET		/user-settings				controllers.Application.userSettings()
@@ -19,11 +19,26 @@ GET     /webbysockets               controllers.Application.webbysockets()
 POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
 
 #Subscription/Vote/Watch
-POST		/updateButtonStatus			controllers.ButtonStateController.UpdateButtonStatus()
-POST		/getButtonStatus			controllers.ButtonStateController.GetButtonStatus()
-POST		/deleteEntitySubscription	controllers.SubscriptionController.DeleteEntitySubscription()
+POST	/updateButtonStatus				controllers.ButtonStateController.UpdateButtonStatus()
+POST	/getButtonStatus				controllers.ButtonStateController.GetButtonStatus()
+POST	/getEntityEventSubscriptions	controllers.SubscriptionController.GetEntityEventSubscriptions()
+POST	/updateSubscriptionsEvents		controllers.SubscriptionController.UpdateSubscriptionsEvents()
+POST	/deleteEntitySubscription		controllers.SubscriptionController.DeleteEntitySubscription()
 
 
+#Saving Queries
+POST	/saveQuery                  controllers.SavedQueryController.saveQuery()
+POST	/deleteQuerySubscription	controllers.SavedQueryController.deleteQuerySubscription()
+POST	/updateQuerySubscription	controllers.SavedQueryController.updateQuerySubscription()
+
+#User Settings
+POST	/user-settings/update		controllers.UserSettingsController.updateInterval()
+
+#Comments
+POST	/newComment					controllers.CommentsController.newComment()
+
+#JavaScript
+GET		/jsRoutes					controllers.JavaScriptController.jsRoutes()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,6 +1,5 @@
 package controllers;
 
-import java.net.ConnectException;
 import java.util.List;
 
 import javax.ws.rs.ProcessingException;
@@ -53,17 +52,23 @@ public class AdminController extends Controller{
         if(events != null){
 	        List<ChangeEvent> ce = events.getChangeEvents();
 	        for(ChangeEvent c : ce){
-	        	c.insert();
+	        	if(c.getEntity() != null){
+	        		c.insert();
+	        	}
 	        }
 	        
 	        List<ReportEvent> re = events.getReportEvents();
 	        for(ReportEvent rep: re){
-	        	rep.insert();
+	        	if(rep.getEntity() != null){
+	        		rep.insert();
+	        	}
 	        }
 	        
 	        List<TimeSpentEvent> tse = events.getTimeSpentEvents();
 	        for(TimeSpentEvent ts : tse){
-	        	ts.insert();
+	        	if(ts.getEntity() != null){
+	        		ts.insert();
+	        	}
 	        }
 	        message+= "\nEvents pulled";
         }

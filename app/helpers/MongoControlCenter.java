@@ -2,6 +2,7 @@ package helpers;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +13,9 @@ import models.Initiative;
 import models.Milestone;
 import models.Risk;
 import models.User;
+import models.Comment;
 import models.EntitySubscription;
+
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -35,7 +38,9 @@ public class MongoControlCenter {
 	private DBCollection milestones;
 	private DBCollection events;
 	private DBCollection users;
+	private DBCollection comments;
 	private DBCollection fieldIncices;
+
 
 	private BasicDBList ids;
 
@@ -62,7 +67,9 @@ public class MongoControlCenter {
 		milestones = db.getCollection("milestones");
 		events = db.getCollection("events");
 		users = db.getCollection("users");
+		comments = db.getCollection("comments");
 		fieldIncices = db.getCollection("fieldIncices");
+
 
 		ids = new BasicDBList();
 	}
@@ -154,6 +161,7 @@ public class MongoControlCenter {
 		}
 
 		Collections.sort(result);
+		Collections.reverse(result);
 		return result;
 	}
 
@@ -408,6 +416,29 @@ public class MongoControlCenter {
 
 	}
 
+	/**
+	 *Gets comments associated with an Entity
+	 *
+	 *
+	 */
+	public ArrayList<Comment> getComments(String id){
+		ArrayList<Comment> results = new ArrayList<Comment>();
+		Iterator<? extends Comment> iterator = Comment.findBy(id).iterator();
+
+		results = commentIterToList(iterator);
+		return results;
+	}
+
+	public static ArrayList<Comment> commentIterToList(Iterator<? extends Comment> iter){
+    	ArrayList<Comment> result = new ArrayList<Comment>();
+    	
+    	while(iter.hasNext()){
+    		result.add(iter.next());
+    	}
+    	
+    	return result;
+    }
+
 	public ArrayList<String> getUserSubscriptionIds(String username,
 			String subscriptionType) {
 
@@ -491,7 +522,6 @@ public class MongoControlCenter {
 		while (riskIter.hasNext()) {
 			result.add(riskIter.next());
 		}
-
 		return result;
 
 	}
@@ -502,6 +532,7 @@ public class MongoControlCenter {
 		return field + ":" + "{\"" + "$regex\"" + ":" + "\"" + regex + "\""
 				+ "," + "\"" + "$options\"" + ":" + "\"" + "i" + "\"" + "}";
 	}
+
 
 	public String createAllowedAccessUsersQuery(String username) {
 		return "$or:[{allowedAccessUsers:\"" + username
@@ -529,5 +560,4 @@ public class MongoControlCenter {
 		return temp;
 
 	}
-
 }

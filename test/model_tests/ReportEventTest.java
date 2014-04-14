@@ -21,7 +21,7 @@ public class ReportEventTest extends WithApplication{
 		running(fakeApplication(), new Runnable(){
 			
 		public void run(){
-		ReportEvent.removeAll();
+		//ReportEvent.removeAll();
 		
 		ReportEvent re = new ReportEvent();
 		re.setEventType("REPORT");

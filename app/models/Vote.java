@@ -37,8 +37,8 @@ public class Vote {
         voteStrTemp = voteStrTemp.replace(":userName", userName);
         voteStrTemp = voteStrTemp.replace(":voteStatus","vote");
         
-
-        return sendVote(voteStrTemp);
+        Response r = sendVote(voteStrTemp);
+        return r;
     }
 
 

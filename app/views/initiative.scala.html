@@ -1,116 +1,308 @@
-@(initiative: Initiative)(username: String) 
+@(initiative: Initiative)(username: String)(children: List[Entity])(entityComments: List[Comment]) 
 @main("Sphinx: Connecting Projects to People")("") {
+<head>
+<style>
+    
+    label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    div#user-comments { width: 350px; margin: 20px 0; }
+    div#user-comments table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+    div#user-comments table td, div#user-comments table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+  </style>
+
+
+
+  <script>
+  $(function(){
+		var allFields = $([]).add(commentHeader).add(comment);
+		var tips = $(".validateTips");
+
+		function updateTips(message){
+			tips.text(message).addClass("ui-state-highlight");
+			setTimeout(function(){
+				tips.removeClass("ui-state-highlight", 1500);
+
+			}, 500);
+		}
+
+		function checkNull(field, label){
+			if (field.length < 1){
+				field.addClass("ui-state-error");
+				updateTips("The field " + label + " must contain at least one character.");
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		$("#dialog-form").dialog({
+			autoOpen: false,
+			height: 400,
+			width: 400,
+			modal: true,
+			buttons: {
+				"Submit": function(){
+					var bValid = true;
+					var commentHeader = $("#commentHeader"); 
+					var comment = $("#comment");
+					allFields.removeClass("ui-state-error");
+
+					bValid = bValid && checkNull(commentHeader, "comment header");
+					bValid = bValid && checkNull(comment, "comment body");
+
+					if(bValid){
+						//submit info
+						createComment('@initiative.getEntityType()', '@initiative.getEntityId()','@username',commentHeader.val(),comment.val())
+						$(this).dialog("close");
+					}
+
+				},
+				Cancel: function(){
+					$(this).dialog("close");
+				}
+			}, 
+			close: function(){
+				allFields.val("").removeClass("ui-state-error");
+			}
+		});
+
+		$("#dialog-edit").dialog({
+			autoOpen: false,
+			height: 400,
+			width: 400,
+			modal: true,
+			buttons: {
+				"Submit": function(){
+					var bValid = true;
+					var commentHeader = $("#commentHeader"); 
+					var comment = $("#comment");
+					allFields.removeClass("ui-state-error");
+
+					bValid = bValid && checkNull(commentHeader, "comment header");
+					bValid = bValid && checkNull(comment, "comment body");
+
+					if(bValid){
+						//submit info
+						createComment('@initiative.getEntityType()', '@initiative.getEntityId()','@username',commentHeader.val(),comment.val())
+						$(this).dialog("close");
+					}
+
+				},
+				Cancel: function(){
+					$(this).dialog("close");
+				}
+			}, 
+			close: function(){
+				allFields.val("").removeClass("ui-state-error");
+			}
+		});
+
+		$("#create-comment").button().click(function(){
+			$("#dialog-form").dialog("open");
+		});
+
+		$("#edit-comment").button().click(function(){
+			$("#dialog-edit").dialog("open");
+		});
+	});</script>
+
+</head>
+
 <div class="thumbnail">
 	@defining(initiative.asInstanceOf[Initiative]){ init=>
+	
 	<div class="entityStateButtons" align="right">
-
+	<img align="left"src="@routes.Assets.at(init.getImage())"</img>
 		<!-- SUBSCRIBE BUTTON -->
 		<button 
-			title="Subscribe/Unsubscribe"
-			name='subscription_b-@init.getEntityType()-@init.getEntityId()'
-			type="button" 
-			class="" 
-			data-toggle="button"
-			onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'subscription' )">
+		title="Subscribe/Unsubscribe"
+		name='subscription_b-@init.getEntityType()-@init.getEntityId()'
+		type="button" 
+		class="" 
+		data-toggle="button"
+		onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'subscription' )">
 
-			<span class="glyphicon glyphicon-heart"
-				title="Subscribe/Unsubscribe"></span>
+		<span class="glyphicon glyphicon-heart"
+		title="Subscribe/Unsubscribe"></span>
 
-		</button>
+	</button>
 
-		<!-- VOTE BUTTON -->
-		<button 
-			title="Vote/Unvote"
-			name='vote_b-@init.getEntityType()-@init.getEntityId()'
-			type="button" 
-			class="" 
-			data-toggle="button"
-			onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'vote' )">
+	<!-- VOTE BUTTON -->
+	<button 
+	title="Vote/Unvote"
+	name='vote_b-@init.getEntityType()-@init.getEntityId()'
+	type="button" 
+	class="" 
+	data-toggle="button"
+	onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'vote' )">
 
-			<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+	<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
 
-		</button>
+</button>
 
-		<!-- WATCH BUTTON -->
-		<button 
-			title="Watch/Unwatch"
-			name='watch_b-@init.getEntityType()-@init.getEntityId()'
-			type="button" 
-			class="btn btn-primary" 
-			data-toggle="button"
-			onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'watch' )">
+<!-- WATCH BUTTON -->
+<button 
+title="Watch/Unwatch"
+name='watch_b-@init.getEntityType()-@init.getEntityId()'
+type="button" 
+class="btn btn-primary" 
+data-toggle="button"
+onclick="updateEntityStateStatus( '@init.getEntityType()', '@init.getEntityId()', '@username', 'watch' )">
 
-			<span class="glyphicon glyphicon-eye-open"
-				title="Watch/Unwatch"></span>
+<span class="glyphicon glyphicon-eye-open"
+title="Watch/Unwatch"></span>
 
-		</button>
+</button>
 
-		<script>
-			setStatusOfAllButtons(
-					'@init.getEntityType()',
-					'@init.getEntityId()',
-					'@username')
-		</script>
+<script>
+	setStatusOfAllButtons(
+		'@init.getEntityType()',
+		'@init.getEntityId()',
+		'@username')
+</script>
 
-	</div>
+</div>
+
 	<div>
-		<h1>
-			Key: @init.getKey() <br /> Summary: @init.getSummary()
-		</h1>
-		<h2>Description: @init.getDescription()</h2>
-
-
-		<h3>
-			Entity Type: @init.getEntityType() <br /> Project Type:
-			@init.getProjectType() <br /> Labels: @init.getLabels()
-		</h3>
+		<br/>
+			<h3><b>@init.getKey()</b> - <b>@init.getSummary()</b></h3>
+		
+		<h4><b>Description:</b> @init.getDescription()</h4>
 
 
 		<h4>
-			Assignee: @init.getAssignee() <br /> Reporter: @init.getReporter() <br />
-			Watchers: @init.getWatchers() <br /> Provider Groups:
-			@init.getProviderGroups() <br />
+			<b>Project Type:</b>
+			@init.getProjectType() <br />
+			
+			@if(init.getLabels() != null){
+					<label>Labels:</label>
+					<dl class="list-group">
+					@for(label <- init.getLabels()){
+					<dd>&nbsp;&nbsp;-@label</dd>		
+					}
+					</dl>
+					}
 		</h4>
-
-
-		<h4>
-			Business Groups: @init.getBusinessGroups() <br /> Business Owner:
-			@init.getBusinessOwner() <br /> Business Unit:
-			@init.getBusinessUnit() <br />
-		</h4>
-
-
-		<h4>
-			Priority: @init.getPriority() <br /> Status: @init.getStatus() <br />
-			Complexity: @init.getComplexity() <br /> Health: @init.getHealth()
-		</h4>
-
-
-		<h4>
-			Created: @{init.getFormattedDate(new Date(init.getCreated()))} <br /> Start Date: @{init.getFormattedDate(new
-			Date(init.getStartDate()))} <br /> Desired Due Date: @{init.getFormattedDate(new
-			Date(init.getDesiredDueDate()))} <br /> Desired Start Date: @{init.getFormattedDate(new
-			Date(init.getDesiredStartDate()))} <br /> Due Date: @{init.getFormattedDate(new
-			Date(init.getDueDate()))} <br /> Updated: @{init.getFormattedDate(new
+		
+<div id="content">
+  <div id="left" style="float: left;">		
+			<b>Priority:</b> @init.getPriority() <br /> <b>Status:</b> @init.getStatus() <br />
+			<b>Complexity:</b> @init.getComplexity() <br /> <b>Health:</b> @init.getHealth()<br/>
+			<b>Created:</b> @{init.getFormattedDate(new Date(init.getCreated()))} <br /> <b>Start Date:</b> @{init.getFormattedDate(new
+			Date(init.getStartDate()))} <br /> <b>Desired Due Date:</b> @{init.getFormattedDate(new
+			Date(init.getDesiredDueDate()))} <br /> <b>Desired Start Date:</b> @{init.getFormattedDate(new
+			Date(init.getDesiredStartDate()))} <br /> <b>Due Date:</b> @{init.getFormattedDate(new
+			Date(init.getDueDate()))} <br /> <b>Updated:</b> @{init.getFormattedDate(new
 			Date(init.getUpdated()))}
-		</h4>
+  </div>
+
+  <div id="right" style="float: right;">
+     <b>Assignee:</b> @init.getAssignee() <br /> <b>Reporter:</b> @init.getReporter() <br />
+			@if(init.getWatchers() != null){
+					<label>Watchers:</label>
+					<dl>
+					@for(watcher <- init.getWatchers()){
+					<dd>&nbsp;&nbsp;-@watcher</dd>		
+					}
+					</dl>
+					 <br/> 
+					}
+					
+					@if(init.getProviderGroups() != null){
+					<label>Provider Groups:</label>
+					<dl>
+					@for(group <- init.getProviderGroups()){
+					<dd>&nbsp;&nbsp;-@group</dd>		
+					}
+					</dl>
+					 <br/> 
+					}
+					
+					
+			@if(init.getBusinessGroups() != null){
+					<label>Business Groups:</label>
+					<dl>
+					@for(group <- init.getBusinessGroups()){
+					<dd>&nbsp;&nbsp;-@group</dd>		
+					}
+					</dl>
+					 <br/> 
+					}
+			<b>Business Owner:</b>
+			@init.getBusinessOwner() <br /> <b>Business Unit:</b>
+			@init.getBusinessUnit() <br />
+  </div>
+  <br style="clear:both;"/>
+</div>
 
 		<h4>
-			Business Goals: @init.getBusinessGoals() <br /> Verification Steps:
+			<b>Business Goals:</b> @init.getBusinessGoals() <br /> <b>Verification Steps:</b>
 			@init.getVerificationSteps()
 		</h4>
 		
-		<h4>
 		@if(init.getWorkBreakdownParent != null){
+		<h4>
+		<b>Work Breakdown Parent:</b>
+		<br/>
+		
 			@defining(init.getWorkBreakdownParent.asInstanceOf[Entity]){ WBP=> <a
-				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">Work
-				Breakdown Parent</a> }
-				}
+				href="./entity?arg=@WBP.getEntityId()&entityType=@WBP.getEntityType()">@WBP.getSummary()</a> }
+				
 		</h4>
+		}
+		
+		@if(children.size() != 0){
+		<h4><b>Entity Children:</b></h4>
+		@for(child <- children){
+			
+			
+			<a
+				href="./entity?arg=@child.getEntityId()&entityType=@child.getEntityType()">@child.getSummary()</a>
+			<br/>
+			
+			
+			}
+		}
 	</div>
 	}
+
+
 </div>
 
 
+<!--Entity Comments-->
 
+<h1>Initiative Comments:<br></h1>	
+<div id="dialog-form" title="Post New Comment">
+	<p class="validateTips">All fields are required.</p>
+
+	<form>
+		<fieldset>
+			<label>Comment Header</label>
+			<input type="text" name="commentHeader" id="commentHeader" class="text ui-widget-content ui-corner-all">
+			<label>Comment Body</label>
+			<input type="text" name="comment" id="comment" class="text ui-widget-content ui-corner-all">
+		</fieldset>
+	</form>
+</div>
+
+<button id="create-comment">Post New Comment</button>
+<div id ="entity-comments">
+	<div id ="comment-container">
+		@for(comment <- entityComments){
+		<div>
+			<div id = "user-comments">
+				<!--add Edit button based on username = getCreatedBy()-->
+				<h4>@comment.getCommentHeader()</h4>
+				posted by @comment.getCreatedBy()
+				<p>@comment.getCommentBody()</p>
+				
+			</div>
+		</div>
+		}
+	</div>
+</div>
 }

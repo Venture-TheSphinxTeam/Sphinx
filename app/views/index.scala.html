@@ -1,404 +1,355 @@
 @(userEntities: List[Event])(teamEntities: List[Event])(orgEntities:
-List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])
+List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEntities: List[Event])
 @main("Sphinx: Connecting Projects to People")(username) {
 <!-- Main jumbotron for a primary marketing message or call to action -->
 
 
-
-<script type="text/javascript">
-	var socket = new WebSocket("ws://" + location.host + "/webbysockets");
-	var refesh_rate = 0;
-
-	socket.onopen = function() {
-		socket.send("username");
-	}
-
-	socket.onmessage = function(message) {
-		refresh_rate = message.data;
-		setTimeout(function() {
-			window.location.reload()
-		}, refresh_rate);
-	}
-</script>
-
-
-
 <div class="container">
-	<div class="row">
-		<div class="span4">
-			<div class="tabbable">
-				<ul class="nav nav-tabs" id="dashTab">
-					<li class="active"><a href="#1" data-toggle="tab">My
-							Projects</a></li>
-					<li class=""><a href="#2" data-toggle="tab">Team Projects</a></li>
-					<li class=""><a href="#3" data-toggle="tab">Projects
-							Across the Firm</a></li>
-					<li class=""><a href="#4" data-toggle="tab">Subscribed
-							Entities</a></li>
-							<li class=""><a href="#5" data-toggle="tab">Query Subscriptions</a><li>
-				</ul>
-				<div class="tab-content">
-					<!--  MY PROJECTS  -->
-					<div class="tab-pane active" id="1">
-						<br />
-						<div id="page_container" class="pcontainer">
-							<div class="page_navigation"></div>
-							<br />
-							<div class="info_text"></div>
-							<ul class="thumbnails">
-								<ul class="content">
-									@for(event <- userEntities){
-									<li>
-										<div class="thumbnail">
-											@defining(event.getEntity()){ entity=>
-											<div class="entityStateButtons" align="right">
-
-												<!-- SUBSCRIBE BUTTON -->
-												<button 
-													title="Subscribe/Unsubscribe"
-													name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
-
-													<span class="glyphicon glyphicon-heart"
-														title="Subscribe/Unsubscribe"></span>
-
-												</button>
-
-												<!-- VOTE BUTTON -->
-												<button 
-													title="Vote/Unvote"
-													name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
-
-													<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
-
-												</button>
-
-												<!-- WATCH BUTTON -->
-												<button 
-													title="Watch/Unwatch"
-													name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
-
-													<span class="glyphicon glyphicon-eye-open"
-														title="Watch/Unwatch"></span>
-
-												</button>
-
-												<script>
-													setStatusOfAllButtons(
-															'@entity.getEntityType()',
-															'@entity.getEntityId()',
-															'@username')
-												</script>
-
-											</div>
-											<div>
-												<h3>@entity.getKey()</h3>
-												<h3>@entity.getSummary()</h3>
-												<h4>@Html(event.getEventDetails())</h4>
-												<p>
-													@entity.getKey() <br /> @event.getDate()
-												</p>
-												<a class="btn btn-primary btn-sm"
-													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-													more &raquo;</a> <br />
-											</div>
-											}
-										</div>
-									</li> }
-
-								</ul>
-							</ul>
-							<br />
-						</div>
-					</div>
-					<!--  TEAM PROJECTS  -->
-					<div class="tab-pane" id="2">
-						<br />
-						<div id="page_container2" class="pcontainer">
-							<div class="page_navigation"></div>
-							<br />
-							<div class="info_text"></div>
-							<ul class="thumbnails">
-								<ul class="content">
-									@for(event <- teamEntities){
-									<li>
-										<div class="thumbnail">
-											@defining(event.getEntity()){ entity=>
-											<div class="entityStateButtons" align="right">
-
-												<!-- SUBSCRIBE BUTTON -->
-												<button 
-													title="Subscribe/Unsubscribe"
-													name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
-
-													<span class="glyphicon glyphicon-heart"
-														title="Subscribe/Unsubscribe"></span>
-
-												</button>
-
-												<!-- VOTE BUTTON -->
-												<button 
-													title="Vote/Unvote"
-													name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
-
-													<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
-
-												</button>
-
-												<!-- WATCH BUTTON -->
-												<button 
-													title="Watch/Unwatch"
-													name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
-
-													<span class="glyphicon glyphicon-eye-open"
-														title="Watch/Unwatch"></span>
-
-												</button>
-
-												<script>
-													setStatusOfAllButtons(
-															'@entity.getEntityType()',
-															'@entity.getEntityId()',
-															'@username')
-												</script>
-
-											</div>
-											<div>
-												<h3>@entity.getKey()</h3>
-												<h3>@entity.getSummary()</h3>
-												<h4>@Html(event.getEventDetails())</h4>
-												<p>
-													@entity.getKey() <br /> @event.getDate()
-												</p>
-												<a class="btn btn-primary btn-sm"
-													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-													more &raquo;</a> <br />
-											</div>
-											}
-										</div>
-									</li> }
-								</ul>
-							</ul>
-						</div>
-						<br />
-					</div>
-					<!--  PROJECTS FROM ACROSS THE FIRM  -->
-					<div class="tab-pane" id="3">
-						<br />
-						<div id="page_container3" class="pcontainer">
-							<div class="page_navigation"></div>
-							<br />
-							<div class="info_text"></div>
-							<ul class="thumbnails">
-								<ul class="content">
-									@for(event <- orgEntities){
-									<li>
-										<div class="thumbnail">
-											@defining(event.getEntity()){ entity=>
-											<div class="entityStateButtons" align="right">
-
-												<!-- SUBSCRIBE BUTTON -->
-												<button 
-													title="Subscribe/Unsubscribe"
-													name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
-
-													<span class="glyphicon glyphicon-heart"
-														title="Subscribe/Unsubscribe"></span>
-
-												</button>
-
-												<!-- VOTE BUTTON -->
-												<button 
-													title="Vote/Unvote"
-													name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
-
-													<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
-
-												</button>
-
-												<!-- WATCH BUTTON -->
-												<button 
-													title="Watch/Unwatch"
-													name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
-
-													<span class="glyphicon glyphicon-eye-open"
-														title="Watch/Unwatch"></span>
-
-												</button>
-
-												<script>
-													setStatusOfAllButtons(
-															'@entity.getEntityType()',
-															'@entity.getEntityId()',
-															'@username')
-												</script>
-
-											</div>
-											<div>
-												<h3>@entity.getKey()</h3>
-												<h3>@entity.getSummary()</h3>
-												<h4>@Html(event.getEventDetails())</h4>
-												<p>
-													@entity.getKey() <br /> @event.getDate()
-												</p>
-												<a class="btn btn-primary btn-sm"
-													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-													more &raquo;</a> <br />
-											</div>
-											}
-										</div>
-									</li> }
-								</ul>
-							</ul>
-						</div>
-						<br />
-					</div>
-					<!--  MY SUBSCRIPTIONS  -->
-					<div class="tab-pane" id="4">
-						<br />
-						<div id="page_container4">
-							<div class="page_navigation"></div>
-							<ul class="thumbnails">
-								<ul class="content">
-									@for(event <- subscribed){
-									<li>
-										<div class="thumbnail">
-											@defining(event.getEntity()){ entity=>
-											<div class="entityStateButtons" align="right">
-
-												<!-- SUBSCRIBE BUTTON -->
-												<button 
-													title="Subscribe/Unsubscribe"
-													name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'subscription' )">
-
-													<span class="glyphicon glyphicon-heart"
-														title="Subscribe/Unsubscribe"></span>
-
-												</button>
-
-												<!-- VOTE BUTTON -->
-												<button 
-													title="Vote/Unvote"
-													name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'vote' )">
-
-													<span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
-
-												</button>
-
-												<!-- WATCH BUTTON -->
-												<button 
-													title="Watch/Unwatch"
-													name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
-													type="button" 
-													class="" 
-													data-toggle="button"
-													onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', '@username', 'watch' )">
-
-													<span class="glyphicon glyphicon-eye-open"
-														title="Watch/Unwatch"></span>
-
-												</button>
-
-												<script>
-													setStatusOfAllButtons(
-															'@entity.getEntityType()',
-															'@entity.getEntityId()',
-															'@username')
-												</script>
-
-											</div>
-											<div>
-												<h3>@entity.getSummary()</h3>
-												<h4>@Html(event.getEventDetails())</h4>
-												<p>
-													@entity.getKey() <br />@event.getDate()
-												</p>
-												<a class="btn btn-primary btn-sm"
-													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
-													more &raquo;</a>
-											</div>
-											}
-										</div>
-									</li> }
-								</ul>
-							</ul>
-						</div>
-						<br />
-					</div>
-					<!-- Query Subscriptions -->
-					<div class="tab-pane" id="5">
-					<br/>
-					<div id="page_container5">
-					<div class="page_navigation"></div>
-					<ul class="thumbnails">
-					<ul class="content">
-					
-					
-					
-					
-					
-					
-					
-					
-					</ul>
-					</ul>
-					</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+   <div class="row">
+      <div class="span4">
+         <div class="tabbable">
+            <ul class="nav nav-tabs" id="dashTab">
+               <li class="active"><a href="#1" data-toggle="tab">My
+                  Projects</a>
+               </li>
+               <li class=""><a href="#2" data-toggle="tab">Team Projects</a></li>
+               <li class=""><a href="#3" data-toggle="tab">Projects
+                  Across the Firm</a>
+               </li>
+               <li class=""><a href="#4" data-toggle="tab">Subscribed
+                  Entities</a>
+               </li>
+               <li class=""><a href="#5" data-toggle="tab">Query Subscriptions</a>
+               <li>
+            </ul>
+            <div class="tab-content">
+               <!--  MY PROJECTS  -->
+               <div class="tab-pane active" id="1">
+                  <br />
+                  <div id="page_container" class="pcontainer">
+                     <div class="page_navigation"></div>
+                     <br />
+                     <div class="info_text"></div>
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
+                        <ul class="content">
+                           @for(event <- userEntities){
+                           <li>
+                              <div class="thumbnail">
+                                 @defining(event.getEntity()){ entity=>
+                                 <div class="entityStateButtons, pull-right" align="right">
+                                    <!-- SUBSCRIBE BUTTON -->
+                                    <button 
+                                       title="Subscribe/Unsubscribe"
+                                       name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'subscription' )">
+                                    <span class="glyphicon glyphicon-heart"
+                                       title="Subscribe/Unsubscribe"></span>
+                                    </button>
+                                    <!-- VOTE BUTTON -->
+                                    <button 
+                                       title="Vote/Unvote"
+                                       name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'vote' )">
+                                    <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+                                    </button>
+                                    <!-- WATCH BUTTON -->
+                                    <button 
+                                       title="Watch/Unwatch"
+                                       name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'watch' )">
+                                    <span class="glyphicon glyphicon-eye-open"
+                                       title="Watch/Unwatch"></span>
+                                    </button>
+                                    <script>
+                                       setStatusOfAllButtons(
+                                       		'@entity.getEntityType()',
+                                       		'@entity.getEntityId()')
+                                    </script>
+                                 </div>
+                                 <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
+                                    <p>
+                                       Event Submitted: @event.getDate()
+                                    </p>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+                                    more &raquo;</a> <br />
+                                 </div>
+                                 }
+                              </div>
+                           </li>
+                           }
+                        </ul>
+                     </ul>
+                     <br />
+                  </div>
+               </div>
+               <!--  TEAM PROJECTS  -->
+               <div class="tab-pane" id="2">
+                  <br />
+                  <div id="page_container2" class="pcontainer">
+                     <div class="page_navigation"></div>
+                     <br />
+                     <div class="info_text"></div>
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
+                        <ul class="content">
+                           @for(event <- teamEntities){
+                           <li>
+                              <div class="thumbnail">
+                                 @defining(event.getEntity()){ entity=>
+                                 <div class="entityStateButtons, pull-right" align="right">
+                                    <!-- SUBSCRIBE BUTTON -->
+                                    <button 
+                                       title="Subscribe/Unsubscribe"
+                                       name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'subscription' )">
+                                    <span class="glyphicon glyphicon-heart"
+                                       title="Subscribe/Unsubscribe"></span>
+                                    </button>
+                                    <!-- VOTE BUTTON -->
+                                    <button 
+                                       title="Vote/Unvote"
+                                       name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'vote' )">
+                                    <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+                                    </button>
+                                    <!-- WATCH BUTTON -->
+                                    <button 
+                                       title="Watch/Unwatch"
+                                       name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()',  'watch' )">
+                                    <span class="glyphicon glyphicon-eye-open"
+                                       title="Watch/Unwatch"></span>
+                                    </button>
+                                    <script>
+                                       setStatusOfAllButtons(
+                                       		'@entity.getEntityType()',
+                                       		'@entity.getEntityId()')
+                                    </script>
+                                 </div>
+                                 <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
+                                    <p>
+                                       Event Submitted: @event.getDate()
+                                    </p>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+                                    more &raquo;</a> <br />
+                                 </div>
+                                 }
+                              </div>
+                           </li>
+                           }
+                        </ul>
+                     </ul>
+                  </div>
+                  <br />
+               </div>
+               <!--  PROJECTS FROM ACROSS THE FIRM  -->
+               <div class="tab-pane" id="3">
+                  <br />
+                  <div id="page_container3" class="pcontainer">
+                     <div class="page_navigation"></div>
+                     <br />
+                     <div class="info_text"></div>
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
+                        <ul class="content">
+                           @for(event <- orgEntities){
+                           <li>
+                              <div class="thumbnail">
+                                 @defining(event.getEntity()){ entity=>
+                                 <div class="entityStateButtons, pull-right" align="right">
+                                    <!-- SUBSCRIBE BUTTON -->
+                                    <button 
+                                       title="Subscribe/Unsubscribe"
+                                       name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
+                                    <span class="glyphicon glyphicon-heart"
+                                       title="Subscribe/Unsubscribe"></span>
+                                    </button>
+                                    <!-- VOTE BUTTON -->
+                                    <button 
+                                       title="Vote/Unvote"
+                                       name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'vote' )">
+                                    <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+                                    </button>
+                                    <!-- WATCH BUTTON -->
+                                    <button 
+                                       title="Watch/Unwatch"
+                                       name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
+                                    <span class="glyphicon glyphicon-eye-open"
+                                       title="Watch/Unwatch"></span>
+                                    </button>
+                                    <script>
+                                       setStatusOfAllButtons(
+                                       		'@entity.getEntityType()',
+                                       		'@entity.getEntityId()')
+                                    </script>
+                                 </div>
+                                 <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
+                                    <p>
+                                       Event Submitted: @event.getDate()
+                                    </p>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+                                    more &raquo;</a> <br />
+                                 </div>
+                                 }
+                              </div>
+                           </li>
+                           }
+                        </ul>
+                     </ul>
+                  </div>
+                  <br />
+               </div>
+               <!--  MY SUBSCRIPTIONS  -->
+               <div class="tab-pane" id="4">
+                  <br />
+                  <div id="page_container4">
+                     <div class="page_navigation"></div>
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
+                        <ul class="content">
+                           @for(event <- subscribed){
+                           <li>
+                              <div class="thumbnail">
+                                 @defining(event.getEntity()){ entity=>
+                                 <div class="entityStateButtons, pull-right" align="right">
+                                    <!-- SUBSCRIBE BUTTON -->
+                                    <button 
+                                       title="Subscribe/Unsubscribe"
+                                       name="subscription_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'subscription' )">
+                                    <span class="glyphicon glyphicon-heart"
+                                       title="Subscribe/Unsubscribe"></span>
+                                    </button>
+                                    <!-- VOTE BUTTON -->
+                                    <button 
+                                       title="Vote/Unvote"
+                                       name="vote_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'vote' )">
+                                    <span class="glyphicon glyphicon-check" title="Vote/Unvote"></span>
+                                    </button>
+                                    <!-- WATCH BUTTON -->
+                                    <button 
+                                       title="Watch/Unwatch"
+                                       name="watch_b-@entity.getEntityType()-@entity.getEntityId()"
+                                       type="button" 
+                                       class="" 
+                                       data-toggle="button"
+                                       onclick="updateEntityStateStatus( '@entity.getEntityType()', '@entity.getEntityId()', 'watch' )">
+                                    <span class="glyphicon glyphicon-eye-open"
+                                       title="Watch/Unwatch"></span>
+                                    </button>
+                                    <script>
+                                       setStatusOfAllButtons(
+                                       		'@entity.getEntityType()',
+                                       		'@entity.getEntityId()')
+                                    </script>
+                                 </div>
+                                 <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
+                                    <p>
+                                       Event Submitted: @event.getDate()
+                                    </p>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+                                    more &raquo;</a> <br />
+                                 </div>
+                                 }
+                              </div>
+                           </li>
+                           }
+                        </ul>
+                     </ul>
+                  </div>
+                  <br />
+               </div>
+               <!-- Query Subscriptions -->
+               <div class="tab-pane" id="5">
+                  <br/>
+                  <div id="page_container5">
+                     <div class="page_navigation"></div>
+                     <ul class="thumbnails" style="overflow-y: auto; height:600px;">
+                        <ul class="content">
+                           @for(event <- queryEntities){
+                           <li>
+                              @defining(event.getEntity()){ entity=>
+                              <div class="thumbnail">
+                                 <div>
+                                 <img src="@routes.Assets.at(event.getImage())"</img>
+                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
+                                    <p>
+                                       Event Submitted: @event.getDate()
+                                    </p>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
+                                    more &raquo;</a> <br />
+                                 </div>
+                              </div>
+                              }
+                           </li>
+                           }
+                        </ul>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
 <hr>
 <footer>
-	<p>&copy; Team Venture</p>
+   <p>&copy; Team Venture</p>
 </footer>
 </div>
 <!-- /container -->
-
 <!--
    <script>
    $('#dashTab a').click(function (e) {
@@ -418,37 +369,55 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])
    </script>
    -->
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('#page_container').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
+   var socket = new WebSocket("ws://" + location.host + "/webbysockets");
+   var refesh_rate;
 
-	$(document).ready(function() {
-		$('#page_container2').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
+   socket.onopen = function(){  
+     socket.send("username");
+   } 
 
-	$(document).ready(function() {
-		$('#page_container3').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
-	$(document).ready(function() {
-		$('#page_container4').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
-	$(document).ready(function() {
-		$('#page_container5').pajinate({
-			items_per_page : 15,
-			abort_on_small_lists : true
-		});
-	});
+   socket.onmessage = function(message){
+    refresh_rate = message.data;
+    setTimeout(function() {
+       		$("#refresh_id").load("/ #areaTabs", function(){
+       			page_tabs();
+       		});
+       		
+       		
+    }, refresh_rate);
+   }
+   
+   function page_tabs(){
+   $('#page_container').pajinate({
+         items_per_page : 15,
+         abort_on_small_lists: true
+      });
+      
+      $('#page_container2').pajinate({
+         items_per_page : 15,
+         abort_on_small_lists: true
+      });
+      
+      $('#page_container3').pajinate({
+         items_per_page : 15,
+         abort_on_small_lists: true
+      });
+	
+	$('#page_container4').pajinate({
+         items_per_page : 15,
+         abort_on_small_lists: true
+      });
+
+   $('#page_container5').pajinate({
+         items_per_page : 15,
+         abort_on_small_lists: true
+      });
+
+
+	}   
+	
+   $(document).ready(function(){
+      page_tabs();
+   });
 </script>
 }
