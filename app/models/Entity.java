@@ -1,15 +1,22 @@
 package models;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.mongodb.*;
 
+import play.Play;
 import play.data.validation.Constraints.*;
 
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import controllers.Ingester;
 
 import org.jongo.*;
 
@@ -63,8 +70,45 @@ public class Entity {
 		return workBreakdownParent;
 	}
 
-	public void setWorkBreakdownParent(Entity workBreakdownParent) {
-		this.workBreakdownParent = workBreakdownParent;
+	public void setWorkBreakdownParent(Entity wbp) {
+
+		if (wbp != null) {
+			String entityType = wbp.getEntityType();
+			Entity e = null;
+			if (entityType.equals(Initiative.TYPE_STRING)) {
+				e = Initiative.getFirstInitiativeById(wbp.getEntityId());
+			} else if (entityType.equals(Milestone.TYPE_STRING)) {
+				e = Milestone.getFirstWithId(wbp.getEntityId());
+			} else if (entityType.equals(Risk.TYPE_STRING)) {
+				e = Risk.getFirstWithId(wbp.getEntityId());
+			}
+
+			if (e != null) {
+				this.workBreakdownParent = e;
+			} else {
+				String base = Play.application().configuration()
+						.getString("external.json.source");
+				Ingester i = new Ingester(base + "/entity/" + entityType + "/"
+						+ wbp.getEntityId());
+				String ent = i.getResponse();
+				if (ent != null) {
+					ObjectMapper om = new ObjectMapper();
+					try {
+						this.workBreakdownParent = om.readValue(ent, Entity.class);
+					} catch (JsonParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (JsonMappingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+
 	}
 
 	public List<Entity> getOtherParents() {

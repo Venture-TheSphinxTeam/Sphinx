@@ -148,7 +148,7 @@ public class Event implements Comparable<Event> {
 			}
 
 			if (e != null) {
-				this.entity = entity;
+				this.entity = e;
 			} else {
 				String base = Play.application().configuration()
 						.getString("external.json.source");
