@@ -179,7 +179,7 @@
 
 		<h4><b>Verification Steps:</b> @mile.getVerificationSteps()</h4>
 
-	@if(mile.getWorkBreakdownParent != null){
+	@if(mile.getWorkBreakdownParent != null && (mile.getWorkBreakdownParent().getAllowedAccessUsers().contains(username) || mile.getWorkBreakdownParent().getAllowedAccessUsers().size() == 0)){
 		<h4>
 		<b>Work Breakdown Parent:</b>
 		<br/>

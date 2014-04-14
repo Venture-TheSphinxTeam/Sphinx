@@ -182,7 +182,7 @@
   <b>Risk Response Plan:</b>
 			@ri.getRiskResponsePlan() <br /> 
 
-	@if(ri.getWorkBreakdownParent != null){
+	@if(ri.getWorkBreakdownParent != null && (ri.getWorkBreakdownParent().getAllowedAccessUsers().contains(username) || ri.getWorkBreakdownParent().getAllowedAccessUsers().size() == 0)){
 		<h4>
 		<b>Work Breakdown Parent:</b>
 		<br/>

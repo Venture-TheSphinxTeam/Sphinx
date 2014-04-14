@@ -243,7 +243,7 @@ title="Watch/Unwatch"></span>
 			@init.getVerificationSteps()
 		</h4>
 		
-		@if(init.getWorkBreakdownParent != null){
+		@if(init.getWorkBreakdownParent != null && (init.getWorkBreakdownParent().getAllowedAccessUsers().contains(username) || init.getWorkBreakdownParent().getAllowedAccessUsers().size() == 0)) {
 		<h4>
 		<b>Work Breakdown Parent:</b>
 		<br/>
