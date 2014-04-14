@@ -205,7 +205,7 @@ function saveQuery() {
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
-			location.reload();
+			//location.reload();
 		}
     })
 }

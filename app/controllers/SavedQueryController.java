@@ -51,7 +51,7 @@ public class SavedQueryController extends Controller {
 		}
 
 		if (eventTypes != null && eventTypes.length() > 0
-				&& eventTypes.equals("[]")) {
+				&& !eventTypes.equals("[]")) {
 			String[] evs = eventTypes.substring(1, eventTypes.length() - 1)
 					.split(",");
 
