@@ -88,6 +88,7 @@ public class SavedQueryController extends Controller {
 
 		String queryName = json.get("name").asText();
 		String username = request().username();
+
 		User user = User.findByName(username);
 
 		user.removeSavedQuery(queryName);

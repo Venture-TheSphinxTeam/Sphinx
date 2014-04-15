@@ -99,7 +99,7 @@ function setModalBody_UpdateQuery(queryName, facets, types){
 
 function removeQuerySubscription(queryName){
 
-	var json = { 'name': queryName};
+	var json = { "name": queryName};
 
 	var url = "/deleteQuerySubscription";
 
