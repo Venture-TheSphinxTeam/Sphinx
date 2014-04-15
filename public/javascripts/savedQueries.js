@@ -99,14 +99,15 @@ function setModalBody_UpdateQuery(queryName, facets, types){
 
 function removeQuerySubscription(queryName){
 
-	var json = { "name": queryName};
-
+	var json = {
+            "name": queryName,
+    };
 	var url = "/deleteQuerySubscription";
 
 	myJsRoutes.controllers.SavedQueryController.deleteQuerySubscription().ajax({
 		data: JSON.stringify(json),
-		datatype: "json",
-		contentType: 'application/json; charset=utf-8',
+    	datatype: "json",
+    	contentType: 'application/json; charset=utf-8',
 		success: function (data){
 			location.reload();
 		}
