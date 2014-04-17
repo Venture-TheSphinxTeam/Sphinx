@@ -26,7 +26,6 @@ import play.mvc.*;
 import views.html.*;
 
 public class Application extends Controller {
-	public static final String USERNAME = "jay-z";
 	public static final String DATABASE = "dev";
 	public static final String MONGO_URL = "venture.se.rit.edu";
 	public static final int MONGO_PORT = 27017;
@@ -51,7 +50,7 @@ public class Application extends Controller {
 						control.setDatabase(DATABASE);
 
 						// find current user
-						userRate = control.getUserRefreshRate(USERNAME);
+						userRate = control.getUserRefreshRate(request().username());
 
 						control.closeConnection();
 
@@ -252,12 +251,13 @@ public class Application extends Controller {
 
 	@Security.Authenticated(Secured.class)
 	public static Result adminTools() {
-		// TODO: Make admin only
+
 		if (User.findByName(request().username()).getAdmin()) {
-			return ok(adminTools.render("", AdminController.entitForm));
+			return ok(adminTools.render("", AdminController.entitForm, new ArrayList<User>()));
 		} else {
 			return ok(accessError.render());
 		}
+
 	}
 
 	public static Result userSettings() {
