@@ -170,6 +170,7 @@
 									@for(query <- userQueries){
 										<li>
 										@defining(query){ query=>
+											@if(query.getFacets().size() != 0){
 											<div class="thumbnail">
 												<div class="optionButtons" align = "right">
 													<button 
@@ -189,6 +190,7 @@
 													<h3>Query Summary - @query.toQueryString()</h3>
 												</div>
 											</div>
+											}
 											}
 										</li>
 										}
