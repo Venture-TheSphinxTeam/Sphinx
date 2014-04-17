@@ -50,7 +50,8 @@ public class Application extends Controller {
 						control.setDatabase(DATABASE);
 
 						// find current user
-						userRate = control.getUserRefreshRate(request().username());
+						userRate = control.getUserRefreshRate(request()
+								.username());
 
 						control.closeConnection();
 
@@ -101,12 +102,15 @@ public class Application extends Controller {
 				.getQuerySubscriptions();
 
 		for (SavedQuery s : querySubs) {
-			ArrayList<Event> allEvents = control.getEventsForQueriedEntities(s
-					.toQueryString()
-					+ ","
-					+ control.createAllowedAccessUsersQuery(username));
-			for (Event ev : allEvents) {
-				queryEvents.add(ev);
+			if (s.getFacets().size() != 0) {
+				ArrayList<Event> allEvents = control
+						.getEventsForQueriedEntities(s.toQueryString()
+								+ ","
+								+ control
+										.createAllowedAccessUsersQuery(username));
+				for (Event ev : allEvents) {
+					queryEvents.add(ev);
+				}
 			}
 		}
 
@@ -253,7 +257,8 @@ public class Application extends Controller {
 	public static Result adminTools() {
 
 		if (User.findByName(request().username()).getAdmin()) {
-			return ok(adminTools.render("", AdminController.entitForm, new ArrayList<User>()));
+			return ok(adminTools.render("", AdminController.entitForm,
+					new ArrayList<User>()));
 		} else {
 			return ok(accessError.render());
 		}
