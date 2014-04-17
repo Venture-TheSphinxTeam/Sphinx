@@ -253,6 +253,11 @@ public class Application extends Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result adminTools() {
 		//TODO: Make admin only
+
+		//Iterator<User> users = User.getAllUsers(); //TO DO FIX
+
+		User.getAllUsers();
+
 		return ok(adminTools.render("", AdminController.entitForm));
 	}
 

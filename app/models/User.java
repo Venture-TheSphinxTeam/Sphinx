@@ -47,14 +47,13 @@ public class User {
 		return users().findOne("{username: #}", name).as(User.class);
 	}
 
-	//untested function
-	public static List<User> getAllUsers(){
-		List<User> users = new ArrayList<User>();
+	public static ArrayList<User> getAllUsers(){
+		Iterable<User> usersIter = users().find().sort("{username: 1}").as(User.class);
 
-		Iterable<User> iterUsers = users().find().as(User.class);
+		ArrayList<User> users = new ArrayList<User>();
 
-		while(iterUsers.hasNext()){
-			users.add(iterUsers.next());
+		while (usersIter.hasNext()) {
+			users.add(usersIter.next());
 		}
 
 		return users;
