@@ -52,8 +52,8 @@ public class User {
 
 		ArrayList<User> users = new ArrayList<User>();
 
-		while (usersIter.hasNext()) {
-			users.add(usersIter.next());
+		for( User u : usersIter){
+			users.add(u);
 		}
 
 		return users;

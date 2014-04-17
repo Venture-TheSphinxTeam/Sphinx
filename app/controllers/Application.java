@@ -254,11 +254,7 @@ public class Application extends Controller {
 	public static Result adminTools() {
 		//TODO: Make admin only
 
-		//Iterator<User> users = User.getAllUsers(); //TO DO FIX
-
-		User.getAllUsers();
-
-		return ok(adminTools.render("", AdminController.entitForm));
+		return ok(adminTools.render("", AdminController.entitForm, new ArrayList<User>()));
 	}
 
 	
