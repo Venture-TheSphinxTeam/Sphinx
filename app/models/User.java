@@ -17,6 +17,9 @@ import scala.math.Ordering;
 import uk.co.panaxiom.playjongo.PlayJongo;
 import views.html.subscriptions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
@@ -42,6 +45,19 @@ public class User {
 
 	public static User findByName(String name) {
 		return users().findOne("{username: #}", name).as(User.class);
+	}
+
+	//untested function
+	public static List<User> getAllUsers(){
+		List<User> users = new ArrayList<User>();
+
+		Iterable<User> iterUsers = users().find().as(User.class);
+
+		while(iterUsers.hasNext()){
+			users.add(iterUsers.next());
+		}
+
+		return users;
 	}
 
 	public User() {

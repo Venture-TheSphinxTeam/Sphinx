@@ -2,14 +2,28 @@
 @main("Sphinx:Connecting Projects to People")("Username") {
 
 <div class="container">
-	<h1>This is the admin page</h1>
 
-	<h2>@messageBox</h2>
+	<div class="container">
+   	<div class="row">
+      	<div class="span4">
+         	<div class="tabbable">
+         		<div class="tab-content" style="overflow-y: auto; height:600px;">
 
-	<h1>Get Entities</h1>
-	@helper.form(controllers.routes.AdminController.forceGetEntities()){
-	@helper.inputDate(dateForm("date")) <input type="submit" value="Grab"></input>
-	}
+         				<h1>Administrator Page</h1>
+
+						<!--<h2>@messageBox</h2>-->
+
+						<h3>Get Entities</h3>
+						@helper.form(controllers.routes.AdminController.forceGetEntities()){
+							@helper.inputDate(dateForm("date")) <input type="submit" value="Grab"></input>
+						}
+
+						<h3>Set User Admin Status</h3>
+
+         		</div>
+         	</div>
+        </div>
+    </div>
 
 
 
