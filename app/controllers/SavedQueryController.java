@@ -61,6 +61,9 @@ public class SavedQueryController extends Controller {
 		} else {
 			return ok();
 		}
+		if(facets.size() == 0){
+			return ok();
+		}
 
 		sq.setName(name);
 
@@ -117,12 +120,26 @@ public class SavedQueryController extends Controller {
 		}
 		String name = json.get("name").asText();
 		String username = request().username();
+		String eventTypes = json.get("eventTypes").asText();
 
 		SavedQuery sq = new SavedQuery();
 
 		for (Facet f : facets) {
 			sq.addFacet(f);
 		}
+		
+		if (eventTypes != null && eventTypes.length() > 0
+				&& !eventTypes.equals("[]")) {
+			String[] evs = eventTypes.substring(1, eventTypes.length() - 1)
+					.split(",");
+
+			for (String s : evs) {
+				sq.addEventType(s);
+			}
+		} else {
+			return ok();
+		}
+		
 		sq.setName(name);
 
 		User user = User.findByName(username);

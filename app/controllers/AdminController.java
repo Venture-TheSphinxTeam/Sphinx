@@ -72,7 +72,11 @@ public class AdminController extends Controller{
 	        }
 	        message+= "\nEvents pulled";
         }
-		return ok(adminTools.render(message, entitForm));
+
+
+		List<User> users = User.getAllUsers();
+
+		return ok(adminTools.render(message, entitForm, users));
 	}
 
 }
