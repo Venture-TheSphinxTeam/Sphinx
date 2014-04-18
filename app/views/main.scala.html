@@ -61,7 +61,11 @@
 						<li><a href="/">Dashboard</a></li>
 						<li><a href="/search">Search</a></li>
 						<li><a href="/subscriptions">My Subscriptions</a></li>
+						@if(User.findByName(request().username()) != null){
+						@if(User.findByName(request().username()).getAdmin()){
 						<li><a href="/admin-tools">Admin Tools</a></li>
+						}
+						}
 					</ul>
 				</div>
 				<!--/.well -->
