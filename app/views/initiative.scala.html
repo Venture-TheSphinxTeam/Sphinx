@@ -219,13 +219,13 @@ onclick="setCommentBox_New('@initiative.getEntityType()', '@initiative.getEntity
 								class="btn btn-primary btn-sm"
 								data-toggle="modal"
 								data-target="#modal"
-								onclick="setCommentBox_Edit()">Edit
+								onclick="setCommentBox_Edit('@initiative.getEntityType()', '@initiative.getEntityId()','@username', '@comment.getCommentBody()', '@comment.getObjectId()')">Edit
 							</button>
 							<button 
 							class="btn btn-primary btn-sm"
 							data-toggle="modal"
 							data-target="#modal"
-							onclick="setCommentBox_Delete()">Delete
+							onclick="setCommentBox_Delete('@comment.getObjectId()')">Delete
 						</button>
 					</div>
 				}

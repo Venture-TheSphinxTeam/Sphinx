@@ -6,7 +6,7 @@ function setCommentBox_New(entityType, entityId, createdBy){
 
 	$("#modal-body-text").html("Enter your new comment and hit Submit. ");
 
-	$("#modal-form").html("<input type='text' name='comment' id='comment'>")
+	$("#modal-form").html("<textarea name='comment' id='comment' class='form-control' row='10'>")
 
 	$("#modal-button1").html("Cancel");
 	$("#modal-button1").removeClass();
@@ -26,12 +26,14 @@ function setCommentBox_New(entityType, entityId, createdBy){
 
 }
 
-function setCommentBox_Edit(){
+function setCommentBox_Edit(_id, entityType, entityId, createdBy){
 	var allFields = $([]).add(commentHeader).add(comment);
 
 	$("#modal-label").html("Edit Comment");
 
 	$("#modal-body-text").html("Edit your comment and hit Submit. ");
+
+	//grab comment object set text box with current body text
 
 	$("#modal-button1").html("Cancel");
 	$("#modal-button1").removeClass();
@@ -43,13 +45,14 @@ function setCommentBox_Edit(){
 
 	$("#modal-button2").click(
 		function(){
-			editComment(entityType, entityId, createdBy, "", comment)
+			//pass in _id
+			editComment(_id, entityType, entityId, createdBy, "", comment)
 		}
 	);
 
 }
 
-function setCommentBox_Delete(){
+function setCommentBox_Delete(objectId){
 	var allFields = $([]).add(commentHeader).add(comment);
 
 	$("#modal-label").html("Delete Comment");
@@ -66,7 +69,8 @@ function setCommentBox_Delete(){
 
 	$("#modal-button2").click(
 		function(){
-			deleteComment(entityType, entityId, createdBy, "", comment)
+			//pass in _id
+			deleteComment(objectId)
 		}
 	);
 }
@@ -102,7 +106,7 @@ function editComment(entityType, entityId, createdBy, commentHeader,comment){
 	'commentHeader': commentHeader,
 	'comment': comment  };
 
-	var url = "/newComment";
+	var url = "/editComment";
 
 	$.ajax({
 		type: "POST",
@@ -116,15 +120,10 @@ function editComment(entityType, entityId, createdBy, commentHeader,comment){
 	})
 }
 
-function deleteComment(entityType, entityId, createdBy, commentHeader,comment){
-	//NOT COMPLETED
-	var json = { 'entityType': entityType, 
-	'entityId': 	 entityId,
-	'createdBy':   createdBy,
-	'commentHeader': commentHeader,
-	'comment': comment  };
+function deleteComment(objectId){
+	var json = { '_id': objectId.toString() };
 
-	var url = "/newComment";
+	var url = "/deleteComment";
 
 	$.ajax({
 		type: "POST",
