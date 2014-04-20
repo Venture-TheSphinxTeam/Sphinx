@@ -12,6 +12,7 @@ import models.facets.SavedQuery;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 public class SavedQueryController extends Controller {
 
+	@Security.Authenticated(Secured.class)
 	public static Result saveQuery() {
 		JsonNode json = request().body().asJson();
 
@@ -38,7 +40,7 @@ public class SavedQueryController extends Controller {
 		}
 		String name = json.get("name").asText();
 		String eventTypes = json.get("eventTypes").asText();
-		String username = json.get("username").asText();
+		String username = request().username();
 
 		ObjectNode result = Json.newObject();
 
@@ -49,7 +51,7 @@ public class SavedQueryController extends Controller {
 		}
 
 		if (eventTypes != null && eventTypes.length() > 0
-				&& eventTypes.equals("[]")) {
+				&& !eventTypes.equals("[]")) {
 			String[] evs = eventTypes.substring(1, eventTypes.length() - 1)
 					.split(",");
 
@@ -59,12 +61,22 @@ public class SavedQueryController extends Controller {
 		} else {
 			return ok();
 		}
+		if(facets.size() == 0){
+			return ok();
+		}
 
 		sq.setName(name);
 
 		User user = User.findByName(username);
-		user.addSavedQuery(sq);
-		user.save();
+		
+		List<SavedQuery> existing = user.getQuerySubscriptions();
+		if(existing.contains(sq)){
+			flash("A query with this name already exists.");
+		}
+		else{
+			user.addSavedQuery(sq);
+			user.save();
+		}
 
 		// user.setUserEntitySubscriptionStatus(false, user, entityId,
 		// entityType);
@@ -72,12 +84,14 @@ public class SavedQueryController extends Controller {
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result deleteQuerySubscription() {
 		// Get json information sent in
 		JsonNode json = request().body().asJson();
 
 		String queryName = json.get("name").asText();
-		String username = json.get("username").asText();
+		String username = request().username();
+
 		User user = User.findByName(username);
 
 		user.removeSavedQuery(queryName);
@@ -88,6 +102,7 @@ public class SavedQueryController extends Controller {
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result updateQuerySubscription() {
 
 		JsonNode json = request().body().asJson();
@@ -104,13 +119,27 @@ public class SavedQueryController extends Controller {
 			return ok();
 		}
 		String name = json.get("name").asText();
-		String username = json.get("username").asText();
+		String username = request().username();
+		String eventTypes = json.get("eventTypes").asText();
 
 		SavedQuery sq = new SavedQuery();
 
 		for (Facet f : facets) {
 			sq.addFacet(f);
 		}
+		
+		if (eventTypes != null && eventTypes.length() > 0
+				&& !eventTypes.equals("[]")) {
+			String[] evs = eventTypes.substring(1, eventTypes.length() - 1)
+					.split(",");
+
+			for (String s : evs) {
+				sq.addEventType(s);
+			}
+		} else {
+			return ok();
+		}
+		
 		sq.setName(name);
 
 		User user = User.findByName(username);

@@ -7,6 +7,8 @@ import models.User;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import play.mvc.Http.Request;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -15,14 +17,15 @@ import java.util.Arrays;
 public class SubscriptionController extends Controller{
 	private static final ArrayList<String> ALL_EVENT_TYPES = new ArrayList(Arrays.asList("REPORT", "TIMESPENT", "CREATE", "UPDATE", "DELETE"));
 
+	@Security.Authenticated(Secured.class)
 	public static Result DeleteEntitySubscription(){
 
 		// Get json information sent in
 		JsonNode json = request().body().asJson();
-		
+
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
+		String username = request().username();
 		
 		ObjectNode result = Json.newObject();
 
@@ -32,6 +35,7 @@ public class SubscriptionController extends Controller{
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result UpdateSubscriptionsEvents(){
 		
 		// Get json information sent in
@@ -39,7 +43,7 @@ public class SubscriptionController extends Controller{
 		
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
+		String username = request().username();
 		List<String> eventTypes = Arrays.asList( json.get("eventSubscriptions").asText().split(",") );
 
 		ObjectNode result = Json.newObject();
@@ -50,6 +54,7 @@ public class SubscriptionController extends Controller{
 		return ok(result);
 	}
 
+	@Security.Authenticated(Secured.class)
 	public static Result GetEntityEventSubscriptions(){
 
 		// Get json information sent in
@@ -57,8 +62,8 @@ public class SubscriptionController extends Controller{
 		
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
-		
+		String username = request().username();  // user is showing up as null
+
 		ObjectNode result = Json.newObject();
 
 		User user = User.findByName(username);

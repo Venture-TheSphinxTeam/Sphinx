@@ -1,6 +1,7 @@
 package controllers;
 
 import javax.ws.rs.ProcessingException;
+
 import java.net.UnknownHostException;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,11 +9,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.*;
 import play.mvc.Controller;
+import play.mvc.Security;
 import play.libs.Json;
 import play.mvc.Result;
 
 public class CommentsController extends Controller {
 	
+	@Security.Authenticated(Secured.class)
 	public static Result newComment() throws UnknownHostException{
 		String message = "";
 		
@@ -20,7 +23,7 @@ public class CommentsController extends Controller {
 
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String createdBy = json.get("createdBy").asText();
+		String createdBy = request().username();
 		String commentHeader = json.get("commentHeader").asText();
 		String comment = json.get("comment").asText();
 
@@ -31,6 +34,8 @@ public class CommentsController extends Controller {
 		//return 
 		return Application.entityView(entityId, entityType);
 	}
+	
+	
 
 	public static void editComment(){
 		

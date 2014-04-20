@@ -161,6 +161,7 @@ public class MongoControlCenter {
 		}
 
 		Collections.sort(result);
+		Collections.reverse(result);
 		return result;
 	}
 

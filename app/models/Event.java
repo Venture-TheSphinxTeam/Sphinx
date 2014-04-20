@@ -23,10 +23,6 @@ import controllers.Ingester;
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
-
-
-
-
 import play.Play;
 //import sun.util.resources.CalendarData;
 import uk.co.panaxiom.playjongo.PlayJongo;
@@ -44,6 +40,11 @@ public class Event implements Comparable<Event> {
 	protected String eventType;
 	protected Entity entity;
 	protected long com_date;
+	private final String IMAGE_LOCATION_C = "images/icon-create.png";
+	private final String IMAGE_LOCATION_R = "images/icon-report.png";
+	private final String IMAGE_LOCATION_U = "images/icon-update.png";
+	private final String IMAGE_LOCATION_D = "images/icon-delete.png";
+	private final String IMAGE_LOCATION_T = "images/icon-timespent.png";
 
 	protected static MongoCollection _events() {
 		return PlayJongo.getCollection("events");
@@ -53,35 +54,10 @@ public class Event implements Comparable<Event> {
 		return _events().find("{" + query + "}").as(Event.class);
 	}
 
-    public static List<? extends Event> findByIDListAndEntityTypeA(
-            List<String> ids, String type) {
+	public static List<? extends Event> findByIDListAndEntityTypeA(
+			List<String> ids, String type) {
 
-
-        String idString = listToMongoString(ids);
-
-        String s = "\"entity.entityId\": {$in:" + idString + "},"
-                + "\"entity.entityType\": \"" + type + "\"";
-
-        ArrayList<Event> result;
-        Iterable<? extends Event> events = ReportEvent.findREBy(s);
-        result = Event.eventIterToList(events.iterator());
-
-        events = ChangeEvent.findCEby(s);
-        result.addAll(eventIterToList(events.iterator()));
-
-        events = TimeSpentEvent.findTSEBy(s);
-        result.addAll(eventIterToList(events.iterator()));
-
-        return result;
-    }
-
-	public static List<? extends Event> findByIDListAndEntityType(
-			List<EntitySubscription> subs, String type) {
-
-        //Change Report
-        ArrayList<String> ids = EntitySubscription.getIdsForEventType(subs,"REPORT");
-
-        String idString = listToMongoString(ids);
+		String idString = listToMongoString(ids);
 
 		String s = "\"entity.entityId\": {$in:" + idString + "},"
 				+ "\"entity.entityType\": \"" + type + "\"";
@@ -90,21 +66,46 @@ public class Event implements Comparable<Event> {
 		Iterable<? extends Event> events = ReportEvent.findREBy(s);
 		result = Event.eventIterToList(events.iterator());
 
-        //Change events
-        ids = EntitySubscription.getIdsForEventType(subs,"CREATE");
-        ids.addAll(EntitySubscription.getIdsForEventType(subs,"UPDATE"));
-        ids.addAll(EntitySubscription.getIdsForEventType(subs,"DELETE"));
-        idString = listToMongoString(ids);
-        s = "\"entity.entityId\": {$in:" + idString + "},"
-                + "\"entity.entityType\": \"" + type + "\"";
+		events = ChangeEvent.findCEby(s);
+		result.addAll(eventIterToList(events.iterator()));
+
+		events = TimeSpentEvent.findTSEBy(s);
+		result.addAll(eventIterToList(events.iterator()));
+
+		return result;
+	}
+
+	public static List<? extends Event> findByIDListAndEntityType(
+			List<EntitySubscription> subs, String type) {
+
+		// Change Report
+		ArrayList<String> ids = EntitySubscription.getIdsForEventType(subs,
+				"REPORT");
+
+		String idString = listToMongoString(ids);
+
+		String s = "\"entity.entityId\": {$in:" + idString + "},"
+				+ "\"entity.entityType\": \"" + type + "\"";
+
+		ArrayList<Event> result;
+		Iterable<? extends Event> events = ReportEvent.findREBy(s);
+		result = Event.eventIterToList(events.iterator());
+
+		// Change events
+		ids = EntitySubscription.getIdsForEventType(subs, "CREATE");
+		ids.addAll(EntitySubscription.getIdsForEventType(subs, "UPDATE"));
+		ids.addAll(EntitySubscription.getIdsForEventType(subs, "DELETE"));
+		idString = listToMongoString(ids);
+		s = "\"entity.entityId\": {$in:" + idString + "},"
+				+ "\"entity.entityType\": \"" + type + "\"";
 
 		events = ChangeEvent.findCEby(s);
 		result.addAll(eventIterToList(events.iterator()));
 
-        ids = EntitySubscription.getIdsForEventType(subs,"TIMESPENT");
-        idString = listToMongoString(ids);
-        s = "\"entity.entityId\": {$in:" + idString + "},"
-                + "\"entity.entityType\": \"" + type + "\"";
+		ids = EntitySubscription.getIdsForEventType(subs, "TIMESPENT");
+		idString = listToMongoString(ids);
+		s = "\"entity.entityId\": {$in:" + idString + "},"
+				+ "\"entity.entityType\": \"" + type + "\"";
 
 		events = TimeSpentEvent.findTSEBy(s);
 		result.addAll(eventIterToList(events.iterator()));
@@ -133,31 +134,30 @@ public class Event implements Comparable<Event> {
 	}
 
 	public void setEntity(Entity entity) {
-        Entity id = entity;
-        
-        if(id != null){
-        	String entityType = id.getEntityType();
-        	Entity e = null;
-            if(entityType.equals(Initiative.TYPE_STRING)){
-                e = Initiative.getFirstInitiativeById(id.getEntityId());
-            }
-            else if(entityType.equals( Milestone.TYPE_STRING)){
-                e = Milestone.getFirstWithId(id.getEntityId());
-            }
-            else if(entityType.equals( Risk.TYPE_STRING)){
-                e = Risk.getFirstWithId(id.getEntityId());
-            }
-            
-            if(e != null){
-            	this.entity = entity;
-            }
-            else{
-            	String base = Play.application().configuration().getString("external.json.source");
-            	Ingester i = new Ingester(base + "/entity/" +entityType + "/"+id.getEntityId());
-            	String ent = i.getResponse();
-            	if(ent != null){
-            		ObjectMapper om = new ObjectMapper();
-            		try {
+		Entity id = entity;
+
+		if (id != null) {
+			String entityType = id.getEntityType();
+			Entity e = null;
+			if (entityType.equals(Initiative.TYPE_STRING)) {
+				e = Initiative.getFirstInitiativeById(id.getEntityId());
+			} else if (entityType.equals(Milestone.TYPE_STRING)) {
+				e = Milestone.getFirstWithId(id.getEntityId());
+			} else if (entityType.equals(Risk.TYPE_STRING)) {
+				e = Risk.getFirstWithId(id.getEntityId());
+			}
+
+			if (e != null) {
+				this.entity = e;
+			} else {
+				String base = Play.application().configuration()
+						.getString("external.json.source");
+				Ingester i = new Ingester(base + "/entity/" + entityType + "/"
+						+ id.getEntityId());
+				String ent = i.getResponse();
+				if (ent != null) {
+					ObjectMapper om = new ObjectMapper();
+					try {
 						this.entity = om.readValue(ent, Entity.class);
 					} catch (JsonParseException e1) {
 						// TODO Auto-generated catch block
@@ -169,11 +169,10 @@ public class Event implements Comparable<Event> {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-            	}
-            }
-        }
-    }
-    
+				}
+			}
+		}
+	}
 
 	public long getComDate() {
 		return com_date;
@@ -309,29 +308,55 @@ public class Event implements Comparable<Event> {
 			return -1;
 		}
 	}
-	
+
 	@Override
-	public boolean equals(Object o){
+	public boolean equals(Object o) {
 		boolean result = false;
-		if(o instanceof Event){
+		if (o instanceof Event) {
 			Event e = (Event) o;
-			if(id.equals(e.getId())){
+			if (id.equals(e.getId())) {
 				result = true;
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
-	public int hashCode(){
+	public int hashCode() {
 		return id.hashCode();
 	}
 
 	protected String getFormattedDate(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd yyyy"); // the format of your date
+		SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd yyyy"); // the
+																		// format
+																		// of
+																		// your
+																		// date
 		String formattedDate = sdf.format(date);
 
 		return formattedDate;
+	}
+
+	public String getImage() {
+		if (this.getEventType().equals("CREATE")) {
+			return IMAGE_LOCATION_C;
+		}
+
+		else if (this.getEventType().equals("REPORT")) {
+			return IMAGE_LOCATION_R;
+		}
+
+		else if (this.eventType.equals("UPDATE")) {
+			return this.IMAGE_LOCATION_U;
+		}
+
+		else if (this.eventType.equals("DELETE")) {
+			return this.IMAGE_LOCATION_D;
+		}
+
+		else {
+			return IMAGE_LOCATION_T;
+		}
 	}
 }

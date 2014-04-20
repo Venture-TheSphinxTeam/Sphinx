@@ -2,18 +2,15 @@
 /** 
  * Subscribe/vote/watch status change toggled from true to false or vice versa
  */
-function updateEntityStateStatus(entityType,entityId,username,buttonType){
+function updateEntityStateStatus(entityType,entityId,buttonType){
 
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
-				 'username':   username,
 				 'buttonType': buttonType };
 
 	var url = "/updateButtonStatus";
 
-	$.ajax({
-		type: "POST",
-		url: url,
+	myJsRoutes.controllers.ButtonStateController.UpdateButtonStatus().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
@@ -27,35 +24,33 @@ function updateEntityStateStatus(entityType,entityId,username,buttonType){
 /**
  * Gets and updates status of all buttons of entityType-entityId on the page
  */
-function setStatusOfAllButtons(entityType,entityId,username){
-	setStatusOfButtons(entityType,entityId,username,"subscription");
-	setStatusOfButtons(entityType,entityId,username,"vote");
-	setStatusOfButtons(entityType,entityId,username,"watch");
+function setStatusOfAllButtons(entityType,entityId){
+	setStatusOfButtons(entityType,entityId,"subscription");
+	setStatusOfButtons(entityType,entityId,"vote");
+	setStatusOfButtons(entityType,entityId,"watch");
 }
 
 /**
  * Gets and updates status of all of a buttonType on the page
  */
-function setStatusOfButtons(entityType,entityId,username,buttonType){
+function setStatusOfButtons(entityType,entityId,buttonType){
 
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
-				 'username':   username,
 				 'buttonType': buttonType };
 
-	var url = '/getButtonStatus';
+	var url = "@routes.ButtonStateController.GetButtonStatus()";
 
-	//Need to get a hole of the button element itself.//
-	$.ajax({
-		type: "POST",
-		url: url,
+
+	myJsRoutes.controllers.ButtonStateController.GetButtonStatus().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
-		contentType: 'application/json; charset=utf-8',
-		success: function (data){
+		contentType: 'application/json; charset=utf-8', 
+		success : function (data){
 			updateButtonsOnPage(entityType,entityId,data['status'], buttonType);
 		}
 	})
+	//Need to get a hole of the button element itself.//
 }
 
 //-------------------SUBFUNCTIONS-----------------------//
@@ -67,6 +62,7 @@ function updateButtonsOnPage(entityType,entityId,status,buttonType){
 
 	var buttons = document.getElementsByName(buttonType+"_b-"+entityType+"-"+entityId);
 	if( status == false ){
+
 		for( var i = 0; i < buttons.length; i++ ) {
 			buttons[i].className = "btn btn-primary";
 		}
@@ -82,18 +78,17 @@ function updateButtonsOnPage(entityType,entityId,status,buttonType){
 /** 
  * Subscribe/vote/watch status change toggled from true to false or vice versa
  */
-function removeSubscription(entityType,entityId,username){
+function removeSubscription(entityType,entityId){
 
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
-				 'username':   username,
 				 'buttonType': 'subscription' };
 
 	var url = "/updateButtonStatus";
 
 	$.ajax({
 		type: "POST",
-		url: url,
+		url: '@routes.ButtonStateController.UpdateButtonStatus()',
 		data: JSON.stringify(json),
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',

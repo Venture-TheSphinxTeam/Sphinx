@@ -1,5 +1,7 @@
 package controllers;
 
+import ch.qos.logback.core.Context;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -8,6 +10,8 @@ import models.Vote;
 import models.Watch;
 import play.libs.Json;
 import play.mvc.Controller;
+import play.mvc.Security;
+import play.mvc.Http.Request;
 import play.mvc.Result;
 
 public class ButtonStateController extends Controller{
@@ -17,6 +21,7 @@ public class ButtonStateController extends Controller{
 	 *
 	 * @return	New state of button
 	 */
+	@Security.Authenticated(Secured.class)
 	public static Result UpdateButtonStatus(){
 		
 		// Get json information sent in
@@ -24,8 +29,8 @@ public class ButtonStateController extends Controller{
 		
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
 		String buttonType = json.get("buttonType").asText();
+		String username = request().username();
 		
 		User user = User.findByName(username);
 
@@ -52,14 +57,16 @@ public class ButtonStateController extends Controller{
 	 *   Returns current status of if entityType-entityName is already subscribed 
 	 * to by inputted user.
 	 */
+	@Security.Authenticated(Secured.class)
 	public static Result GetButtonStatus(){
 
+		// Get json information sent in
 		JsonNode json = request().body().asJson();
-		
+
 		String entityType = json.get("entityType").asText();
 		String entityId = json.get("entityId").asText();
-		String username = json.get("username").asText();
 		String buttonType = json.get("buttonType").asText();
+		String username = request().username();
 		
 		User user = User.findByName(username);
 
