@@ -10,6 +10,8 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.adminTools;
 
+import java.util.ArrayList;
+
 public class AdminController extends Controller{
 	public static Form<GetEntitiesForm> entitForm = Form.form(GetEntitiesForm.class);
 	
@@ -73,10 +75,7 @@ public class AdminController extends Controller{
 	        message+= "\nEvents pulled";
         }
 
-
-		List<User> users = User.getAllUsers();
-
-		return ok(adminTools.render(message, entitForm, users));
+		return ok(adminTools.render(message, entitForm, new ArrayList<User>()));
 	}
 
 }
