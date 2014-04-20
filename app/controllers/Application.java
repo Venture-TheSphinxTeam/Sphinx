@@ -20,15 +20,16 @@ import com.mongodb.BasicDBObject;
 
 import models.User;
 import models.facets.SavedQuery;
+import play.Play;
 import play.libs.F.Callback;
 import play.libs.F.Callback0;
 import play.mvc.*;
 import views.html.*;
 
 public class Application extends Controller {
-	public static final String DATABASE = "dev";
-	public static final String MONGO_URL = "venture.se.rit.edu";
-	public static final int MONGO_PORT = 27017;
+	public static String DATABASE = Play.application().configuration().getString("sphinx.db.db");
+	public static String MONGO_URL = Play.application().configuration().getString("sphinx.db.url");
+	public static int MONGO_PORT = Play.application().configuration().getInt("sphinx.db.port");
 
 	public static WebSocket<String> webbysockets() {
 		return new WebSocket<String>() {
