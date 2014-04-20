@@ -15,7 +15,7 @@ application.langs="en"
 # ~~~~~
 # Define the Global object class for this application.
 # Default to Global in the root package.
-# application.global=Global
+application.global=Global
 
 # Router
 # ~~~~~
@@ -70,12 +70,16 @@ logger.application=DEBUG
 
 # Play Jongo
 # ~~~~~
-playjongo.uri="mongodb://127.0.0.1:27017/test"
+playjongo.uri="mongodb://venture.se.rit.edu:27017/dev"
 playjongo.gridfs.enabled=false
 
 
 
 # Sphinx
 # ~~~~~~
-external.json.source="http://callao.student.rit.edu:9998"
-vote.post_target:"http://callao.student.rit.edu:9998/:entityType/:id/:voteStatus/:username"
+external.json.source="http://localhost:9998"
+external.pull_int="15"
+sphinx.db.url="venture.se.rit.edu"
+sphinx.db.port="27017"
+sphinx.db.db="dev"
+vote.post_target:"http://localhost:9998/test/vote"
