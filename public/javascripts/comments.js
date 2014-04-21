@@ -27,7 +27,7 @@ function setCommentBox_New(entityType, entityId, createdBy){
 }
 
 function setCommentBox_Edit(entityType, entityId, createdBy, comment, objId){
-	
+	var commentBody = comment;
 	$("#modal-label").html("Edit Comment");
 
 	$("#modal-body-text").html("Edit your comment and hit Submit. ");
@@ -108,8 +108,6 @@ function editComment(entityType, entityId, createdBy, commentHeader, comment, ob
 
 	var url = "/editComment";
 
-	console.log(json);
-
 	myJsRoutes.controllers.CommentsController.changeComment().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
@@ -130,8 +128,6 @@ function deleteComment(entityType, entityId, createdBy, commentHeader, comment,o
 	'comment': comment };
 
 	var url = "/deleteComment";
-
-	console.log(json);
 
 	myJsRoutes.controllers.CommentsController.removeComment().ajax({
 		data: JSON.stringify(json),
