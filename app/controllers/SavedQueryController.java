@@ -64,6 +64,10 @@ public class SavedQueryController extends Controller {
 		if(facets.size() == 0){
 			return ok();
 		}
+		
+		if(name.equals("")){
+			return ok();
+		}
 
 		sq.setName(name);
 
