@@ -95,8 +95,6 @@ public class AdminController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public static Result getAdminStatusOfUsers(){
 
-		System.out.println("yoyo");
-
 		// Check the user is an admin before returning admin statuses
 		if (User.findByName(request().username()).getAdmin()) {
 			// create return object
@@ -124,6 +122,32 @@ public class AdminController extends Controller{
 		else {
 			return badRequest("User is not admin and does not have access to this function");
 		}
+	}
+
+	@Security.Authenticated(Secured.class)
+	public static Result toggleAdminStatusOfUser(){
+
+		// Check the user is an admin before returning admin statuses
+		if (User.findByName(request().username()).getAdmin()) {
+
+			// Get json information sent in
+			JsonNode json = request().body().asJson();		
+			String username = json.get("username").asText();
+			User userToChangeUsername = User.findByName(username);
+
+			if( userToChangeUsername.getAdmin() ){
+				userToChangeUsername.setUserAdminStatus(false,userToChangeUsername);
+			}else{
+				userToChangeUsername.setUserAdminStatus(true,userToChangeUsername);
+			}
+
+
+			return ok( Json.newObject() );			
+		} 
+		else {
+			return badRequest("User is not admin and does not have access to this function");
+		}
+
 	}
 
 }
