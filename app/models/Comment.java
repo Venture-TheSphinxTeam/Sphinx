@@ -44,9 +44,10 @@ public class Comment {
         //return this;
     }
 
-    public void upsert(ObjectId _id){
+    public void upsert(){
         //save with _id
         //comments().save(_id, this) ?
+        comments().save(this);
 
     }
 

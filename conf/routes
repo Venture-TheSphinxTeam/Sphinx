@@ -36,7 +36,8 @@ POST	/user-settings/update		controllers.UserSettingsController.updateInterval()
 
 #Comments
 POST	/newComment					controllers.CommentsController.newComment()
-POST	/deleteComment				controllers.CommentsController.deleteComment()
+POST	/editComment				controllers.CommentsController.changeComment()
+POST	/deleteComment				controllers.CommentsController.removeComment()
 
 #JavaScript
 GET		/jsRoutes					controllers.JavaScriptController.jsRoutes()

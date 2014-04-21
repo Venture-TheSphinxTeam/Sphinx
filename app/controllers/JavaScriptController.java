@@ -19,6 +19,8 @@ public class JavaScriptController extends Controller{
 				routes.javascript.SavedQueryController.deleteQuerySubscription(),
 				routes.javascript.SavedQueryController.saveQuery(),
 				routes.javascript.SavedQueryController.updateQuerySubscription(),
-				routes.javascript.CommentsController.newComment()));
+				routes.javascript.CommentsController.newComment(),
+				routes.javascript.CommentsController.changeComment(),
+				routes.javascript.CommentsController.removeComment()));
 	}
 }

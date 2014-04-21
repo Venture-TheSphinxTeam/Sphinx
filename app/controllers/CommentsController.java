@@ -36,12 +36,30 @@ public class CommentsController extends Controller {
 	}
 	
 	
-
-	public static void editComment(){
+	@Security.Authenticated(Secured.class)
+	public static Result changeComment() throws UnknownHostException{
+		String message = "";
 		
+		JsonNode json = request().body().asJson();
+
+		String objID = json.get("_id").asText();
+		String entityType = json.get("entityType").asText();
+		String entityId = json.get("entityId").asText();
+		String createdBy = request().username();
+		String commentHeader = json.get("commentHeader").asText();
+		String comment = json.get("comment").asText();
+
+		// create result object
+		Comment result = new Comment(objID, entityType, entityId, createdBy, commentHeader, comment);
+		result.upsert();
+		 
+		//return 
+		return Application.entityView(entityId, entityType);
 	}
 
-	public static Result deleteComment() throws UnknownHostException{
+	@Security.Authenticated(Secured.class)
+	public static Result removeComment() throws UnknownHostException{
+		String message = "";
 		
 		JsonNode json = request().body().asJson();
 
