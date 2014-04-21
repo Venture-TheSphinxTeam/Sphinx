@@ -26,7 +26,11 @@
 	                	<li>
 	                	<div class="thumbnail">
 	                  		<p><b>Username :</b> @user.getUsername()</p>
-	                  		<input type="checkbox" id="adminStatus-@user.getUsername()"> Admin<br>
+	                  		<input 
+	                  			type="checkbox" 
+	                  			id="adminStatus-@user.getUsername()" 
+	                  			onclick="toggleAdminStatusOfUser('@user.getUsername()')"> 
+	                  			Admin<br>
 
 	                	</div>
 	                	</li>
