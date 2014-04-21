@@ -21,6 +21,8 @@ public class JavaScriptController extends Controller{
 				routes.javascript.SavedQueryController.updateQuerySubscription(),
 				routes.javascript.CommentsController.newComment(),
 				routes.javascript.CommentsController.changeComment(),
-				routes.javascript.CommentsController.removeComment()));
+				routes.javascript.CommentsController.removeComment(),
+				routes.javascript.AdminController.getAdminStatusOfUsers(),
+				routes.javascript.AdminController.toggleAdminStatusOfUser()));
 	}
 }

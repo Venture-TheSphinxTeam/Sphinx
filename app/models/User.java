@@ -221,6 +221,11 @@ public class User {
 		users().save(user);
 	}
 
+	public static void setUserAdminStatus(boolean status, User user){
+		user.admin = status;
+		users().save(user);
+	}
+
 	public String getUsername() {
 		return username;
 	}

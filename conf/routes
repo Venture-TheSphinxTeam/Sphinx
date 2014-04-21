@@ -17,6 +17,8 @@ GET     /webbysockets               controllers.Application.webbysockets()
 
 #Admin Tools
 POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
+POST	/getAdminStatusOfUsers		controllers.AdminController.getAdminStatusOfUsers()
+POST	/toggleAdminStatusOfUser	controllers.AdminController.toggleAdminStatusOfUser()
 
 #Subscription/Vote/Watch
 POST	/updateButtonStatus				controllers.ButtonStateController.UpdateButtonStatus()

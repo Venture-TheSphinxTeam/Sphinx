@@ -8,8 +8,6 @@ function updateEntityStateStatus(entityType,entityId,buttonType){
 				 'entityId': 	 entityId,
 				 'buttonType': buttonType };
 
-	var url = "/updateButtonStatus";
-
 	myJsRoutes.controllers.ButtonStateController.UpdateButtonStatus().ajax({
 		data: JSON.stringify(json),
 		datatype: "json",
@@ -38,9 +36,6 @@ function setStatusOfButtons(entityType,entityId,buttonType){
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
 				 'buttonType': buttonType };
-
-	var url = "@routes.ButtonStateController.GetButtonStatus()";
-
 
 	myJsRoutes.controllers.ButtonStateController.GetButtonStatus().ajax({
 		data: JSON.stringify(json),
@@ -83,8 +78,6 @@ function removeSubscription(entityType,entityId){
 	var json = { 'entityType': entityType, 
 				 'entityId': 	 entityId,
 				 'buttonType': 'subscription' };
-
-	var url = "/updateButtonStatus";
 
 	$.ajax({
 		type: "POST",
