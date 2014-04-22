@@ -270,7 +270,7 @@ public class Application extends Controller {
 
 	@Security.Authenticated(Secured.class)
 	public static Result userSettings() {
-		return ok(settings.render("", UserSettingsController.intervalForm));
+		return ok(settings.render("", UserSettingsController.intervalForm, UserSettingsController.iconForm));
 	}
 
 	@Security.Authenticated(Secured.class)

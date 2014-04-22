@@ -230,11 +230,6 @@ public class User {
 		return username;
 	}
 
-	//@Security.Authenticated(Secured.class)
-	public String getName(){
-		return username;
-	}
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -255,6 +250,7 @@ public class User {
 
 	public void setPictureURL(String pictureURL) {
 		this.pictureURL = pictureURL;
+		users().save(this);
 	}
 
 	public List<String> getGroups() {
