@@ -3,46 +3,50 @@
 # ~~~~
 
 #User Auth
-GET		/login						controllers.LoginController.login()
-POST	/login 						controllers.LoginController.authenticate()
-GET		/logout						controllers.LoginController.logout()
+GET		/login								controllers.LoginController.login()
+POST	/login 								controllers.LoginController.authenticate()
+GET		/logout								controllers.LoginController.logout()
+
 # Home page
-GET     /                           controllers.Application.index()
-GET     /search						controllers.Application.search(arg: String ?="", priority: String?="", status: String?="", reporter: String?="", assignee: String?="", label: String?="" )
-GET		/subscriptions				controllers.Application.subscriptions()
-GET		/admin-tools				controllers.Application.adminTools()
-GET		/user-settings				controllers.Application.userSettings()
-GET		/entity					    controllers.Application.entityView(arg: String ?= "", entityType: String ?= "")
-GET     /webbysockets               controllers.Application.webbysockets()
+GET     /                           		controllers.Application.index()
+GET     /search								controllers.Application.search(arg: String ?="", priority: String?="", status: String?="", reporter: String?="", assignee: String?="", label: String?="" )
+GET		/subscriptions						controllers.Application.subscriptions()
+GET		/admin-tools						controllers.Application.adminTools()
+GET		/user-settings						controllers.Application.userSettings()
+GET		/entity					    		controllers.Application.entityView(arg: String ?= "", entityType: String ?= "")
+GET     /webbysockets               		controllers.Application.webbysockets()
 
 #Admin Tools
-POST 	/admin-tools/retrieve		controllers.AdminController.forceGetEntities()
-POST	/getAdminStatusOfUsers		controllers.AdminController.getAdminStatusOfUsers()
-POST	/toggleAdminStatusOfUser	controllers.AdminController.toggleAdminStatusOfUser()
+POST 	/admin-tools/retrieve				controllers.AdminController.forceGetEntities()
+POST	/getAdminStatusOfUsers				controllers.AdminController.getAdminStatusOfUsers()
+POST	/toggleAdminStatusOfUser			controllers.AdminController.toggleAdminStatusOfUser()
 
 #Subscription/Vote/Watch
-POST	/updateButtonStatus				controllers.ButtonStateController.UpdateButtonStatus()
-POST	/getButtonStatus				controllers.ButtonStateController.GetButtonStatus()
-POST	/getEntityEventSubscriptions	controllers.SubscriptionController.GetEntityEventSubscriptions()
-POST	/updateSubscriptionsEvents		controllers.SubscriptionController.UpdateSubscriptionsEvents()
-POST	/deleteEntitySubscription		controllers.SubscriptionController.DeleteEntitySubscription()
+POST	/updateButtonStatus					controllers.ButtonStateController.UpdateButtonStatus()
+POST	/getButtonStatus					controllers.ButtonStateController.GetButtonStatus()
+POST	/getEntityEventSubscriptions		controllers.SubscriptionController.GetEntityEventSubscriptions()
+POST	/updateSubscriptionsEvents			controllers.SubscriptionController.UpdateSubscriptionsEvents()
+POST	/deleteEntitySubscription			controllers.SubscriptionController.DeleteEntitySubscription()
 
 
 #Saving Queries
-POST	/saveQuery                  controllers.SavedQueryController.saveQuery()
-POST	/deleteQuerySubscription	controllers.SavedQueryController.deleteQuerySubscription()
-POST	/updateQuerySubscription	controllers.SavedQueryController.updateQuerySubscription()
+POST	/saveQuery                  		controllers.SavedQueryController.saveQuery()
+POST	/deleteQuerySubscription			controllers.SavedQueryController.deleteQuerySubscription()
+POST	/updateQuerySubscription			controllers.SavedQueryController.updateQuerySubscription()
 
 #User Settings
-POST	/user-settings/update		controllers.UserSettingsController.updateInterval()
+POST	/user-settings/updateInterval		controllers.UserSettingsController.updateInterval()
+POST	/user-settings/updateIcon			controllers.UserSettingsController.updateIcon()
 
 #Comments
-POST	/newComment					controllers.CommentsController.newComment()
+POST	/newComment							controllers.CommentsController.newComment()
+POST	/editComment						controllers.CommentsController.changeComment()
+POST	/deleteComment						controllers.CommentsController.removeComment()
 
 #JavaScript
-GET		/jsRoutes					controllers.JavaScriptController.jsRoutes()
+GET		/jsRoutes							controllers.JavaScriptController.jsRoutes()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               		controllers.Assets.at(path="/public", file)
 
 

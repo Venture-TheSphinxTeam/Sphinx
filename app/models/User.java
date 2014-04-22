@@ -234,6 +234,8 @@ public class User {
 		this.username = username;
 	}
 
+
+
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -248,6 +250,7 @@ public class User {
 
 	public void setPictureURL(String pictureURL) {
 		this.pictureURL = pictureURL;
+		users().save(this);
 	}
 
 	public List<String> getGroups() {
