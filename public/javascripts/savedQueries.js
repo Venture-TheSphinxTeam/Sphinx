@@ -80,19 +80,19 @@ function setModalBody_UpdateQuery(queryName, facets, types) {
 	}
 
 	if (report != -1) {
-		$("#event-report").prop('checked', true);
+		$("#event-report_e").prop('checked', true);
 	}
 	if (time != -1) {
-		$("#event-timespent").prop('checked', true);
+		$("#event-timespent_e").prop('checked', true);
 	}
 	if (create != -1) {
-		$("#event-create").prop('checked', true);
+		$("#event-create_e").prop('checked', true);
 	}
 	if (update != -1) {
-		$("#event-update").prop('checked', true);
+		$("#event-update_e").prop('checked', true);
 	}
 	if (_delete != -1) {
-		$("#event-delete").prop('checked', true);
+		$("#event-delete_e").prop('checked', true);
 	}
 
 	$('.selectpicker').selectpicker();
