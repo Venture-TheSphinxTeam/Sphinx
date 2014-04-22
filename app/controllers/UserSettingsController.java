@@ -8,19 +8,20 @@ import models.*;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import views.html.settings;
 
 public class UserSettingsController extends Controller{
 	public static Form<ChangeInterval> intervalForm = Form.form(ChangeInterval.class);
 	
+	@Security.Authenticated(Secured.class)
 	public static Result updateInterval(){
 		String message = "";
 		
 
 		Form<ChangeInterval> ff = intervalForm.bindFromRequest();
 		
-		String username = "jay-z";
-		User user = User.findByName(username);
+		User user = User.findByName(request().username());
 		Integer newRate = 0;
 		
 		try {

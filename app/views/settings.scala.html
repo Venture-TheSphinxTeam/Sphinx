@@ -4,11 +4,10 @@
 <div class="container">
 	<div class="row">
 		<h2>User Settings</h2>
-		<h1>@updateMessage</h1><br><br>
+		<h1>@updateMessage</h1><br>
+		<b>Username : </b> @(User.findByName(request().username()).getUsername())<br>
+		<b>Email Address : </b> @(User.findByName(request().username()).getEmailAddress())<br><br>
 		
-		Username : <br>
-		Email Address : <br>
-		<br>
 		@helper.form(controllers.routes.UserSettingsController.updateInterval()){
 			@helper.inputText(intervalForm("interval")) <input type="submit" value="Submit"></input>
 		}
