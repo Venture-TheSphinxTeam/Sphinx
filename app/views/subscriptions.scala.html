@@ -249,7 +249,7 @@
       }
       
       @defining(index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldValues")){ list =>
-      	@for(value <- list.asInstanceOf[List[String]]){
+      	@for(value <- list.asInstanceOf[List[String]].sorted){
       		<option>@value</option>
       	}
       	
