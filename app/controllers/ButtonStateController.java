@@ -2,17 +2,21 @@ package controllers;
 
 import ch.qos.logback.core.Context;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.User;
 import models.Vote;
 import models.Watch;
+import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Security;
 import play.mvc.Http.Request;
 import play.mvc.Result;
+
+import javax.ws.rs.ProcessingException;
 
 public class ButtonStateController extends Controller{
 	
@@ -120,15 +124,31 @@ public class ButtonStateController extends Controller{
 			User.setUserEntityVoteStatus(false, user, entityId, entityType);
 			retVal = false;
 
-            v.sendUnVote();
-			
-		}
+            try {
+                v.sendUnVote();
+            } catch (JsonProcessingException e) {
+                Logger.error("Could not convert JSON to String",e);
+                flash("An error occurred and the unvote could not be sent.");
+            } catch(ProcessingException e){
+                Logger.error("Could not send unvote to url",e);
+                flash("An error occurred connecting to the external API and the unvote could not be sent.");
+            }
+
+        }
 		else{
 			User.setUserEntityVoteStatus(true, user, entityId, entityType);
 			retVal = true;
 
-            v.sendVote();
-		}
+            try {
+                v.sendVote();
+            } catch (JsonProcessingException e) {
+                Logger.error("Could not convert JSON to String",e);
+                flash("An error occurred and the vote could not be sent.");
+            } catch(ProcessingException e){
+                Logger.error("Could not send vote to url",e);
+                flash("An error occurred connecting to the external API and the vote could not be sent.");
+            }
+        }
 
 		return retVal;
 	}

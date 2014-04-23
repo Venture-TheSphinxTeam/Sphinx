@@ -22,15 +22,12 @@ public class OutgoingJSON {
 		this.json = json;
 	}
 	
-	public Response sendJson(){
+	public Response sendJson() throws ProcessingException{
 		Client c = ClientBuilder.newClient();
         WebTarget wt = c.target(url);
         Response response = null;
-        try{
-        	response = wt.request().post(Entity.json(json));
-        }catch(ProcessingException e){
-        	e.printStackTrace();
-        }
+        response = wt.request().post(Entity.json(json));
+
         return response;
 	}
 
