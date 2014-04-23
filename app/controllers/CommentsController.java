@@ -71,7 +71,7 @@ public class CommentsController extends Controller {
 		Comment result = new Comment(_id, null, null, null, null, null);
 		result.delete();
 
-		return Application.entityView(entityId, entityType);
+		return ok();
 
 	}
 
