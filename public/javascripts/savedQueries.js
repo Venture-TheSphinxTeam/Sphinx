@@ -10,6 +10,54 @@ function setSQModalBody() {
 	$("#save").click(saveQuery);
 }
 
+function executeQuery(facets) {
+
+	var priority = facets.match(/priority: "(.*?)"/);
+	var status = facets.match(/status: "(.*?)"/);
+	var reporter = facets.match(/reporter: "(.*?)"/);
+	var assignee = facets.match(/assignee: "(.*?)"/);
+	var label = facets.match(/labels: "(.*?)"/);
+
+	if (priority != null) {
+		priority = priority[1];
+	} else {
+		priority = "";
+	}
+
+	if (status != null) {
+		status = status[1];
+	} else {
+		status = "";
+	}
+
+	if (reporter != null) {
+		reporter = reporter[1];
+	} else {
+		reporter = "";
+	}
+
+	if (assignee != null) {
+		assignee = assignee[1];
+	} else {
+		assignee = "";
+	}
+
+	if (label != null) {
+		label = label[1];
+	} else {
+		label = "";
+	}
+
+	setCookie("priority", priority);
+	setCookie("status", status);
+	setCookie("reporter", reporter);
+	setCookie("assignee", assignee);
+	setCookie("labels", label);
+	window.location.href = "./search?arg=" + "" + "&field=" + "" + "&priority="
+			+ priority + "&status=" + status + "&reporter=" + reporter
+			+ "&assignee=" + assignee + "&label=" + label;
+}
+
 function setModalBody_DeleteQuery(queryName) {
 
 	$("#modal-label").html("Delete Query Subscription");
@@ -152,7 +200,7 @@ function updateQuerySubscription(queryName) {
 	if (facets.length > 0) {
 		facets = facets.slice(0, facets.length - 2);
 	}
-	
+
 	var eventTypes = "[";
 
 	$("#modal-chkbox div input:checked").each(
