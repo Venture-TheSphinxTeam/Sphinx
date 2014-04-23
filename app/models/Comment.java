@@ -53,7 +53,7 @@ public class Comment {
 
     public void delete() {
         //comments().remove(this);
-        comments().remove("_id : #", this._id);
+        comments().remove("{_id : #}", this._id);
     }
 
     public static Iterable<? extends Comment> findBy(String query){
@@ -72,6 +72,14 @@ public class Comment {
 
     public ObjectId getObjectId(){
         return _id;
+    }
+    
+    public ObjectId get_Id(){
+    	return _id;
+    }
+    
+    public void set_Id(ObjectId _id){
+    	this._id = _id;
     }
 
     public String getEntityId() {
