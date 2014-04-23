@@ -77,7 +77,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                  </div>
                                  <div>
                                  <img src="@routes.Assets.at(event.getImage())"</img>
-                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h4>@entity.getEntityType()-@entity.getEntityId() : @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
                                        Event Submitted: @event.getDate()
@@ -149,7 +149,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                  </div>
                                  <div>
                                  <img src="@routes.Assets.at(event.getImage())"</img>
-                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h4>@entity.getEntityType()-@entity.getEntityId() : @entity.getSummary() </h4>                        
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
                                        Event Submitted: @event.getDate()
@@ -221,7 +221,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                  </div>
                                  <div>
                                  <img src="@routes.Assets.at(event.getImage())"</img>
-                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h4>@entity.getEntityType()-@entity.getEntityId() : @entity.getSummary() </h4>                        
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
                                        Event Submitted: @event.getDate()
@@ -293,7 +293,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                  </div>
                                  <div>
                                  <img src="@routes.Assets.at(event.getImage())"</img>
-                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h4>@entity.getEntityType()-@entity.getEntityId() : @entity.getSummary() </h4>                        
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
                                        Event Submitted: @event.getDate()
@@ -328,7 +328,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                 </div>
                                 <div>
                                  <img src="@routes.Assets.at(event.getImage())"</img>
-                                    <h4>@entity.getKey() - @entity.getSummary() </h4>                      
+                                    <h4>@entity.getEntityType()-@entity.getEntityId() : @entity.getSummary() </h4>                        
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>
                                        Event Submitted: @event.getDate()
