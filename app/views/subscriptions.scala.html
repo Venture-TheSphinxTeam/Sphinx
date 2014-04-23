@@ -93,7 +93,7 @@
 													onclick="setModalBody_Delete('milestone','@entity.getEntityId()')">delete</button>
 											</div>
 											<div>
-												<h3>Milestone-@entity.getEntityId()</h3>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -138,7 +138,7 @@
 											</div>
 											
 											<div>
-												<h3>Risk-@entity.getEntityId()</h3>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
