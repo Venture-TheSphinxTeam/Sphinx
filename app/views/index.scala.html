@@ -244,6 +244,8 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                   <br />
                   <div id="page_container4">
                      <div class="page_navigation"></div>
+                     <br />
+                     <div class="info_text"></div>
                      <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- subscribed){
@@ -314,13 +316,17 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                   <br/>
                   <div id="page_container5">
                      <div class="page_navigation"></div>
+                     <br />
+                     <div class="info_text"></div>
                      <ul class="thumbnails" style="overflow-y: auto; height:600px;">
                         <ul class="content">
                            @for(event <- queryEntities){
                            <li>
                               @defining(event.getEntity()){ entity=>
                               <div class="thumbnail">
-                                 <div>
+                                <div class="entityStateButtons, pull-right" align="right">
+                                </div>
+                                <div>
                                  <img src="@routes.Assets.at(event.getImage())"</img>
                                     <h4>@entity.getKey() - @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
@@ -330,7 +336,7 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     <a class="btn btn-primary btn-sm"
                                        href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
                                     more &raquo;</a> <br />
-                                 </div>
+                              </div>
                               </div>
                               }
                            </li>

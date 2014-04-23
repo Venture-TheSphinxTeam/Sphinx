@@ -136,13 +136,14 @@
 													data-target="#modal"
 													onclick="setModalBody_Delete('risk','@entity.getEntityId()')">delete</button>
 											</div>
-											</div>
+											
 											<div>
 												<h3>Risk-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
 													more &raquo;</a> <br />
+											</div>
 											</div>
 										}
 									</li>
@@ -169,25 +170,27 @@
 									@for(query <- userQueries){
 										<li>
 										@defining(query){ query=>
+											@if(query.getFacets().size() != 0){
 											<div class="thumbnail">
 												<div class="optionButtons" align = "right">
 													<button 
 														class="btn btn-primary btn-sm"
 														data-toggle="modal"
 														data-target="#editQueryModal"
-														onclick="setModalBody_UpdateQuery('@query.toQueryString()', '@query.getEventTypes()')">edit
+														onclick="setModalBody_UpdateQuery('@query.getName()', '@query.toQueryString()', '@query.getEventTypes()')">edit
 														</button>
 													<button 
 													class="btn btn-primary btn-sm"
 													data-toggle="modal"
 													data-target="#modal"
-													onclick="setModalBody_DeleteQuery()">delete</button>
+													onclick="setModalBody_DeleteQuery(@{"\"" + query.getName() + "\""})">delete</button>
 												</div>
 												<div>
 													<h3>Query ID - @query.getName()</h3>
 													<h3>Query Summary - @query.toQueryString()</h3>
 												</div>
 											</div>
+											}
 											}
 										</li>
 										}
@@ -252,32 +255,40 @@
       </select>
       }
       <form>
-      		<div class="form-group">
+      		<div class="form-group" id="modal-chkbox">
       			<label for="eventTypes" id="modal-chkbox">Event Types</label>
       			<div class="checkbox">
-      				<input type="checkbox" value="CHANGE" checked>
-      					Change Events
-      				</input>
-      			</div>
+                  <input type="checkbox" value="CREATE" id="event-create">
+                     Create Events
+                  </input>
+               </div>
+               
+               <div class="checkbox">
+                  <input type="checkbox" value="UPDATE" id="event-update">
+                     Update Events
+                  </input>
+               </div>
+
+               <div class="checkbox">
+                  <input type="checkbox" value="DELETE" id="event-delete">
+                     Delete Events
+                  </input>
+               </div>
 
 				<div class="checkbox">
-      				<input type="checkbox" value="REPORT" checked>
+      				<input type="checkbox" value="REPORT" id="event-report">
       					Report Events
       				</input>
       			</div>
 
       			<div class="checkbox">
-      				<input type="checkbox" value="TIMESPENT" checked>
+      				<input type="checkbox" value="TIMESPENT" id="event-timespent">
       					Timespent Events
       				</input>
       			</div>
 
       		</div>
 		</form>
-      	    
-      	    
-      	    
-      	    
       	    
       	    </div>
       </div>
