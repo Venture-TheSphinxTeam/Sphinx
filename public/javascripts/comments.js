@@ -22,6 +22,9 @@ function setCommentBox_New(entityType, entityId, createdBy){
 		function(){
 			var comment = $("#comment");
 			//will need to prevent submitting empty comments
+			if(comment.val() == ""){
+				comment.val("I have nothing to say at this particular point in time.")
+			}
 			createComment(entityType, entityId, createdBy, "", comment.val())
 		}
 	);
@@ -52,6 +55,10 @@ function setCommentBox_Edit(entityType, entityId, createdBy, comment, objId){
 		function(){
 			//pass in _id
 			var comment = $("#comment");
+			//will need to prevent submitting empty comments
+			if(comment.val() == ""){
+				comment.val("[COMMENT REDACTED]")
+			}
 			editComment(entityType, entityId, createdBy, '', comment.val(), objId)
 		}
 	);
