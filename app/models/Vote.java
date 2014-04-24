@@ -1,7 +1,9 @@
 package models;
 import helpers.OutgoingJSON;
+import play.Logger;
 import play.Play;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -30,7 +32,7 @@ public class Vote {
     
     public Vote(){}
 
-    public Response sendVote(){
+    public Response sendVote() throws JsonProcessingException{
         String voteStrTemp = Play.application().configuration().getString("vote.post_target");
         voteStrTemp = voteStrTemp.replace(":entityType", entityType);
         voteStrTemp = voteStrTemp.replace(":entityId", Long.toString(entityId));
@@ -42,7 +44,7 @@ public class Vote {
     }
 
 
-    public Response sendVote(String url){
+    public Response sendVote(String url) throws JsonProcessingException, ProcessingException{
         
         OutgoingJSON out = new OutgoingJSON(url, this.JSONRep());
         Response response = out.sendJson();
@@ -50,7 +52,7 @@ public class Vote {
         return response;
     }
 
-    public Response sendUnVote(){
+    public Response sendUnVote() throws JsonProcessingException{
         String voteStrTemp = Play.application().configuration().getString("vote.post_target");
         voteStrTemp = voteStrTemp.replace(":entityType", entityType);
         voteStrTemp = voteStrTemp.replace(":entityId", Long.toString(entityId));
@@ -60,7 +62,7 @@ public class Vote {
         return sendUnVote(voteStrTemp);
     }
 
-    public Response sendUnVote(String url){
+    public Response sendUnVote(String url) throws JsonProcessingException, ProcessingException {
         OutgoingJSON out = new OutgoingJSON(url, this.JSONRep());
         Response response = out.sendJson();
 
@@ -91,18 +93,12 @@ public class Vote {
         this.userName = userName;
     }
 
-    public String JSONRep(){
+    public String JSONRep() throws JsonProcessingException{
     	
     	ObjectMapper om = new ObjectMapper();
     	String result = "";
-    	
-    	try {
-			result = om.writeValueAsString(this);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+	    result = om.writeValueAsString(this);
+
         return result;
     }
 }

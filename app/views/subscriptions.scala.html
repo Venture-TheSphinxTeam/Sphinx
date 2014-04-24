@@ -93,7 +93,7 @@
 													onclick="setModalBody_Delete('milestone','@entity.getEntityId()')">delete</button>
 											</div>
 											<div>
-												<h3>Milestone-@entity.getEntityId()</h3>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -138,7 +138,7 @@
 											</div>
 											
 											<div>
-												<h3>Risk-@entity.getEntityId()</h3>
+												<h3>@entity.getEntityType()-@entity.getEntityId()</h3>
 												<h3>@entity.getSummary()</h3>
 												<a class="btn btn-primary btn-sm"
 													href="./entity?arg=@entity.getEntityId()&entityType=@entity.getEntityType()">Learn
@@ -188,6 +188,9 @@
 												<div>
 													<h3>Query ID - @query.getName()</h3>
 													<h3>Query Summary - @query.toQueryString()</h3>
+													<button class="btn btn-primary btn-sm"
+													onclick="executeQuery('@query.toQueryString()')">Execute
+													query &raquo;</button>
 												</div>
 											</div>
 											}
@@ -246,7 +249,7 @@
       }
       
       @defining(index.asInstanceOf[com.mongodb.BasicDBObject].get("fieldValues")){ list =>
-      	@for(value <- list.asInstanceOf[List[String]]){
+      	@for(value <- list.asInstanceOf[List[String]].sorted){
       		<option>@value</option>
       	}
       	
@@ -258,31 +261,31 @@
       		<div class="form-group" id="modal-chkbox">
       			<label for="eventTypes" id="modal-chkbox">Event Types</label>
       			<div class="checkbox">
-                  <input type="checkbox" value="CREATE" id="event-create">
+                  <input type="checkbox" value="CREATE" id="event-create_e">
                      Create Events
                   </input>
                </div>
                
                <div class="checkbox">
-                  <input type="checkbox" value="UPDATE" id="event-update">
+                  <input type="checkbox" value="UPDATE" id="event-update_e">
                      Update Events
                   </input>
                </div>
 
                <div class="checkbox">
-                  <input type="checkbox" value="DELETE" id="event-delete">
+                  <input type="checkbox" value="DELETE" id="event-delete_e">
                      Delete Events
                   </input>
                </div>
 
 				<div class="checkbox">
-      				<input type="checkbox" value="REPORT" id="event-report">
+      				<input type="checkbox" value="REPORT" id="event-report_e">
       					Report Events
       				</input>
       			</div>
 
       			<div class="checkbox">
-      				<input type="checkbox" value="TIMESPENT" id="event-timespent">
+      				<input type="checkbox" value="TIMESPENT" id="event-timespent_e">
       					Timespent Events
       				</input>
       			</div>
