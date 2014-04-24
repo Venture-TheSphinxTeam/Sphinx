@@ -361,6 +361,7 @@ public class Event implements Comparable<Event> {
 	}
 
 	public String getAssociatedUser(){
+		//default user
 		return "default-user";
 	}
 }

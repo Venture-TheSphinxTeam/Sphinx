@@ -61,7 +61,8 @@ public class ReportEvent extends Event  {
 
     @Override
     public String getAssociatedUser(){
-        return reportedBy;
+        return "default-user";
+        //return reportedBy; because none of these users actually exist
     }
 
     public void setReportedBy(String reportedBy) {
