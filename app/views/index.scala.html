@@ -76,7 +76,10 @@ List[Event])(username: String)(subscribed: Iterator[ _ <: models.Event])(queryEn
                                     </script>
                                  </div>
                                  <div>
-                                 <img class="sphinx_icons" src="@routes.Assets.at(event.getImage())"</img>
+                                 <div style="float:left;">
+                                 <img class="sphinx_icons" src="@routes.Assets.at(event.getImage())"</img><br>
+                                 <img class="user_icons" src="http://cdn.bulbagarden.net/upload/c/c4/PPW251.png"</img>
+                                 </div>
                                     <h4>@entity.getEntityType()-@entity.getEntityId() : @entity.getSummary() </h4>                      
                                     <h5>@Html(event.getEventDetails().substring(0, Math.min(event.getEventDetails().length(), 200)))</h5>
                                     <p>

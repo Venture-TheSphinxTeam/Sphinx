@@ -65,6 +65,11 @@ public class ChangeEvent extends Event{
         return changedBy;
     }
 
+    @Override
+    public String getAssociatedUser(){
+        return changedBy;
+    }
+
     public void setChangedBy(String changedBy) {
         this.changedBy = changedBy;
     }
@@ -86,7 +91,7 @@ public class ChangeEvent extends Event{
     	}
     	
     	result += entity.getEntityType().toLowerCase();
-    	result += entity.getSummary();
+    	result += (" " + entity.getSummary());
     	
 		return result;
     }

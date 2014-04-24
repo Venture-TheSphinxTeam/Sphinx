@@ -25,14 +25,8 @@ public class UserSettingsController extends Controller{
 		
 		User user = User.findByName(request().username());
 		
-		System.out.println("Interval things");
-		System.out.println(inv);
-
-		System.out.println(user.getUpdateFrequency());
-		System.out.println(inv.get().interval);
-		
 		try {
-			//@TODO: sanitize and round
+			
 			Integer newRate = inv.get().interval;
 			user.setUpdateFrequency(newRate);
 			message = "Update interval set to " + newRate + " minutes.";
@@ -52,22 +46,20 @@ public class UserSettingsController extends Controller{
 		Form<ChangeIcon> ico = iconForm.bindFromRequest();
 		
 		User user = User.findByName(request().username());
-		String newURL = ico.get().userURL;
-
-		System.out.println("Icon things");
-
-		System.out.println(ico);
-
-		System.out.println(user.getPictureURL());
-		System.out.println(newURL);
+		
 
 		try {
-			//@TODO: sanitize
+			String newURL = ico.get().userImageURL;
+
+			if(newURL == ""){
+				throw new Exception();
+			}
+
 			user.setPictureURL(newURL);
 
 			message = "User icon has been updated.";
 		} catch (Exception e) {
-			message += "\n"+"Invalid input. Please no tricksy stuffs.";
+			message += "\n"+"Invalid input.";
 		}
 		 
 		return ok(settings.render(message, intervalForm, iconForm));

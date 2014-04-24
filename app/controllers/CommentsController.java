@@ -4,6 +4,8 @@ import javax.ws.rs.ProcessingException;
 
 import java.net.UnknownHostException;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -26,9 +28,10 @@ public class CommentsController extends Controller {
 		String createdBy = request().username();
 		String commentHeader = json.get("commentHeader").asText();
 		String comment = json.get("comment").asText();
+		Date timeStamp = new Date();
 
 		// create result object
-		Comment result = new Comment(entityType, entityId, createdBy, commentHeader, comment);
+		Comment result = new Comment(entityType, entityId, createdBy, commentHeader, comment, timeStamp);
 		result.insert();
 		 
 		//return 
@@ -48,9 +51,10 @@ public class CommentsController extends Controller {
 		String createdBy = request().username();
 		String commentHeader = json.get("commentHeader").asText();
 		String comment = json.get("comment").asText();
+		Date timeStamp = new Date();
 
 		// create result object
-		Comment result = new Comment(objID, entityType, entityId, createdBy, commentHeader, comment);
+		Comment result = new Comment(objID, entityType, entityId, createdBy, commentHeader, comment, timeStamp);
 		result.upsert();
 		 
 		//return 

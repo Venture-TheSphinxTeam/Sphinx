@@ -59,6 +59,11 @@ public class ReportEvent extends Event  {
         return reportedBy;
     }
 
+    @Override
+    public String getAssociatedUser(){
+        return reportedBy;
+    }
+
     public void setReportedBy(String reportedBy) {
         this.reportedBy = reportedBy;
     }
