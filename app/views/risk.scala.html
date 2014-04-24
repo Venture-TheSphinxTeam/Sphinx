@@ -208,7 +208,7 @@ onclick="setCommentBox_New('@risk.getEntityType()', '@risk.getEntityId()','@user
 				<div style="float:left;"><img class="user_icons" src="@(User.findByName(comment.getCreatedBy()).getPictureURL())"></div>
 				<p>@comment.getCommentBody()</p>
 				posted by @comment.getCreatedBy()
-				<!--add timestamp-->
+				at @comment.getDate()
 						</div>
 					</div>
 				</li>
