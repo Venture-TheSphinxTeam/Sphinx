@@ -62,12 +62,15 @@ public class ChangeEvent extends Event{
     }
 
     public String getChangedBy() {
-        return changedBy;
+
+        
+        return changedBy; 
     }
 
     @Override
     public String getAssociatedUser(){
-        return changedBy;
+        return "default-user";
+        //return changedBy; because none of these users actually exist
     }
 
     public void setChangedBy(String changedBy) {
