@@ -74,4 +74,10 @@ public class TimeSpentEvent extends Event {
 		return super.getFormattedDate(new Date(periodEndDate));
 	}
 
+	@Override
+	public String getAssociatedUser(){
+		//there is no associated user, so return a default
+		return "default-user";
+	}
+
 }
