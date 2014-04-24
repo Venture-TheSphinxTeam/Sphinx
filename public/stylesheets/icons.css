@@ -1,5 +1,11 @@
 .sphinx_icons{
-	height: 40px;
-	width: 40px;
+	height: 60px;
+	width: 60px;
+	padding: 5px;
+}
 
+.user_icons{
+	height: 60px;
+	width: 60px;
+	padding: 5px;
 }

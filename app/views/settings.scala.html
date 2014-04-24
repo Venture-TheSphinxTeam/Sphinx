@@ -4,13 +4,16 @@
 <div class="container">
 	<div class="row">
 		<h2>User Settings</h2>
-		<h2>@updateMessage</h2><br>
+		<h3>@updateMessage</h3><br>
 		<b>Username : </b> @(User.findByName(request().username()).getUsername())<br>
 		<b>Email Address : </b> @(User.findByName(request().username()).getEmailAddress())<br><br>
-		<img src=@(User.findByName(request().username()).getPictureURL()) alt="user-icon" height="60" width="60">
-		<br><br>
-		@helper.form(controllers.routes.UserSettingsController.updateIcon()){
-			@helper.inputText(iconForm("userURL"))<input type="submit" value="Submit">
+		User icon:
+		<img class="user_icons" src="@(User.findByName(request().username()).getPictureURL())">
+		
+		@helper.form(controllers.routes.UserSettingsController.updateIcon()){ 
+
+			@helper.inputText(iconForm("userImageURL")) <input type="submit" value="Submit">  
+
 		}
 
 		@helper.form(controllers.routes.UserSettingsController.updateInterval()){
