@@ -16,6 +16,8 @@ function setCommentBox_New(entityType, entityId, createdBy){
 	$("#modal-button2").removeClass();
 	$("#modal-button2").addClass("btn btn-default");
 
+	$("#modal-button2").off('click');
+
 	$("#modal-button2").click(
 		function(){
 			var comment = $("#comment");
@@ -40,9 +42,11 @@ function setCommentBox_Edit(entityType, entityId, createdBy, comment, objId){
 	$("#modal-button1").removeClass();
 	$("#modal-button1").addClass("btn btn-primary");
 
-	$("#modal-button2").html("Submit");
+	$("#modal-button2").html("Edit");
 	$("#modal-button2").removeClass();
 	$("#modal-button2").addClass("btn btn-default");
+
+	$("#modal-button2").off('click');
 
 	$("#modal-button2").click(
 		function(){
@@ -67,6 +71,8 @@ function setCommentBox_Delete(objectId){
 	$("#modal-button2").html("Delete");
 	$("#modal-button2").removeClass();
 	$("#modal-button2").addClass("btn btn-default");
+
+	$("#modal-button2").off('click');
 
 	$("#modal-button2").click(
 		function(){
