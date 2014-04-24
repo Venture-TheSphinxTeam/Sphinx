@@ -1,7 +1,5 @@
 package models;
 
 public class ChangeIcon {
-	
-	public String userURL;
-
+	public String userImageURL;
 }
