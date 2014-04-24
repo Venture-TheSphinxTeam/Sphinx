@@ -223,7 +223,7 @@ public class Event implements Comparable<Event> {
 	public String getEventDetails() {
 		String result = "";
 
-		result = "An event of type " + eventType + "has been performed on"
+		result = "An event of type " + eventType + " has been performed on"
 				+ entity.getSummary();
 
 		return result;
@@ -358,5 +358,9 @@ public class Event implements Comparable<Event> {
 		else {
 			return IMAGE_LOCATION_T;
 		}
+	}
+
+	public String getAssociatedUser(){
+		return "default-user";
 	}
 }

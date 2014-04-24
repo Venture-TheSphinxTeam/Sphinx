@@ -199,7 +199,7 @@ onclick="setCommentBox_New('@milestone.getEntityType()', '@milestone.getEntityId
 					<div class="thumbnail">
 						<div id = "user-comments">
 							@if(comment.getCreatedBy() == username){
-							<div class="optionButtons" align = "right">
+							<div class="optionButtons" style="float:right;">
 								<button 
 									class="btn btn-primary btn-sm"
 									data-toggle="modal"
@@ -214,10 +214,10 @@ onclick="setCommentBox_New('@milestone.getEntityType()', '@milestone.getEntityId
 								</button>
 							</div>
 							}
-				<div style="float:right;"><img src=@(User.findByName(comment.getCreatedBy()).getPictureURL()) alt="user-icon" height="60" width="60"></div>
+				<div style="float:left;"><img class="user_icons" src="@(User.findByName(comment.getCreatedBy()).getPictureURL())"></div>
 				<p>@comment.getCommentBody()</p>
 				posted by @comment.getCreatedBy()
-				<!--add timestamp-->
+				at @comment.getDate()
 						</div>
 					</div>
 				</li>

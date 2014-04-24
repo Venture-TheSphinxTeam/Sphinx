@@ -20,21 +20,23 @@ public class Comment {
         return PlayJongo.getCollection("comments");
     }
 
-    public Comment(String new_entityType, String new_entityId, String new_createdBy, String new_commentHeader, String new_comment){
+    public Comment(String new_entityType, String new_entityId, String new_createdBy, String new_commentHeader, String new_comment, Date new_date){
         this.entityId = new_entityId;
         this.entityType = new_entityType;
         this.createdBy = new_createdBy; 
         this.commentHeader = new_commentHeader;
         this.comment = new_comment;
+        this.lastUpdateDate = new_date;
     }
 
-    public Comment(String newId, String new_entityType, String new_entityId, String new_createdBy, String new_commentHeader, String new_comment){
+    public Comment(String newId, String new_entityType, String new_entityId, String new_createdBy, String new_commentHeader, String new_comment, Date new_date){
         this._id = new ObjectId(newId);
         this.entityId = new_entityId;
         this.entityType = new_entityType;
         this.createdBy = new_createdBy; 
         this.commentHeader = new_commentHeader;
         this.comment = new_comment;
+        this.lastUpdateDate = new_date;
     }
 
     public Comment(){}
@@ -66,7 +68,7 @@ public class Comment {
     protected String createdBy; //TODO: Change from string to User
     protected String commentHeader;
     protected String comment;
-    //Will we need a lastUpdateDate or dateCreated
+    protected Date lastUpdateDate;
    
 
 
@@ -118,6 +120,10 @@ public class Comment {
     public void setCommentBody(String newCommentBody){
         this.comment = newCommentBody;
         comments().save(this);
+    }
+
+    public Date getDate(){
+        return lastUpdateDate;
     }
 }
 
