@@ -1,5 +1,6 @@
 package controllers;
 
+import helpers.auth.AuthValidation;
 import models.User;
 import views.*;
 import views.html.login;
@@ -12,6 +13,7 @@ import static play.data.Form.form;
  * Created by Stephen Yingling on 4/1/14.
  */
 public class LoginController extends Controller {
+	
 
     public static Result login(){
         return ok(login.render(form(Login.class)));
@@ -34,21 +36,12 @@ public class LoginController extends Controller {
     }
 
     public static class Login {
+    	public static AuthValidation validator;
         public String username;
         public String password;
 
         public String validate(){
-            User user = User.findByName(username);
-
-            if(user == null){
-                return "This user does not exist in the system";
-            }
-
-            if (!user.getPassword().equals(password)) {
-            	
-                return "Invalid password";
-            }
-            return null;
+        	return validator.validateUser(username, password);
         }
     }
     

@@ -84,3 +84,7 @@ sphinx.db.port="27017"
 sphinx.db.db="dev"
 vote.post_target:"http://localhost:9998/entity/:entityType/:entityId/:voteStatus/:userName"
 watch.post_target:"http://localhost:9998/entity/:entityType/:entityId/:watchStatus/:userName"
+
+#Sphinx Auth
+# ~~~~~~~~~~
+play.authValidator:"DefaultAuth"
