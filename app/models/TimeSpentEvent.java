@@ -2,6 +2,7 @@ package models;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import org.jongo.MongoCollection;
 
@@ -41,7 +42,8 @@ public class TimeSpentEvent extends Event {
 
 	protected long periodStartDate;
 	protected long periodEndDate;
-
+	protected List<UserTime> userTime;
+	
 	public long getPeriodStartDate() {
 		return periodStartDate;
 	}
@@ -57,6 +59,21 @@ public class TimeSpentEvent extends Event {
 	public void setPeriodEndDate(long periodEndDate) {
 		this.com_date = periodEndDate;
 		this.periodEndDate = periodEndDate;
+	}
+	
+
+	public void setUserTimeSpentInHoursForPeriod(
+			UserTimeConverter c) {
+		this.userTime = c.getUserTimes();
+	}
+	
+
+	public List<UserTime> getUserTime() {
+		return userTime;
+	}
+
+	public void setUserTime(List<UserTime> userTime) {
+		this.userTime = userTime;
 	}
 
 	@Override
