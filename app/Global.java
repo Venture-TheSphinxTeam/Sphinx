@@ -1,7 +1,12 @@
 
+
+import helpers.auth.AuthValidation;
+import helpers.auth.DefaultAuth;
+
 import java.util.Date;
 
 import controllers.Ingester;
+import controllers.LoginController;
 import play.*;
 
 public class Global extends GlobalSettings {
@@ -39,6 +44,30 @@ public class Global extends GlobalSettings {
 	public void onStart(Application app) {
 		System.out.println("Application Starting");
 		synchThread.start();
+		
+		String authClass = Play.application().configuration().getString("play.authValidator");
+		
+		Object o = null;
+		try {
+			 o = Class.forName(authClass).newInstance();
+		} catch (InstantiationException e) {
+			Logger.error("Could not instantiate authValidator", e);
+		} catch (IllegalAccessException e) {
+			Logger.error("", e);
+		} catch (ClassNotFoundException e) {
+			Logger.error("Could not find class for authValidator", e);
+		}
+		
+		AuthValidation av;
+		
+		if(o != null && (o instanceof AuthValidation)){
+			av = (AuthValidation) o;
+		}
+		else{
+			av = new DefaultAuth();
+		}
+		
+		LoginController.Login.validator = av;
 	}
 
 	@Override

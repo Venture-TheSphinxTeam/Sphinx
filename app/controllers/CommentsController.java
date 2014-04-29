@@ -1,15 +1,20 @@
 package controllers;
 
+import helpers.OutgoingJSON;
+
 import javax.ws.rs.ProcessingException;
 
-import java.net.UnknownHostException;
+import org.glassfish.jersey.message.internal.OutboundJaxrsResponse;
 
+import java.net.UnknownHostException;
 import java.util.Date;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.*;
+import play.Logger;
+import play.Play;
 import play.mvc.Controller;
 import play.mvc.Security;
 import play.libs.Json;
@@ -33,6 +38,22 @@ public class CommentsController extends Controller {
 		// create result object
 		Comment result = new Comment(entityType, entityId, createdBy, commentHeader, comment, timeStamp);
 		result.insert();
+		
+		OutgoingJSON oj = new OutgoingJSON();
+		
+		String tempString = Play.application().configuration().getString("comment.post_target");
+		tempString.replace(":entityType", entityType);
+		tempString.replace(":entityId", entityId);
+		tempString.replace(":userName", createdBy);
+		
+		oj.setJson(comment);
+		oj.setUrl(tempString);
+		
+		try{
+			oj.sendJson();
+		}catch(ProcessingException e){
+			Logger.error("Could not post comment",e);
+		}
 		 
 		//return 
 		return Application.entityView(entityId, entityType);

@@ -70,6 +70,8 @@ logger.application=DEBUG
 
 # Play Jongo
 # ~~~~~
+
+#Set this to the location of your mongodb instance
 playjongo.uri="mongodb://venture.se.rit.edu:27017/dev"
 playjongo.gridfs.enabled=false
 
@@ -77,10 +79,37 @@ playjongo.gridfs.enabled=false
 
 # Sphinx
 # ~~~~~~
+
+#Set this to the location of the API you will be pulling JSON from
 external.json.source="http://localhost:9998"
+
+#Set this to the number of minutes between each automated pull from the
+#PM System API
 external.pull_int="15"
+
+#Set these to the location of you mongodb instance as well
 sphinx.db.url="venture.se.rit.edu"
 sphinx.db.port="27017"
 sphinx.db.db="dev"
+
+#Set this to the url you will be posting vote data to
+#Use :entityType, :entityId, :voteStatus, and :userName to replace
+#that part of the URL with the related value
 vote.post_target:"http://localhost:9998/entity/:entityType/:entityId/:voteStatus/:userName"
+
+#Set this to the url you will be posting watch data to
+#Use :entityType, :entityId, :watchStatus, and :userName to replace
+#that part of the URL with the related value
 watch.post_target:"http://localhost:9998/entity/:entityType/:entityId/:watchStatus/:userName"
+
+#Set this to the url you will be posting comment data to
+#Use :entityType, :entityId, and :userName to replace
+#that part of the URL with the related value
+comment.post_target:"http://localhost:9998/entity/:entityType/:entityId/comment/:userName"
+
+#Sphinx Auth
+# ~~~~~~~~~~
+#Set this equal to the fully qualified class name of a class
+#That implements the helpers.auth.AuthValidator interface that you
+#want to use for validating users
+play.authValidator:"helpers.auth.DefaultAuth"
