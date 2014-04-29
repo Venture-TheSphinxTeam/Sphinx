@@ -93,7 +93,7 @@ public class CommentsController extends Controller {
 		String _id = json.get("_id").asText();
 
 		//create result object
-		Comment result = new Comment(_id, null, null, null, null, null);
+		Comment result = new Comment(_id, null, null, null, null, null,null);
 		result.delete();
 
 		return ok();
