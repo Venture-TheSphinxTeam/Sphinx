@@ -102,6 +102,11 @@ vote.post_target:"http://localhost:9998/entity/:entityType/:entityId/:voteStatus
 #that part of the URL with the related value
 watch.post_target:"http://localhost:9998/entity/:entityType/:entityId/:watchStatus/:userName"
 
+#Set this to the url you will be posting comment data to
+#Use :entityType, :entityId, and :userName to replace
+#that part of the URL with the related value
+comment.post_target:"http://localhost:9998/entity/:entityType/:entityId/comment/:userName"
+
 #Sphinx Auth
 # ~~~~~~~~~~
 #Set this equal to the fully qualified class name of a class
