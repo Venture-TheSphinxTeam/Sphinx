@@ -70,6 +70,7 @@
 	
 	<div class="info_text"></div>
 	<ul class="content" id="entities" style="overflow-y: auto; height:700px;">
+	@if(userEntities.size() != 0){
 		@for(entity <- userEntities){
 
 		<li>
@@ -144,6 +145,10 @@
 
 			</div>
 		</li> }
+		}else{
+			Search returned no results.
+			
+		}
 	</ul>
 
 </div>
