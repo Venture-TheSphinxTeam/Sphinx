@@ -13,6 +13,9 @@ function updateEntityStateStatus(entityType,entityId,buttonType){
 		datatype: "json",
 		contentType: 'application/json; charset=utf-8',
 		success: function (data){
+			if ( buttonType == 'subscription'){
+				location.reload();
+			}
 			updateButtonsOnPage(entityType,entityId,data['status'], buttonType);
 		}
 	})
@@ -54,7 +57,6 @@ function setStatusOfButtons(entityType,entityId,buttonType){
  *  Update all buttons of buttonType related to that entityType-entityid
  */
 function updateButtonsOnPage(entityType,entityId,status,buttonType){
-
 	var buttons = document.getElementsByName(buttonType+"_b-"+entityType+"-"+entityId);
 	if( status == false ){
 
