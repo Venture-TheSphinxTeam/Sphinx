@@ -256,7 +256,6 @@ public class Application extends Controller {
 
 	@Security.Authenticated(Secured.class)
 	public static Result adminTools() {
-
 		List<User> users = User.getAllUsers();
 
 		if (User.findByName(request().username()).getAdmin()) {

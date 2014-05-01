@@ -2,9 +2,11 @@ package models;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import helpers.OutgoingJSON;
 import play.Play;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 
 /**
@@ -24,7 +26,7 @@ public class Watch {
 
     public Watch(){}
 
-    public Response sendWatch(){
+    public Response sendWatch() throws JsonProcessingException, ProcessingException{
         String voteStrTemp = Play.application().configuration().getString("watch.post_target");
         voteStrTemp = voteStrTemp.replace(":entityType", entityType);
         voteStrTemp = voteStrTemp.replace(":entityId", Long.toString(entityId));
@@ -36,7 +38,7 @@ public class Watch {
     }
 
 
-    public Response sendWatch(String url){
+    public Response sendWatch(String url) throws JsonProcessingException, ProcessingException{
 
         OutgoingJSON out = new OutgoingJSON(url, this.JSONRep());
         Response response = out.sendJson();
@@ -44,7 +46,7 @@ public class Watch {
         return response;
     }
 
-    public Response sendUnWatch(){
+    public Response sendUnWatch() throws JsonProcessingException, ProcessingException {
         String voteStrTemp = Play.application().configuration().getString("watch.post_target");
         voteStrTemp = voteStrTemp.replace(":entityType", entityType);
         voteStrTemp = voteStrTemp.replace(":entityId", Long.toString(entityId));

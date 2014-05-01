@@ -9,7 +9,6 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.adminTools;
-
 import play.mvc.Security;
 import play.mvc.Http.Request;
 import play.mvc.Result;
@@ -31,7 +30,7 @@ public class AdminController extends Controller{
 		try {
 			ec = ingester.getEntitiesSince(ff.get().date);
 		} catch (ProcessingException e) {
-			message += "\n"+e.getMessage();
+			message += "Could not retrieve entities<br>";
 		}
 		if(ec != null){
 			List<Initiative> li = ec.getInitiatives();
@@ -51,13 +50,13 @@ public class AdminController extends Controller{
 				r.upsert();
 			}
 			ec.createIndices();
-			message += "\nEntities pulled";
+			message += "Events pulled sucessfully<\br>";
 		}
         EventCollection events =null;
         try{
         	events =ingester.getEventsSince(ff.get().date);
         }catch(ProcessingException e){
-        	message += "\n"+e.getMessage();
+        	message += "Could not retrieve Events";
         }
         if(events != null){
 	        List<ChangeEvent> ce = events.getChangeEvents();
@@ -80,10 +79,11 @@ public class AdminController extends Controller{
 	        		ts.insert();
 	        	}
 	        }
-	        message+= "\nEvents pulled";
+	        message+= "Events sucessfully pulled";
         }
-
-		return ok(adminTools.render(message, entitForm, new ArrayList<User>()));
+        flash("retrieve_mess",message);
+        List<User> users = User.getAllUsers();
+		return redirect(controllers.routes.Application.adminTools());
 	}
 
 	/*

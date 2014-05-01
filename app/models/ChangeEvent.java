@@ -1,14 +1,20 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
 import uk.co.panaxiom.playjongo.PlayJongo;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,6 +57,7 @@ public class ChangeEvent extends Event{
 
     protected long eventDate;
     protected String changedBy;
+    protected List<UpdateChanges> updateChanges;
 
     public long getEventDate() {
         return eventDate;
@@ -66,6 +73,22 @@ public class ChangeEvent extends Event{
         
         return changedBy; 
     }
+    
+    @JsonAnySetter
+    public void setUCsFromOther(String key, Object value){
+    	UpdateChanges uc = null;
+    	ObjectMapper om = new ObjectMapper();
+    	if(value instanceof UpdateChanges){
+    		uc = (UpdateChanges) value;
+    	}
+    	if (uc !=null){
+    		uc.setFieldName(key);
+    		if(updateChanges == null){
+    			updateChanges = new ArrayList<UpdateChanges>(); 
+    		}
+    		updateChanges.add(uc);
+    	}
+    }
 
     @Override
     public String getAssociatedUser(){
@@ -77,7 +100,17 @@ public class ChangeEvent extends Event{
         this.changedBy = changedBy;
     }
     
-    @Override
+    
+    
+    public List<UpdateChanges> getUpdateChanges() {
+		return updateChanges;
+	}
+
+	public void setUpdateChanges(List<UpdateChanges> updateChanges) {
+		this.updateChanges = updateChanges;
+	}
+
+	@Override
     public String getEventDetails(){
     	String result ="";
     	

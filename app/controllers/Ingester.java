@@ -13,6 +13,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import models.EventCollection;
+import play.Logger;
 import play.Play;
 import models.EntityCollection;
 
@@ -80,7 +81,7 @@ public class Ingester {
     	try{
     	r = ib.get();
     	}catch(ProcessingException e){
-    		//TODO: Logging
+    		Logger.error("Could not retrieve entities",e);
     		throw e;
     	}
     	
@@ -98,7 +99,7 @@ public class Ingester {
         try{
         r = ib.get();
         }catch (ProcessingException e){
-        	//TODO: Logging
+        	Logger.error("Could not retrieve events",e);
         	throw e;
         }
 

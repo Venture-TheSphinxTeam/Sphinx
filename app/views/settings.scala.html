@@ -5,20 +5,45 @@
 	<div class="row">
 		<h2>User Settings</h2>
 		<h3>@updateMessage</h3><br>
-		<b>Username : </b> @(User.findByName(request().username()).getUsername())<br>
-		<b>Email Address : </b> @(User.findByName(request().username()).getEmailAddress())<br><br>
-		User icon:
-		<img class="user_icons" src="@(User.findByName(request().username()).getPictureURL())">
-		
-		@helper.form(controllers.routes.UserSettingsController.updateIcon()){ 
-
-			@helper.inputText(iconForm("userImageURL")) <input type="submit" value="Submit">  
-
+		<div class="col-md-12">
+			<b>Username : </b> @(User.findByName(request().username()).getUsername())<br>
+			<b>Email Address : </b> @(User.findByName(request().username()).getEmailAddress())<br><br>
+		</div>
+		<div class="col-md-12">
+			<b>User icon:</b>
+			<img class="user_icons" src="@(User.findByName(request().username()).getPictureURL())"> 
+		</div>
+		<div class="well col-md-12">
+		@helper.form(controllers.routes.UserSettingsController.updateIcon(),'class -> "form-horizontal"){ 
+			<fieldset>
+				<legend>
+					User Icon Image URL
+				</legend>
+				<div class="form-group">
+					<input type="text" class="form-control" 
+						   id=@iconForm("userImageURL").id
+					       name=@iconForm("userImageURL").name />
+				</div>
+				<button type="submit" class="btn btn-primary">Update</button>
+			</fieldset>
 		}
+		</div>
+		<div class="well col-md-12">
+		@helper.form(controllers.routes.UserSettingsController.updateInterval(),'class -> "form-horizontal"){
+			<fieldset>
+				<legend>
+					Refresh Rate For Feeds (In Minutes)
+				</legend>
+			<div class="form-group">
+				<input type="text" class="form-control" 
+					   id=@intervalForm("interval").id
+				       name=@intervalForm("interval").name />
+			</div>
 
-		@helper.form(controllers.routes.UserSettingsController.updateInterval()){
-			@helper.inputText(intervalForm("interval"))<input type="submit" value="Submit">
+			<button type="submit" class="btn btn-primary">Update</button>
+			</fieldset>
 		}
+		</div>
 		
 	</div>
 </div>

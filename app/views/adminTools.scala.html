@@ -11,12 +11,25 @@
          		<div class="tab-content">
 
            		<h1>Administrator Page</h1>
+           			<div class="col-md-6">
+              				@helper.form(controllers.routes.AdminController.forceGetEntities()){
+              					<h3>Manually Synchronize with PM System</h3>
+              					<div class="form-group">
+              						<label class="control-label">Get Events Since (YYYY-MM-DD)</label>
+              						<input type="date" class="form-control" 
+              						       id=@dateForm("date").id
+              						       name=@dateForm("date").name />
+  									<!--@helper.inputDate(dateForm("date")) -->
+  								</div>
+  								<button type="submit" class="btn btn-primary">Synch</button>
 
-  					<h3>Manually Synchronize with PM System</h3>
-  						  
-              		@helper.form(controllers.routes.AdminController.forceGetEntities()){
-  						@helper.inputDate(dateForm("date")) <input type="submit" value="Grab"></input>
-  					}
+  							}
+  						@if(flash.get("retrieve_mess") != null){
+  							@Html(flash.get("retrieve_mess"))
+  						}
+  				</div>
+
+  				<div class="col-md-6">
 
   					<h3>Set User Admin Status</h3>
 
@@ -38,7 +51,7 @@
 	                </ul>
 	                <script>setAdminButtonStatuses()</script>
 
-
+	            </div>
          		</div>
          	</div>
         </div>

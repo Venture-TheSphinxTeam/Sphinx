@@ -165,12 +165,28 @@ public class ButtonStateController extends Controller{
 		if( User.doesUserWatchEntity(user, entityId, entityType)){
 			User.setUserEntityWatchStatus(false, user, entityId, entityType);
 			retVal = false;
-            w.sendUnWatch();
+            try{
+            	w.sendUnWatch();
+            } catch (JsonProcessingException e) {
+                Logger.error("Could not convert JSON to String",e);
+                flash("An error occurred and the unwatch could not be sent.");
+            } catch(ProcessingException e){
+                Logger.error("Could not send unwatch to url",e);
+                flash("An error occurred connecting to the external API and the unwatch could not be sent.");
+            }
 		}
 		else{
 			User.setUserEntityWatchStatus(true, user, entityId, entityType);
 			retVal = true;
-            w.sendWatch();
+			try{
+				w.sendWatch();
+			}catch (JsonProcessingException e) {
+                Logger.error("Could not convert JSON to String",e);
+                flash("An error occurred and the watch could not be sent.");
+            } catch(ProcessingException e){
+                Logger.error("Could not send watch to url",e);
+                flash("An error occurred connecting to the external API and the watch could not be sent.");
+            }
 		}
 
 		return retVal;
