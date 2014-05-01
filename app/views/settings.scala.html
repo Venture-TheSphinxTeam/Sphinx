@@ -7,18 +7,21 @@
 		<h3>@updateMessage</h3><br>
 		<b>Username : </b> @(User.findByName(request().username()).getUsername())<br>
 		<b>Email Address : </b> @(User.findByName(request().username()).getEmailAddress())<br><br>
-		User icon:
-		<img class="user_icons" src="@(User.findByName(request().username()).getPictureURL())">
 		
+		User icon:
+		<img class="user_icons" src="@(User.findByName(request().username()).getPictureURL())"> 
+		<div class="thumbnail">
 		@helper.form(controllers.routes.UserSettingsController.updateIcon()){ 
 
 			@helper.inputText(iconForm("userImageURL")) <input type="submit" value="Submit">  
 
 		}
-
+		</div>
+		<div class="thumbnail">
 		@helper.form(controllers.routes.UserSettingsController.updateInterval()){
 			@helper.inputText(intervalForm("interval"))<input type="submit" value="Submit">
 		}
+		</div>
 		
 	</div>
 </div>

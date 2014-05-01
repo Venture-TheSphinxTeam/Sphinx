@@ -4,7 +4,9 @@
 
 <div class="thumbnail">
 	@defining(milestone.asInstanceOf[Milestone]){ mile=>
-		<img align="left"src="@routes.Assets.at(mile.getImage())"</img>
+	<div style="float:left;">
+		<img class="sphinx_icons" src="@routes.Assets.at(mile.getImage())"</img>
+	</div>
 	<div class="entityStateButtons" align="right">
 
 		<!-- SUBSCRIBE BUTTON -->
