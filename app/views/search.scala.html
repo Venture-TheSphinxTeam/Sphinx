@@ -70,6 +70,7 @@
 	
 	<div class="info_text"></div>
 	<ul class="content" id="entities" style="overflow-y: auto; height:700px;">
+	@if(userEntities.size() != 0){
 		@for(entity <- userEntities){
 
 		<li>
@@ -77,7 +78,9 @@
 
 
 				<div>
-				<img src="@routes.Assets.at(entity.getImage())"</img>
+            <div style="float:left;">
+				<img class="sphinx_icons"src="@routes.Assets.at(entity.getImage())"</img>
+            </div>
 
 	                <div class="entityStateButtons, pull-right" align="right">
                         <!-- SUBSCRIBE BUTTON -->
@@ -144,6 +147,10 @@
 
 			</div>
 		</li> }
+		}else{
+			Search returned no results.
+			
+		}
 	</ul>
 
 </div>
