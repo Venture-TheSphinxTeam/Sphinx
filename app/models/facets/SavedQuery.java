@@ -60,8 +60,20 @@ public class SavedQuery {
 		for(int i=0; i< facets.size()-1; i++){
 			queryString += facets.get(i).toQueryString() +", ";
 		}
-		
-		queryString += facets.get(facets.size()-1).toQueryString();
+        queryString += facets.get(facets.size()-1).toQueryString();
+
+        if(eventTypes.size() >0){
+            String eTypes = "[";
+
+            for(int i=0; i<eventTypes.size()-1; i++){
+                eTypes += eventTypes.get(i) +",";
+            }
+
+            eTypes += eventTypes.get(eventTypes.size()-1) +"]";
+
+            queryString += ", eventTypes: $in: {" + eTypes +"}";
+
+        }
 		
 		return queryString;
 	}
