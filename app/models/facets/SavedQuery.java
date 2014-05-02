@@ -62,21 +62,26 @@ public class SavedQuery {
 		}
         queryString += facets.get(facets.size()-1).toQueryString();
 
-        if(eventTypes.size() >0){
+		
+		return queryString;
+	}
+    
+    public String eventTypesAsMongoString(){
+    	String res ="";
+    	if(eventTypes.size() >0){
             String eTypes = "[";
 
             for(int i=0; i<eventTypes.size()-1; i++){
-                eTypes += eventTypes.get(i) +",";
+                eTypes += ""+eventTypes.get(i) +",";
             }
 
             eTypes += eventTypes.get(eventTypes.size()-1) +"]";
 
-            queryString += ", eventTypes: $in: {" + eTypes +"}";
+            res += eTypes;
 
         }
-		
-		return queryString;
-	}
+    	return res;
+    }
     
     @Override
     public boolean equals(Object o){

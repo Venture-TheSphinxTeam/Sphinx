@@ -132,23 +132,27 @@ public class MongoControlCenter {
 
 		return result;
 	}
-
+	
 	public ArrayList<Event> getEventsForQueriedEntities(String query) {
+		return getEventsForQueriedEntitiesInEvents(query, "[\"CREATE\",\"UPDATE\",\"DELETE\",\"TIMESPENT\",\"REPORT\"]");
+	}
+
+	public ArrayList<Event> getEventsForQueriedEntitiesInEvents(String query,String eventTypes) {
 		ArrayList<Event> result = new ArrayList<Event>();
 
 		Iterator<? extends Entity> entit = Initiative.findBy(query).iterator();
 		ArrayList<String> ids = entityIteratorToIdList(entit);
 		result.addAll(Event.findByIDListAndEntityTypeA(ids,
-				Initiative.TYPE_STRING));
+				Initiative.TYPE_STRING, eventTypes));
 
 		entit = Milestone.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
 		result.addAll(Event.findByIDListAndEntityTypeA(ids,
-				Milestone.TYPE_STRING));
+				Milestone.TYPE_STRING, eventTypes));
 
 		entit = Risk.findBy(query).iterator();
 		ids = entityIteratorToIdList(entit);
-		result.addAll(Event.findByIDListAndEntityTypeA(ids, Risk.TYPE_STRING));
+		result.addAll(Event.findByIDListAndEntityTypeA(ids, Risk.TYPE_STRING, eventTypes));
 
 		long unixTime = System.currentTimeMillis() / 1000L;
 		long threeMonths = 7776000L;

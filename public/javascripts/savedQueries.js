@@ -7,7 +7,7 @@ function setSQModalBody() {
 
 	$("#save").removeClass();
 	$("#save").addClass("btn btn-default");
-	$("#save").click(saveQuery);
+	//$("#save").click(saveQuery);
 }
 
 function executeQuery(facets) {
@@ -288,8 +288,5 @@ function saveQuery() {
 		data : JSON.stringify(json),
 		datatype : "json",
 		contentType : 'application/json; charset=utf-8',
-		success : function(data) {
-			// location.reload();
-		}
 	})
 }
