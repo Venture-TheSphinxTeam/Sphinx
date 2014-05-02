@@ -26,6 +26,12 @@ public class Initiative extends Entity {
 				"{ entityType: \"" + Initiative.TYPE_STRING + "\"," + query
 						+ "}").as(Initiative.class);
 	}
+	public static Iterable<? extends Entity> findByQueryForUser(String query, String username) {
+
+		return findBy(query +",$or:[{allowedAccessUsers:\"" + username
+			+ "\"},{allowedAccessUsers:{$size: 0}}]");
+	}
+	
 
 	public void remove() {
 		initiatives().remove(this.id);

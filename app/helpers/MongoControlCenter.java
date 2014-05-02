@@ -169,7 +169,7 @@ public class MongoControlCenter {
 		return result;
 	}
 
-	private ArrayList<String> entityIteratorToIdList(
+	public static ArrayList<String> entityIteratorToIdList(
 			Iterator<? extends Entity> it) {
 		ArrayList<String> result = new ArrayList<String>();
 
