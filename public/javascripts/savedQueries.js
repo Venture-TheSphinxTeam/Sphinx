@@ -235,7 +235,6 @@ function updateQuerySubscription(queryName) {
 
 function saveQuery() {
 
-	e.stopPro
 	var facets = "";
 	var pickers = $(".selectpicker");
 

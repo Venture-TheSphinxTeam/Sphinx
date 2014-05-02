@@ -105,10 +105,10 @@ public class Application extends Controller {
 		for (SavedQuery s : querySubs) {
 			if (s.getFacets().size() != 0) {
 				ArrayList<Event> allEvents = control
-						.getEventsForQueriedEntities(s.toQueryString()
+						.getEventsForQueriedEntitiesInEvents(s.toQueryString()
 								+ ","
 								+ control
-										.createAllowedAccessUsersQuery(username));
+										.createAllowedAccessUsersQuery(username),s.eventTypesAsMongoString());
 				for (Event ev : allEvents) {
 					queryEvents.add(ev);
 				}
