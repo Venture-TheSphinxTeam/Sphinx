@@ -108,7 +108,7 @@ public class Application extends Controller {
 						.getEventsForQueriedEntitiesInEvents(s.toQueryString()
 								+ ","
 								+ control
-										.createAllowedAccessUsersQuery(username),s.eventTypesAsMongoString());
+										.createAllowedAccessUsersQuery(username),s.getEventTypes());
 				for (Event ev : allEvents) {
 					queryEvents.add(ev);
 				}
