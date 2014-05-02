@@ -134,10 +134,10 @@ public class MongoControlCenter {
 	}
 	
 	public ArrayList<Event> getEventsForQueriedEntities(String query) {
-		return getEventsForQueriedEntitiesInEvents(query, "[\"CREATE\",\"UPDATE\",\"DELETE\",\"TIMESPENT\",\"REPORT\"]");
+		return getEventsForQueriedEntitiesInEvents(query, null);
 	}
 
-	public ArrayList<Event> getEventsForQueriedEntitiesInEvents(String query,String eventTypes) {
+	public ArrayList<Event> getEventsForQueriedEntitiesInEvents(String query,List<String> eventTypes) {
 		ArrayList<Event> result = new ArrayList<Event>();
 
 		Iterator<? extends Entity> entit = Initiative.findBy(query).iterator();
@@ -169,7 +169,7 @@ public class MongoControlCenter {
 		return result;
 	}
 
-	private ArrayList<String> entityIteratorToIdList(
+	public static ArrayList<String> entityIteratorToIdList(
 			Iterator<? extends Entity> it) {
 		ArrayList<String> result = new ArrayList<String>();
 

@@ -99,24 +99,7 @@ public class Application extends Controller {
 
 		HashSet<Event> queryEvents = new HashSet<Event>();
 
-		List<SavedQuery> querySubs = User.findByName(username)
-				.getQuerySubscriptions();
-
-		for (SavedQuery s : querySubs) {
-			if (s.getFacets().size() != 0) {
-				ArrayList<Event> allEvents = control
-						.getEventsForQueriedEntitiesInEvents(s.toQueryString()
-								+ ","
-								+ control
-										.createAllowedAccessUsersQuery(username),s.eventTypesAsMongoString());
-				for (Event ev : allEvents) {
-					queryEvents.add(ev);
-				}
-			}
-		}
-
-		ArrayList<Event> queryEvList = new ArrayList<Event>();
-		queryEvList.addAll(queryEvents);
+		List<Event> queryEvList = SavedQuery.allSQEventsForUser(username);
 
 		// Object[] userSubscriptions = //TODO
 

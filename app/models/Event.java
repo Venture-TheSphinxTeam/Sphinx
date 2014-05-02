@@ -40,6 +40,7 @@ public class Event implements Comparable<Event> {
 	protected String eventType;
 	protected Entity entity;
 	protected long com_date;
+	public static final String ALL_EVENT_TYPES = "[\"CREATE\",\"UPDATE\",\"DELETE\",\"TIMESPENT\",\"REPORT\"]";
 	private final String IMAGE_LOCATION_C = "images/icon-create.png";
 	private final String IMAGE_LOCATION_R = "images/icon-report.png";
 	private final String IMAGE_LOCATION_U = "images/icon-update.png";
@@ -76,22 +77,44 @@ public class Event implements Comparable<Event> {
 	}
 	
 	public static List<? extends Event> findByIDListAndEntityTypeA(
-			List<String> ids, String type, String eventTypes) {
+			List<String> ids, String type, List<String> eventTypes) {
 
 		String idString = listToMongoString(ids);
 
 		String s = "\"entity.entityId\": {$in:" + idString + "},"
 				+ "\"entity.entityType\": \"" + type + "\"";
 
-		ArrayList<Event> result;
-		Iterable<? extends Event> events = ReportEvent.findREBy(s + ", eventType: {$in: " + eventTypes +"}");
-		result = Event.eventIterToList(events.iterator());
+		ArrayList<Event> result = new ArrayList<Event>();
+		Iterable<? extends Event> events;
+		
+		if(eventTypes == null || eventTypes.contains("\"REPORT\"")){
+			events = ReportEvent.findREBy(s);
+			result = Event.eventIterToList(events.iterator());
+		}
+		
+		if(eventTypes == null){
+			events = ChangeEvent.findCEby(s);
+			result.addAll(eventIterToList(events.iterator()));
+		}else {
+			if(eventTypes.contains("\"CREATE\"")){
+				events = ChangeEvent.findCEby(s+ ", eventType:" + "\"CREATE\"}");
+				result.addAll(eventIterToList(events.iterator()));
+			}
+			
+			if(eventTypes.contains("\"UPDATE\"")){
+				events = ChangeEvent.findCEby(s+ ", eventType:" + "\"UPDATE\"}");
+				result.addAll(eventIterToList(events.iterator()));
+			}
+			if(eventTypes.contains("\"DELETE\"")){
+				events = ChangeEvent.findCEby(s+ ", eventType:" + "\"DELETE\"}");
+				result.addAll(eventIterToList(events.iterator()));
+			}
+		}
 
-		events = ChangeEvent.findCEby(s+ ", eventType: {$in: " + eventTypes +"}");
-		result.addAll(eventIterToList(events.iterator()));
-
-		events = TimeSpentEvent.findTSEBy(s+ ", eventType: {$in: " + eventTypes +"}");
-		result.addAll(eventIterToList(events.iterator()));
+		if(eventTypes == null || eventTypes.contains("\"TIMESPENT\"")){
+			events = TimeSpentEvent.findTSEBy(s);
+			result.addAll(eventIterToList(events.iterator()));
+		}
 
 		return result;
 	}

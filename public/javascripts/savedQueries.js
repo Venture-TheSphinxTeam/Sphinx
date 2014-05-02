@@ -1,5 +1,7 @@
 function setSQModalBody() {
 
+	$("#saveSuccessAlert").addClass("hide");
+	$("#saveErrorAlert").addClass("hide");
 	$("#modal-label").html("Save As Saved Query");
 
 	$("#cancel").removeClass();
@@ -288,5 +290,12 @@ function saveQuery() {
 		data : JSON.stringify(json),
 		datatype : "json",
 		contentType : 'application/json; charset=utf-8',
+		success : function(data) {
+					$("#saveSuccessAlert").removeClass("hide").slideDown("fast");
+			},
+		error : function(data){saveErrorAlert
+			$("saveErrorAlert").removeClass("hide").slideDown("fast");
+		} 
+
 	})
 }

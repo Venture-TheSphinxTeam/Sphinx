@@ -23,6 +23,12 @@ public class Risk extends Entity{
     	return risks().find("{entityType: \""+Risk.TYPE_STRING+ 
 				"\","+query+"}").as(Risk.class);
     }
+    
+    public static Iterable<? extends Entity> findByQueryForUser(String query, String username) {
+
+		return findBy(query +",$or:[{allowedAccessUsers:\"" + username
+			+ "\"},{allowedAccessUsers:{$size: 0}}]");
+	}
 
     public void remove(){
         risks().remove(this.id);

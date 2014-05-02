@@ -24,6 +24,12 @@ public class Milestone extends Entity{
     	return milestones().find("{entityType: \""+Milestone.TYPE_STRING+ 
 				"\","+query+"}").as(Milestone.class);
     }
+    
+    public static Iterable<? extends Entity> findByQueryForUser(String query, String username) {
+
+		return findBy(query +",$or:[{allowedAccessUsers:\"" + username
+			+ "\"},{allowedAccessUsers:{$size: 0}}]");
+	}
 
     public void remove(){
         milestones().remove(this.id);

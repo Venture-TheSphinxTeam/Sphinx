@@ -1,7 +1,22 @@
 package models.facets;
 
+import helpers.MongoControlCenter;
+
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+
+import org.jongo.MongoCollection;
+
+import play.mvc.Http.Context;
+import controllers.Secured;
+import models.Entity;
+import models.Event;
+import models.Initiative;
+import models.Milestone;
+import models.Risk;
+import models.User;
 
 public class SavedQuery {
 	protected List<FacetQuery> facets;
@@ -81,6 +96,44 @@ public class SavedQuery {
 
         }
     	return res;
+    }
+    
+
+    
+    public List<Event> allEventsForQuery(String username){
+    	ArrayList<Event> result = new ArrayList<Event>();
+    	
+    	Iterator<? extends Entity> ent = Initiative.findByQueryForUser(toQueryString(), username).iterator();
+    	ArrayList<String> ids = MongoControlCenter.entityIteratorToIdList(ent);
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
+				Initiative.TYPE_STRING, eventTypes));
+		
+		ent = Milestone.findByQueryForUser(toQueryString(), username).iterator();
+		ids = MongoControlCenter.entityIteratorToIdList(ent);
+		result.addAll(Event.findByIDListAndEntityTypeA(ids,
+				Milestone.TYPE_STRING, eventTypes));
+
+		ent = Risk.findByQueryForUser(toQueryString(), username).iterator();
+		ids = MongoControlCenter.entityIteratorToIdList(ent);
+		result.addAll(Event.findByIDListAndEntityTypeA(ids, Risk.TYPE_STRING, eventTypes));
+		
+    	return result;
+    }
+    
+    public static List<Event> allSQEventsForUser(String username){
+    	ArrayList<Event> result = new ArrayList<Event>();
+    	HashSet<Event> eventSet = new HashSet<Event>();
+    	
+    	User u = User.findByName(username);
+    	
+    	if(u != null){
+    		for(SavedQuery sq : u.getQuerySubscriptions()){
+    			eventSet.addAll(sq.allEventsForQuery(username));
+    		}
+    	}
+    	result.addAll(eventSet);
+    	
+    	return result;
     }
     
     @Override
